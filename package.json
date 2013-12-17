@@ -1,0 +1,19 @@
+{
+	"name": "dip",
+	"description": "",
+	"version": "0.1.0",
+	"private": true,
+	"author": "Adam Havel",
+	"dependencies": {
+		"express": "latest",
+		"mongoose": "latest",
+		"underscore": "latest",
+		"grunt": "latest",
+		"grunt-contrib-watch": "latest",
+		"grunt-contrib-jshint": "latest",
+		"grunt-contrib-uglify": "latest",
+		"grunt-nodemon": "latest",
+		"grunt-concurrent": "latest",
+		"grunt-exec": "latest"
+	}
+}

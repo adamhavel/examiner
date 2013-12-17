@@ -1,0 +1,28 @@
+/*------------------------------------*\
+    $VARIABLES
+\*------------------------------------*/
+
+/* $media-queries */
+
+$layout-width: 1220px;
+
+$palm: '(max-width: 760px)';
+$lap: '(min-width: 761px) and (max-width: #{$layout-width - 1})';
+$portable: '(max-width: #{$layout-width - 1})';
+$desk: '(min-width: #{$layout-width})';
+
+/* $colors */
+
+$light-red: #f58457;
+$red: #f15825;
+$light-blue: #4fcae5;
+$blue: #4bc0da;
+$light-grey: #787878;
+$grey: #666;
+$light-yellow: #f7c63c;
+$yellow: #f5b417;
+
+/* $typography */
+
+$line-height: 1.5;
+$leading: $line-height * 1rem;

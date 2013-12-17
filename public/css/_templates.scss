@@ -1,0 +1,255 @@
+/*------------------------------------*\
+    $TEMPLATES
+\*------------------------------------*/
+
+/* $blocks */
+
+.t-box {
+	display: inline-block;
+	padding: 1rem 1.5*$gutter;
+	line-height: 1.75;
+	font-weight: 300;
+	background: $red;
+	color: white;
+	text-transform: uppercase;
+	&.giga {
+		line-height: 1.2;
+	};
+}
+
+.t-button {
+	display: block;
+	padding: .6em 1em;
+	background-color: $red;
+	border: 0 solid $light-red;
+	color: white;
+	font-weight: 400;
+	text-transform: uppercase;
+	text-align: center;
+	&:hover {
+		background-color: $light-red;
+	};
+	.block-list & {
+		margin-bottom: 0;
+		border-left-width: 3em;
+		text-align: left;
+	};
+	&[type=submit] {
+		width: 100%;
+		box-shadow: 0 .4em 0 -.25em $grey;
+	};
+}
+
+.t-card {
+	display: block;
+	position: relative;
+	margin-bottom: 2*$gutter;
+	background-color: $red;
+	overflow: hidden;
+	color: white;
+	b {
+		color: inherit;
+		font-weight: 700;
+	};
+	> .heading {
+		margin-bottom: 0;
+		line-height: 1.25 !important;
+		font-weight: 400;
+		text-align: center; 
+	};
+	> h1.heading {
+		padding: $leading $gutter*(2/3); 
+		border-bottom: .1rem dashed $light-red;
+	};
+	> h2.heading {
+		padding: $leading/1.5 $gutter;
+		border-top: .1rem dashed $light-red;
+	};
+	.more {
+		position: absolute;
+		z-index: 2;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		text-indent: 100%;
+		&.t-button {
+			@extend .paint-blue;
+			position: static;
+			top: auto;
+			left: auto;
+			width: auto;
+			height: auto;
+			margin-top: $gutter;
+			text-indent: 0;
+			text-transform: none;
+		};
+	};
+	&:before {
+		content: '';
+		position: absolute;
+		z-index: 1;
+		top: 0;
+		right: 0;
+		width: 0;	
+		height: 0;
+		border-right: 2.25em solid transparent;
+		border-bottom: 2.25em solid $grey;
+		box-shadow: .2em .2em 0 0 rgba(62, 62, 62, .2);
+		background: url('../img/body-bg.png') no-repeat #f9f9f9;
+	};
+	&:hover {
+		&:before {
+			border-bottom-color: $yellow;
+		};
+	};
+	&.paint-blue {
+		.heading {
+			border-color: $light-blue;
+		};
+		&:hover {
+			&:before {
+				border-bottom-color: $red;
+			};
+		};
+	};
+	&.paint-yellow {
+		.heading {
+			border-color: $light-yellow;
+		};
+		&:hover {
+			&:before {
+				border-bottom-color: $red;
+			};
+		};
+	};
+	@media screen and #{$lap} {
+		margin-bottom: $gutter * 1.5;
+	};
+	@media screen and #{$palm} {
+		margin-bottom: $gutter;
+	};
+
+	&.t-card--pale {
+		background: #fafafa !important;
+		> .heading {
+			padding: $leading;
+			border: 0;
+			color: $grey;
+		};
+		&:before {
+			border-bottom-color: $blue;
+		};
+		&:hover {
+			&:before {
+				border-bottom-color: $grey !important;
+			};
+		};
+		&.paint-yellow {
+			&:before {
+				border-bottom-color: $yellow;
+			};
+		};
+		&.paint-red {
+			background: #fafafa !important;
+			&:before {
+				border-bottom-color: $red;
+			};
+		};
+	};
+
+	&.t-card--dark {
+		background: $light-grey !important;
+		color: white !important;
+		> .heading {
+			border-color: #939393;
+		};
+		&:before {
+			border-bottom-color: $blue;
+		};
+		&:hover {
+			&:before {
+				border-bottom-color: $red;
+			};
+		};
+		.bullet-list {
+			li:before {
+				color: $blue;
+			};
+		};
+	};
+}
+
+	.t-card__content {
+		padding: $gutter;
+		.heading {
+			margin-bottom: $leading/4;
+			line-height: 1.1 !important;
+			text-transform: none;
+		};
+		p, ul {
+			text-align: left;
+		};
+		.paint-yellow > & {
+			color: $grey;
+		};
+		.t-card--pale & {
+			padding: 0 $gutter*(2/3);
+			color: $red !important;
+		};
+	}
+
+/* $forms */
+
+.t-input {
+	display: block;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: 2.75em;
+	padding: 0 1em;
+	margin-bottom: $leading;
+	line-height: 2.75;
+	background: #f7f7f7;
+	border: 1px solid $light-grey;
+	&.error {
+		border-color: $red;
+	};
+	&[cols] {
+		height: auto;
+		padding: .5em 1em;
+		line-height: 1.5;
+	}
+}
+
+
+/* $colors */
+
+.paint-yellow {
+	background-color: $yellow !important;
+	border: 0 solid $light-yellow;
+	&[href]:hover {
+		background-color: $light-yellow !important;
+	};
+}
+.paint-blue {
+	background-color: $blue !important;
+	border: 0 solid $light-blue;
+	&[href]:hover {
+		background-color: $light-blue !important;
+	};
+}
+.paint-grey {
+	background-color: $grey !important;
+	border: 0 solid $light-grey;
+	&[href]:hover {
+		background-color: $light-grey !important;
+	};
+}
+.paint-red {
+	background-color: $red !important;
+	border: 0 solid $light-red;
+	&[href]:hover {
+		background-color: $light-red !important;
+	};
+}

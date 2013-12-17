@@ -1,0 +1,20 @@
+/*------------------------------------*\
+    $ICONS
+\*------------------------------------*/
+
+.i {
+	display: inline-block;
+	height: $leading;
+	background: {
+		position: center;
+		repeat: no-repeat;
+	};
+	vertical-align: bottom;
+}
+
+$icons: ();
+@each $icon in $icons {
+	.i--#{$icon} {
+		background-image: url('../img/i--#{$icon}.png');
+	}
+}

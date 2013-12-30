@@ -1,12 +1,11 @@
 describe('Test', function(){
 
-	var module;
 	before(function() {
-		app = angular.module("app");
+		module("app");
 	});
 
-	it("should be registered", function() {
-		expect(app).not.to.equal(null);
+	it('should return -1 when the value is not present', function(){
+		assert.equal(-1, [1,2,3].indexOf(5));
 	});
 
 });

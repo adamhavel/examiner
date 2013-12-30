@@ -87,7 +87,6 @@ body {
 				display: block;
 				width: 100%;
 				box-sizing: border-box;
-				-moz-box-sizing: bored-box;
 			}
 		}
 		.search-form__submit {
@@ -447,7 +446,7 @@ body {
 			border-top: 2px solid $blue;
 		};
 		img {
-			width: 2.5em;
+			width: 2.5em;;
 		};
 	};
 }
@@ -462,11 +461,14 @@ body {
 \*------------------------------------*/
 
 .push-right {
-	float: right;
+	float: right;;
 }
 .pull-left {
 	float: left;
 }
 .round {
 	border-radius: 50%;
+	transition: transform 1s ease;
+	display: flex;
+	align-items: center;
 }

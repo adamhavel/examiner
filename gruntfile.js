@@ -4,18 +4,18 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 
 		watch: {
-			validate: {
+			lint: {
 				files: ['gruntfile.js','client/**/*.js','server/**/*.js'],
 				tasks: ['jshint']
 			},
 			js: {
 				files: ['client/**/*.js'],
-				tasks: ['uglify:client'],
+				tasks: ['uglify:app','concat:angular'],
 				options: { livereload: true }
 			},
 			css: {
-				files: ['public/css/default.min.css'],
-				tasks: ['csslint:strict'],
+				files: ['public/css/*.scss'],
+				tasks: ['exec:sass','autoprefixer','csslint','cssmin'],
 				options: { livereload: true }
 			},
 			html: {
@@ -39,30 +39,87 @@ module.exports = function(grunt) {
 		},
 
 		jshint: {
-			all: ['gruntfile.js','client/**/*.js','server/**/*.js']
+			options: {
+				force: true
+			},
+			all: [
+				'gruntfile.js',
+				'client/**/*.js',
+				'server/**/*.js'
+			]
+		},
+
+		concat: {
+			options: {
+				separator: ';',
+				stripBanners: true
+			},
+			angular: {
+				src: [
+					// load angular first
+					'public/lib/angular/**/*.min.js',
+					// load angular production modules, i.e. not mocks
+					'public/lib/angular-*/**/*.min.js',
+					'public/js/**/*.min.js'
+				],
+				dest: 'public/js/app.min.js',
+			},
 		},
 
 		uglify: {
-			client: {
-				src: ['client/**/*.js'],
+			app: {
+				src: [
+					'client/**/*.js'
+				],
 				dest: 'public/js/app.min.js'
+			},
+			shiv: {
+				src: ['public/lib/**/html5shiv.js'],
+				dest: 'public/js/html5shiv.min.js'	
+			}
+		},
+
+		autoprefixer: {
+			default: {
+				options: {
+					browsers: ['> 1%','last 2 versions','firefox 24','opera 12.1']
+				},
+				src: 'public/css/default.css'
 			}
 		},
 
 		csslint: {
-			strict: {
-				options: {},
-				src: ['public/css/default.min.css']
+			options: {
+				csslintrc: '.csslintrc'
+
 			},
+			default: {
+				src: ['public/css/default.css']
+			}
+		},
+
+		cssmin: {
+			options: {
+				report: 'min',
+				keepSpecialComments: 0
+			},
+			default: {
+				files: {
+					'public/css/default.min.css': ['public/css/default.css']
+				}
+			}
 		},
 
 		exec: {
 			sass: {
-				cmd: 'sass --watch default.scss:default.min.css --style compressed',
+				cmd: 'sass default.scss:default.css --style expanded',
 				cwd: 'public/css'
 			},
 			mongo: {
-				cmd: 'mongod --config mongodb.conf',
+				cmd: 'mongod --config db/mongodb.conf',
+			},
+			update: {
+				cmd: 'npm update'
 			}
 		},
 
@@ -86,27 +143,79 @@ module.exports = function(grunt) {
 		},
 
 		concurrent: {
-			dev: ['nodemon:dev', 'watch', 'exec:sass','exec:mongo'],
+			dev: ['exec:mongo','nodemon:dev','watch'],
 			options: {
 				logConcurrentOutput: true
+			}
+		},
+
+		clean: {
+			build: ['build'],
+		},
+
+		copy: {
+			build: {
+				files: [
+					{
+						expand: true,
+						src: ['server/**'],
+						dest: 'build/'
+					},
+					{
+						expand: true,
+						src: [
+							'public/**',
+							'!public/lib/**',
+							'!public/css/*.scss'
+						],
+						dest: 'build/'
+					},
+				]
 			}
 		}
 
 	});
 
-grunt.loadNpmTasks('grunt-contrib-watch');
-grunt.loadNpmTasks('grunt-contrib-jshint');
-grunt.loadNpmTasks('grunt-contrib-uglify');
-grunt.loadNpmTasks('grunt-contrib-csslint');
-grunt.loadNpmTasks('grunt-nodemon');
-grunt.loadNpmTasks('grunt-concurrent');
-grunt.loadNpmTasks('grunt-exec');
-grunt.loadNpmTasks('grunt-karma');
-grunt.loadNpmTasks('grunt-mocha-test');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-csslint');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-contrib-concat');
+	grunt.loadNpmTasks('grunt-nodemon');
+	grunt.loadNpmTasks('grunt-concurrent');
+	grunt.loadNpmTasks('grunt-autoprefixer');
+	grunt.loadNpmTasks('grunt-hashres');
+	grunt.loadNpmTasks('grunt-exec');
+	grunt.loadNpmTasks('grunt-svgmin');
+	grunt.loadNpmTasks('grunt-karma');
+	grunt.loadNpmTasks('grunt-mocha-test');
 
-grunt.option('force', true);
+	grunt.registerTask('default', function() {
+		grunt.option('force', true);
+		grunt.task.run(['concurrent:dev']);
+	});
 
-grunt.registerTask('default', ['concurrent:dev']);
-grunt.registerTask('test', ['mochaTest', 'karma']);
+	grunt.registerTask('test', [
+		'mochaTest',
+		'karma'
+	]);
+
+	grunt.registerTask('build', [
+		'exec:sass',
+		'autoprefixer',
+		'csslint',
+		'cssmin',
+		'jshint',
+		'mochaTest',
+		'karma',
+		'uglify:app',
+		'concat:angular',
+		'uglify:shiv',
+		'clean:build',
+		'copy:build'
+	]);
 
 };

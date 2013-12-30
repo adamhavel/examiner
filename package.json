@@ -1,7 +1,7 @@
 {
   "name": "app",
   "description": "",
-  "version": "0.1.0-1",
+  "version": "0.1.0-2",
   "private": true,
   "author": "Adam Havel <havel.adam@gmail.com>",
   "scripts": {

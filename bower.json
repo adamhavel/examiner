@@ -1,11 +1,11 @@
 {
   "name": "app",
-  "version": "0.1.0-3",
+  "version": "0.1.0-4",
   "dependencies": {
-    "angular": "latest",
-    "angular-resource": "latest",
-    "angular-route": "latest",
-    "angular-mocks": "latest",
-    "html5shiv": "~3.7.0"
+	 "angular": "latest",
+	 "angular-resource": "latest",
+	 "angular-route": "latest",
+	 "angular-mocks": "latest",
+	 "html5shiv": "~3.7.0"
   }
 }

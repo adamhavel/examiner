@@ -190,8 +190,11 @@ module.exports = function(grunt) {
 		bump: {
 			options: {
 				files: ['package.json','bower.json'],
-				commitFiles: ['-a'],
-				pushTo: 'origin'
+				commit: false,
+				push: false
+			},
+			build: {
+				createTag: false
 			}
 		}
 
@@ -240,8 +243,7 @@ module.exports = function(grunt) {
 		'uglify:shiv',
 		'clean:build',
 		'copy:build',
-		'hashres:build',
-		'bump:build'
+		'hashres:build'
 	]);
 
 };

@@ -1,7 +1,7 @@
 {
   "name": "app",
   "description": "",
-  "version": "0.1.0",
+  "version": "0.1.0-1",
   "private": true,
   "author": "Adam Havel <havel.adam@gmail.com>",
   "scripts": {
@@ -39,6 +39,7 @@
     "grunt-hashres": "~0.3.4",
     "grunt-autoprefixer": "latest",
     "grunt-svgmin": "~0.3.0",
-    "grunt-contrib-concat": "~0.3.0"
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-bump": "0.0.13"
   }
 }

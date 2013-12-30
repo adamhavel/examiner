@@ -110,6 +110,19 @@ module.exports = function(grunt) {
 			}
 		},
 
+		hashres: {
+			options: {
+				fileNameFormat: '${name}.${hash}.${ext}',
+			},
+			build: {
+				src: [
+					'build/public/js/app.min.js',
+					'build/public/css/default.min.css'
+				],
+				dest: 'build/public/index.html'
+			}
+		},
+
 		exec: {
 			sass: {
 				cmd: 'sass default.scss:default.css --style expanded',
@@ -150,7 +163,7 @@ module.exports = function(grunt) {
 		},
 
 		clean: {
-			build: ['build'],
+			build: ['build']
 		},
 
 		copy: {
@@ -172,6 +185,13 @@ module.exports = function(grunt) {
 					},
 				]
 			}
+		},
+
+		bump: {
+			options: {
+				files: ['package.json','bower.json'],
+				commitFiles: ['-a'],
+			}
 		}
 
 	});
@@ -192,6 +212,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-svgmin');
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-mocha-test');
+	grunt.loadNpmTasks('grunt-bump');
 
 	grunt.registerTask('default', function() {
 		grunt.option('force', true);
@@ -202,6 +223,8 @@ module.exports = function(grunt) {
 		'mochaTest',
 		'karma'
 	]);
+
+	grunt.option('force', true);
 
 	grunt.registerTask('build', [
 		'exec:sass',
@@ -215,7 +238,9 @@ module.exports = function(grunt) {
 		'concat:angular',
 		'uglify:shiv',
 		'clean:build',
-		'copy:build'
+		'copy:build',
+		'hashres:build',
+		'bump:build'
 	]);
 
 };

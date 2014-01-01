@@ -10,17 +10,23 @@ module.exports = function(grunt) {
 			},
 			js: {
 				files: ['client/**/*.js'],
-				tasks: ['uglify:app','concat:angular'],
-				options: { livereload: true }
+				tasks: ['makejs'],
+				options: {
+					livereload: true
+				}
 			},
 			css: {
 				files: ['public/css/*.scss'],
-				tasks: ['exec:sass','autoprefixer','csslint','cssmin'],
-				options: { livereload: true }
+				tasks: ['makecss'],
+				options: {
+					livereload: true
+				}
 			},
 			html: {
 				files: ['public/**/*.html'],
-				options: { livereload: true }
+				options: {
+					livereload: true
+				}
 			},
 		},
 
@@ -85,6 +91,14 @@ module.exports = function(grunt) {
 					browsers: ['> 1%','last 2 versions','firefox 24','opera 12.1']
 				},
 				src: 'public/css/default.css'
+			}
+		},
+
+		remfallback: {
+			default: {
+				files: {
+					'public/css/default.css': ['public/css/default.css']
+				}
 			}
 		},
 
@@ -187,14 +201,20 @@ module.exports = function(grunt) {
 			}
 		},
 
+		svgmin: { 
+			build: {
+				files: [{
+					expand: true,
+					src: ['build/public/img/*.svg']
+				}]
+			}
+		},
+
 		bump: {
 			options: {
 				files: ['package.json','bower.json'],
 				commit: false,
 				push: false
-			},
-			build: {
-				createTag: false
 			}
 		}
 
@@ -211,6 +231,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-nodemon');
 	grunt.loadNpmTasks('grunt-concurrent');
 	grunt.loadNpmTasks('grunt-autoprefixer');
+	grunt.loadNpmTasks('grunt-remfallback');
 	grunt.loadNpmTasks('grunt-hashres');
 	grunt.loadNpmTasks('grunt-exec');
 	grunt.loadNpmTasks('grunt-svgmin');
@@ -218,14 +239,21 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-mocha-test');
 	grunt.loadNpmTasks('grunt-bump');
 
+	grunt.registerTask('makecss', [
+		'exec:sass','remfallback','autoprefixer','csslint','cssmin'
+	]);
+
+	grunt.registerTask('makejs', [
+		'uglify:app','concat:angular'
+	]);
+
 	grunt.registerTask('default', function() {
 		grunt.option('force', true);
-		grunt.task.run(['concurrent:dev']);
+		grunt.task.run(['makecss','makejs','jshint','concurrent:dev']);
 	});
 
 	grunt.registerTask('test', [
-		'mochaTest',
-		'karma'
+		'mochaTest','karma'
 	]);
 
 	grunt.option('force', true);
@@ -243,7 +271,8 @@ module.exports = function(grunt) {
 		'uglify:shiv',
 		'clean:build',
 		'copy:build',
-		'hashres:build'
+		'hashres:build',
+		'svgmin:build'
 	]);
 
 };

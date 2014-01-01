@@ -6,6 +6,6 @@ angular.module('app', [
 	'app.services',
 	'app.filters'
 ]).config(['$routeProvider', function($routeProvider) {
-	$routeProvider.when('/view', {templateUrl: 'partials/partial1.html', controller: 'MyCtrl1'});
-	$routeProvider.otherwise({redirectTo: '/view1'});
+	$routeProvider.when('/view', {templateUrl: 'views/partial.html', controller: 'MyCtrl1'});
+	$routeProvider.otherwise({redirectTo: '/view'});
 }]);

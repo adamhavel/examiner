@@ -6,7 +6,8 @@
   "author": "Adam Havel <havel.adam@gmail.com>",
   "scripts": {
     "start": "node server/server.js",
-    "test": "grunt test"
+    "test": "grunt test",
+    "prepublish": "git clone https://github.com/rizzenvrinn/style-seed.git public/css"
   },
   "engines": {
     "node": "v0.10.x"

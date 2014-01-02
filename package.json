@@ -7,7 +7,7 @@
    "scripts": {
       "start": "node server/server.js",
       "test": "grunt test",
-      "prepublish": "git clone https://github.com/rizzenvrinn/style-seed.git public/css; bower install"
+      "prepublish": "git clone https://github.com/rizzenvrinn/style-seed.git public/css"
    },
    "engines": {
       "node": "v0.10.x"

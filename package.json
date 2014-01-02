@@ -1,47 +1,48 @@
 {
-  "name": "app",
-  "description": "",
-  "version": "0.1.0-4",
-  "private": true,
-  "author": "Adam Havel <havel.adam@gmail.com>",
-  "scripts": {
-    "start": "node server/server.js",
-    "test": "grunt test",
-    "prepublish": "git clone https://github.com/rizzenvrinn/style-seed.git public/css"
-  },
-  "engines": {
-    "node": "v0.10.x"
-  },
-  "dependencies": {
-    "express": "~3.4.7",
-    "mongoose": "~3.8.3",
-    "underscore": "~1.5.2",
-    "grunt": "~0.4.2"
-  },
-  "devDependencies": {
-    "karma": "~0.11.12",
-    "karma-mocha": "~0.1.1",
-    "karma-chai": "~0.0.2",
-    "karma-phantomjs-launcher": "~0.1.1",
-    "mocha": "~1.16.2",
-    "chai": "~1.8.1",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-contrib-jshint": "~0.8.0",
-    "grunt-contrib-uglify": "~0.2.7",
-    "grunt-contrib-csslint": "~0.2.0",
-    "grunt-contrib-cssmin": "~0.7.0",
-    "grunt-contrib-copy": "~0.5.0",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-nodemon": "~0.1.2",
-    "grunt-concurrent": "~0.4.2",
-    "grunt-exec": "~0.4.3",
-    "grunt-karma": "~0.7.2",
-    "grunt-mocha-test": "~0.8.1",
-    "grunt-hashres": "~0.3.4",
-    "grunt-autoprefixer": "latest",
-    "grunt-svgmin": "~0.3.0",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-bump": "0.0.13",
-    "grunt-remfallback": "0.0.4"
-  }
+   "name": "app",
+   "description": "",
+   "version": "0.1.0-4",
+   "private": true,
+   "author": "Adam Havel <havel.adam@gmail.com>",
+   "scripts": {
+      "start": "node server/server.js",
+      "test": "grunt test",
+      "prepublish": "git clone https://github.com/rizzenvrinn/style-seed.git public/css; bower install"
+   },
+   "engines": {
+      "node": "v0.10.x"
+   },
+   "dependencies": {
+      "express": "~3.4.7",
+      "mongoose": "~3.8.3",
+      "underscore": "~1.5.2",
+      "grunt": "~0.4.2"
+   },
+   "devDependencies": {
+      "karma": "~0.11.12",
+      "karma-mocha": "~0.1.1",
+      "karma-chai": "~0.0.2",
+      "karma-phantomjs-launcher": "~0.1.1",
+      "mocha": "~1.16.2",
+      "chai": "~1.8.1",
+      "grunt-contrib-watch": "~0.5.3",
+      "grunt-contrib-jshint": "~0.8.0",
+      "grunt-contrib-uglify": "~0.2.7",
+      "grunt-contrib-csslint": "~0.2.0",
+      "grunt-contrib-cssmin": "~0.7.0",
+      "grunt-contrib-copy": "~0.5.0",
+      "grunt-contrib-clean": "~0.5.0",
+      "grunt-nodemon": "~0.1.2",
+      "grunt-concurrent": "~0.4.2",
+      "grunt-exec": "~0.4.3",
+      "grunt-karma": "~0.7.2",
+      "grunt-mocha-test": "~0.8.1",
+      "grunt-hashres": "~0.3.4",
+      "grunt-autoprefixer": "latest",
+      "grunt-svgmin": "~0.3.0",
+      "grunt-bump": "~0.0.13",
+      "grunt-remfallback": "~0.0.4",
+      "grunt-contrib-concat": "~0.3.0",
+      "grunt-sass": "~0.9.0"
+   }
 }

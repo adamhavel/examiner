@@ -1,11 +1,11 @@
-describe('Test', function(){
+describe('Test', function() {
 
-	before(function() {
-		module("app");
-	});
+   before(function() {
+      module("app");
+   });
 
-	it('should return -1 when the value is not present', function(){
-		assert.equal(-1, [1,2,3].indexOf(5));
-	});
+   it('should be true', function() {
+      assert.equal(true, true);
+   });
 
 });

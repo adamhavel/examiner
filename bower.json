@@ -1,11 +1,12 @@
 {
-  "name": "app",
-  "version": "0.1.0-4",
-  "dependencies": {
-	 "angular": "~1.2.6",
-	 "angular-resource": "~1.2.6",
-	 "angular-route": "~1.2.6",
-	 "angular-mocks": "~1.2.6",
-	 "html5shiv": "~3.7.0"
-  }
+   "name": "app",
+   "version": "0.1.0-4",
+   "dependencies": {
+      "angular": "~1.2.6",
+      "angular-resource": "~1.2.6",
+      "angular-route": "~1.2.6",
+      "angular-mocks": "~1.2.6",
+      "html5shiv": "~3.7.0",
+      "underscore": "~1.5.2"
+   }
 }

@@ -1,13 +1,14 @@
-angular.module('app', [
+var app = angular.module('app', [
    'ngRoute',
    'ngResource',
-   'app.controllers',
+   'app.modules',
    'app.directives',
-   'app.services',
    'app.filters'
-]).config(['$routeProvider', function($routeProvider) {
+]);
+
+app.config(['$routeProvider', function($routeProvider) {
    $routeProvider.when('/view', {
-      templateUrl: 'views/partial.html', controller: 'MyCtrl1'
+      templateUrl: 'templates/template.html'
    });
    $routeProvider.otherwise({
       redirectTo: '/view'

@@ -1,10 +1,10 @@
 {
    "node": true,
    "browser": true,
-   "es5": true,
+   "es5": false,
    "esnext": true,
    "bitwise": false,
-   "camelcase": false,
+   "camelcase": true,
    "curly": false,
    "eqeqeq": true,
    "immed": true,
@@ -22,15 +22,15 @@
       "angular": true
    },
    "predef": [
-   "define",
-   "require",
-   "exports",
-   "module",
-   "describe",
-   "before",
-   "beforeEach",
-   "after",
-   "afterEach",
-   "it"
+      "define",
+      "require",
+      "exports",
+      "module",
+      "describe",
+      "before",
+      "beforeEach",
+      "after",
+      "afterEach",
+      "it"
    ]
 }

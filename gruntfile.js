@@ -152,7 +152,8 @@ mochaTest: {
    ========================================================================== */
    
 clean: {
-   build: ['build']
+   build: ['build'],
+   temp: ['temp']
 },
 
 copy: {
@@ -172,11 +173,32 @@ copy: {
             src: [
                'public/**',
                '!public/lib/**',
+               '!public/temp/**',
+               '!public/img/icon-*.svg',
                '!public/css/*.scss'
             ],
             dest: 'build/'
          },
       ]
+   },
+   icons: {
+      files: [
+         {
+            expand: true,
+            cwd: 'temp/bmp',
+            src: '*.png',
+            dest: 'public/img',
+            rename: function (dest, src) {
+               return dest + '/icon-' + src;
+            }
+         },
+         {
+            expand: true,
+            cwd: 'temp',
+            src: '*.scss',
+            dest: 'public/css'
+         }
+      ]   
    }
 },
 
@@ -196,6 +218,17 @@ svgmin: {
       files: [{
          expand: true,
          src: 'build/public/img/*.svg'
+      }]
+   },
+   icons: {
+      files: [{
+         expand: true,
+         cwd: 'public/img',
+         src: 'icon-*.svg',
+         dest: 'temp',
+         rename: function (dest, src) {
+            return dest + '/' + src.replace(/^icon-/, '');
+         }
       }]
    }
 },
@@ -221,13 +254,32 @@ imagemin: {
    }
 },
 
+grunticon: {
+   icons: {
+      files: [{
+         expand: true,
+         cwd: 'temp',
+         src: ['*.svg'],
+         dest: 'temp'
+      }],
+      options: {
+         datasvgcss: '_icons.scss',
+         cssprefix: '.icon--',
+         pngfolder: 'bmp',
+         defaultWidth: 20,
+         defaultHeight: 20,
+         template: 'public/css/_icons.hbs'
+      }
+   }
+},
+
 
 /* Runtime
    ========================================================================== */
    
 watch: {
    options: {
-      spawn: false
+      spawn: true
    },
    server: {
       files: ['server/**/*.js'],
@@ -237,22 +289,29 @@ watch: {
       files: ['client/**/*.js'],
       tasks: ['makejs'],
       options: {
-         livereload: true
+         livereload: true,
+         spawn: false
       }
    },
    css: {
       files: ['public/css/*.scss'],
       tasks: ['makecss'],
       options: {
-         livereload: true
+         livereload: true,
+         spawn: false
       }
    },
    html: {
-      files: ['public/**/*.html'],
+      files: ['public/index.html', 'public/templates/*.html'],
       options: {
-         livereload: true
+         livereload: true,
+         spawn: false
       }
    },
+   icons: {
+      files: ['public/img/icon-*.svg'],
+      tasks: ['makeicons']
+   }
 },
 
 nodemon: {
@@ -317,6 +376,7 @@ grunt.loadNpmTasks('grunt-hashres');
 grunt.loadNpmTasks('grunt-exec');
 grunt.loadNpmTasks('grunt-sass');
 grunt.loadNpmTasks('grunt-svgmin');
+grunt.loadNpmTasks('grunt-grunticon');
 grunt.loadNpmTasks('grunt-karma');
 grunt.loadNpmTasks('grunt-mocha-test');
 grunt.loadNpmTasks('grunt-bump');
@@ -332,12 +392,16 @@ grunt.registerTask('makejs', [
    'uglify:app', 'concat:bundle', 'jshint:client'
 ]);
 
+grunt.registerTask('makeicons', [
+   'svgmin:icons', 'grunticon:icons', 'copy:icons', 'clean:temp'
+]);
+
 grunt.registerTask('test', [
    'mochaTest', 'karma'
 ]);
 
 grunt.registerTask('init', [
-   'makecss', 'uglify:libs', 'uglify:shiv', 'makejs', 'jshint:server'
+   'makecss', 'uglify:libs', 'uglify:shiv', 'makejs', 'jshint:server', 'makeicons'
 ]);
 
 
@@ -351,6 +415,7 @@ grunt.registerTask('default', function() {
    ]);
 });
 
+grunt.option('force', true);
 grunt.registerTask('build', [
    'init', 'test', 'clean:build', 'copy:build', 'hashres:build', 'svgmin:build', 'imagemin', 'exec:build'
 ]);

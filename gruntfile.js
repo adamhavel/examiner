@@ -16,7 +16,7 @@ pkg: grunt.file.readJSON('package.json'),
    
 jshint: {
    options: {
-      jshintrc: '.jshintrc',
+      jshintrc: 'grunt/.jshintrc',
       force: true
    },
    client: 'client/**/*.js',
@@ -93,7 +93,7 @@ remfallback: {
 
 csslint: {
    options: {
-      csslintrc: '.csslintrc'
+      csslintrc: 'grunt/.csslintrc'
    },
    default: {
       src: 'public/css/default.css'
@@ -268,7 +268,7 @@ grunticon: {
          pngfolder: 'bmp',
          defaultWidth: 20,
          defaultHeight: 20,
-         template: 'public/css/_icons.hbs'
+         template: 'grunt/icon.hbs'
       }
    }
 },

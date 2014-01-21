@@ -111,16 +111,15 @@ cssmin: {
    }
 },
 
-hashres: {
+uncss: {
    options: {
-      fileNameFormat: '${name}.${hash}.${ext}',
+      ignore: ['.active'],
+      stylesheets: ['css/default.css']
    },
-   build: {
-      src: [
-         'build/public/js/app.min.js',
-         'build/public/css/default.min.css'
-      ],
-      dest: 'build/public/index.html'
+   default: {
+      files: {
+         'public/css/default.css': ['public/**/*.html']
+      }
    }
 },
 
@@ -173,9 +172,9 @@ copy: {
             src: [
                'public/**',
                '!public/lib/**',
-               '!public/temp/**',
                '!public/img/icon-*.svg',
-               '!public/css/*.scss'
+               '!public/css/*.scss',
+               '!public/css/default.css'
             ],
             dest: 'build/'
          },
@@ -199,6 +198,19 @@ copy: {
             dest: 'public/css'
          }
       ]   
+   }
+},
+
+hashres: {
+   options: {
+      fileNameFormat: '${name}.${hash}.${ext}',
+   },
+   build: {
+      src: [
+         'build/public/js/app.min.js',
+         'build/public/css/default.min.css'
+      ],
+      dest: 'build/public/index.html'
    }
 },
 
@@ -372,6 +384,7 @@ grunt.loadNpmTasks('grunt-nodemon');
 grunt.loadNpmTasks('grunt-concurrent');
 grunt.loadNpmTasks('grunt-autoprefixer');
 grunt.loadNpmTasks('grunt-remfallback');
+grunt.loadNpmTasks('grunt-uncss');
 grunt.loadNpmTasks('grunt-hashres');
 grunt.loadNpmTasks('grunt-exec');
 grunt.loadNpmTasks('grunt-sass');
@@ -383,26 +396,45 @@ grunt.loadNpmTasks('grunt-bump');
 
 /* Helper tasks
    ========================================================================== */
-   
-grunt.registerTask('makecss', [
-   'sass', 'remfallback', 'autoprefixer', 'cssmin', 'csslint'
-]);
+
+grunt.registerTask('makecss', function(option) {
+   grunt.task.run('sass');
+   if (option === 'build') {
+      grunt.task.run('uncss');
+   }
+   grunt.task.run([
+      'remfallback', 'autoprefixer', 'cssmin', 'csslint'
+   ]);
+});
 
 grunt.registerTask('makejs', [
    'uglify:app', 'concat:bundle', 'jshint:client'
 ]);
 
-grunt.registerTask('makeicons', [
-   'svgmin:icons', 'grunticon:icons', 'copy:icons', 'clean:temp'
-]);
+grunt.registerTask('makeicons', function() {
+   if (grunt.file.expand('public/img/icon-*.svg').length > 0) {
+      grunt.task.run([
+         'svgmin:icons', 'grunticon:icons', 'copy:icons', 'clean:temp'
+      ]);
+   } else {
+      grunt.log.writeln('No icons found.');
+   }
+});
 
 grunt.registerTask('test', [
    'mochaTest', 'karma'
 ]);
 
-grunt.registerTask('init', [
-   'makecss', 'uglify:libs', 'uglify:shiv', 'makejs', 'jshint:server', 'makeicons'
-]);
+grunt.registerTask('init', function(option) {
+   if (option === 'build') {
+      grunt.task.run('makecss:build');
+   } else {
+      grunt.task.run('makecss');   
+   }
+   grunt.task.run([
+      'uglify:libs', 'uglify:shiv', 'makejs', 'jshint:server', 'makeicons'
+   ]);
+});
 
 
 /* Main tasks
@@ -417,7 +449,7 @@ grunt.registerTask('default', function() {
 
 grunt.option('force', true);
 grunt.registerTask('build', [
-   'init', 'test', 'clean:build', 'copy:build', 'hashres:build', 'svgmin:build', 'imagemin', 'exec:build'
+   'init:build', 'test', 'clean:build', 'copy:build', 'hashres:build', 'svgmin:build', 'imagemin', 'exec:build'
 ]);
 
 };

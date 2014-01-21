@@ -31,10 +31,10 @@
     "grunt": "~0.4.2",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-contrib-jshint": "~0.8.0",
-    "grunt-contrib-uglify": "~0.2.7",
+    "grunt-contrib-uglify": "~0.3.1",
     "grunt-contrib-csslint": "~0.2.0",
     "grunt-contrib-cssmin": "~0.7.0",
-    "grunt-contrib-imagemin": "~0.4.0",
+    "grunt-contrib-imagemin": "~0.5.0",
     "grunt-contrib-copy": "~0.5.0",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-nodemon": "~0.1.2",
@@ -48,7 +48,8 @@
     "grunt-bump": "~0.0.13",
     "grunt-remfallback": "~0.0.4",
     "grunt-contrib-concat": "~0.3.0",
-    "grunt-sass": "~0.9.0",
-    "grunt-grunticon": "~1.0.0"
+    "grunt-sass": "~0.10.0",
+    "grunt-grunticon": "~1.0.0",
+    "grunt-uncss": "~0.1.6"
   }
 }

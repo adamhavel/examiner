@@ -1,4 +1,4 @@
-var app = angular.module('app', [
+var ng = angular.module('app', [
    'ngRoute',
    'ngResource',
    'app.modules',
@@ -6,7 +6,7 @@ var app = angular.module('app', [
    'app.filters'
 ]);
 
-app.config(['$routeProvider', function($routeProvider) {
+ng.config(['$routeProvider', function($routeProvider) {
    $routeProvider.when('/view', {
       templateUrl: 'templates/template.html'
    });

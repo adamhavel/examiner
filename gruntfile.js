@@ -13,7 +13,7 @@ pkg: grunt.file.readJSON('package.json'),
 
 /* JavaScript
    ========================================================================== */
-   
+
 jshint: {
    options: {
       jshintrc: 'grunt/.jshintrc',
@@ -47,9 +47,8 @@ uglify: {
    libs: {
       options: {
          mangle: false
-      }, 
+      },
       src: [
-         'public/lib/underscore/underscore-min.js',
          // load angular first
          'public/lib/angular/**/*.min.js',
          // load angular production modules, i.e. not mocks
@@ -57,16 +56,19 @@ uglify: {
       ],
       dest: 'public/lib/libs.min.js'
    },
-   shiv: {
-      src: 'public/lib/**/html5shiv.js',
-      dest: 'public/js/html5shiv.min.js'  
+   shims: {
+      src: [
+         'public/lib/html5shiv/dist/html5shiv.js',
+         'public/lib/polyfills/polyfill.js'
+      ],
+      dest: 'public/js/shims.min.js'
    }
 },
 
 
 /* Stylesheet
    ========================================================================== */
-   
+
 sass: {
    default: {
       src: 'public/css/default.scss',
@@ -113,7 +115,7 @@ cssmin: {
 
 uncss: {
    options: {
-      ignore: ['.active'],
+      ignore: [/\.j-/],
       stylesheets: ['css/default.css']
    },
    default: {
@@ -126,7 +128,7 @@ uncss: {
 
 /* Tests
    ========================================================================== */
-   
+
 karma: {
    options: {
       configFile: 'test/client/config/karma.conf.js',
@@ -149,7 +151,7 @@ mochaTest: {
 
 /* Build
    ========================================================================== */
-   
+
 clean: {
    build: ['build'],
    temp: ['temp']
@@ -197,7 +199,7 @@ copy: {
             src: '*.scss',
             dest: 'public/css'
          }
-      ]   
+      ]
    }
 },
 
@@ -210,7 +212,7 @@ hashres: {
          'build/public/js/app.min.js',
          'build/public/css/default.min.css'
       ],
-      dest: 'build/public/index.html'
+      dest: 'build/public/**/*.html'
    }
 },
 
@@ -224,8 +226,8 @@ bump: {
 
 /* Images
    ========================================================================== */
-   
-svgmin: { 
+
+svgmin: {
    build: {
       files: [{
          expand: true,
@@ -275,11 +277,11 @@ grunticon: {
          dest: 'temp'
       }],
       options: {
-         datasvgcss: '_icons.scss',
-         cssprefix: '.icon--',
+         datasvgcss: '_icons-data.scss',
+         cssprefix: 'icon--',
          pngfolder: 'bmp',
-         defaultWidth: 20,
-         defaultHeight: 20,
+         defaultWidth: 24,
+         defaultHeight: 24,
          template: 'grunt/icon.hbs'
       }
    }
@@ -288,7 +290,7 @@ grunticon: {
 
 /* Runtime
    ========================================================================== */
-   
+
 watch: {
    options: {
       spawn: true
@@ -320,6 +322,13 @@ watch: {
          spawn: false
       }
    },
+   images: {
+      files: ['public/assets/site/img/*.(png|jpg|gif|svg)'],
+      options: {
+         livereload: true,
+         spawn: false
+      }
+   },
    icons: {
       files: ['public/img/icon-*.svg'],
       tasks: ['makeicons']
@@ -328,14 +337,10 @@ watch: {
 
 nodemon: {
    dev: {
+      script: 'server.js',
       options: {
-         file: 'server.js',
-         watchedExtensions: ['js'],
          delayTime: 1,
-         cwd: 'server',
-         env: {
-            PORT: 3000
-         }
+         cwd: 'server'
       }
    }
 },
@@ -398,12 +403,12 @@ grunt.loadNpmTasks('grunt-bump');
    ========================================================================== */
 
 grunt.registerTask('makecss', function(option) {
-   grunt.task.run('sass');
+   grunt.task.run('exec:sass');
    if (option === 'build') {
       grunt.task.run('uncss');
    }
    grunt.task.run([
-      'remfallback', 'autoprefixer', 'cssmin', 'csslint'
+      /*'remfallback',*/ 'autoprefixer', 'cssmin', 'csslint'
    ]);
 });
 
@@ -429,17 +434,17 @@ grunt.registerTask('init', function(option) {
    if (option === 'build') {
       grunt.task.run('makecss:build');
    } else {
-      grunt.task.run('makecss');   
+      grunt.task.run('makecss');
    }
    grunt.task.run([
-      'uglify:libs', 'uglify:shiv', 'makejs', 'jshint:server', 'makeicons'
+      'uglify:libs', 'uglify:shims', 'makejs', 'jshint:server', 'makeicons'
    ]);
 });
 
 
 /* Main tasks
    ========================================================================== */
-   
+
 grunt.registerTask('default', function() {
    grunt.option('force', true);
    grunt.task.run([

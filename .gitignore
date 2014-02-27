@@ -1,5 +1,7 @@
 node_modules
 public/lib
+public/css/*.css
+public/js/*.min.js
 db/**
 !db/mongodb.conf
 build

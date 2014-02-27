@@ -9,47 +9,46 @@
     "url": "http://github.com/rizzenvrinn/mean-seed"
   },
   "scripts": {
-    "start": "node server/server.js",
-    "test": "grunt test"
+    "start": "node server/server.js"
   },
   "engines": {
     "node": "v0.10.x"
   },
   "dependencies": {
-    "express": "~3.4.7",
-    "mongoose": "~3.8.3",
-    "underscore": "~1.5.2"
+    "express": "~3.4.8",
+    "mongoose": "~3.8.8",
+    "underscore": "~1.6.0"
   },
   "devDependencies": {
-    "karma": "~0.11.12",
+    "karma": "~0.10.9",
     "karma-mocha": "~0.1.1",
-    "karma-chai": "~0.0.2",
-    "karma-phantomjs-launcher": "~0.1.1",
-    "mocha": "~1.16.2",
-    "chai": "~1.8.1",
+    "karma-chai": "~0.1.0",
+    "karma-phantomjs-launcher": "~0.1.2",
+    "mocha": "~1.17.1",
+    "chai": "~1.9.0",
     "jpegtran-bin": "0.2.0",
     "grunt": "~0.4.2",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-contrib-jshint": "~0.8.0",
-    "grunt-contrib-uglify": "~0.3.1",
+    "grunt-contrib-uglify": "~0.3.2",
     "grunt-contrib-csslint": "~0.2.0",
-    "grunt-contrib-cssmin": "~0.7.0",
+    "grunt-contrib-cssmin": "~0.8.0",
     "grunt-contrib-imagemin": "~0.5.0",
     "grunt-contrib-copy": "~0.5.0",
     "grunt-contrib-clean": "~0.5.0",
-    "grunt-nodemon": "~0.1.2",
-    "grunt-concurrent": "~0.4.2",
-    "grunt-exec": "~0.4.3",
-    "grunt-karma": "~0.7.2",
-    "grunt-mocha-test": "~0.8.1",
-    "grunt-hashres": "~0.3.4",
+    "grunt-nodemon": "~0.2.0",
+    "grunt-concurrent": "~0.4.3",
+    "grunt-exec": "~0.4.5",
+    "grunt-karma": "~0.6.2",
+    "grunt-mocha-test": "~0.9.3",
+    "grunt-hashres": "~0.4.1",
     "grunt-autoprefixer": "latest",
-    "grunt-svgmin": "~0.3.0",
+    "grunt-svgmin": "~0.3.1",
     "grunt-bump": "~0.0.13",
     "grunt-remfallback": "~0.0.4",
     "grunt-contrib-concat": "~0.3.0",
-    "grunt-sass": "~0.10.0",
+    "grunt-sass": "~0.11.0",
     "grunt-grunticon": "~1.0.0",
-    "grunt-uncss": "~0.1.6"
+    "grunt-uncss": "~0.2.0"
   }
 }

@@ -52,7 +52,8 @@ uglify: {
          // load angular first
          'public/lib/angular/**/*.min.js',
          // load angular production modules, i.e. not mocks
-         'public/lib/angular-*/**/*.min.js'
+         'public/lib/angular-*/**/*.min.js',
+         'public/lib/fastclick/**/*.js'
       ],
       dest: 'public/lib/libs.min.js'
    },
@@ -174,7 +175,7 @@ copy: {
             src: [
                'public/**',
                '!public/lib/**',
-               '!public/img/icon-*.svg',
+               '!public/img/icon/**',
                '!public/css/*.scss',
                '!public/css/default.css'
             ],
@@ -228,6 +229,11 @@ bump: {
    ========================================================================== */
 
 svgmin: {
+   options: {
+      plugins: [
+         { removeXMLProcInst: false }
+      ]
+   },
    build: {
       files: [{
          expand: true,
@@ -237,12 +243,9 @@ svgmin: {
    icons: {
       files: [{
          expand: true,
-         cwd: 'public/img',
-         src: 'icon-*.svg',
-         dest: 'temp',
-         rename: function (dest, src) {
-            return dest + '/' + src.replace(/^icon-/, '');
-         }
+         cwd: 'public/img/icon',
+         src: '*.svg',
+         dest: 'temp'
       }]
    }
 },
@@ -330,7 +333,7 @@ watch: {
       }
    },
    icons: {
-      files: ['public/img/icon-*.svg'],
+      files: ['public/img/icon/*.svg'],
       tasks: ['makeicons']
    }
 },
@@ -417,7 +420,7 @@ grunt.registerTask('makejs', [
 ]);
 
 grunt.registerTask('makeicons', function() {
-   if (grunt.file.expand('public/img/icon-*.svg').length > 0) {
+   if (grunt.file.expand('public/img/icon/*.svg').length > 0) {
       grunt.task.run([
          'svgmin:icons', 'grunticon:icons', 'copy:icons', 'clean:temp'
       ]);

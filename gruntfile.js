@@ -116,7 +116,7 @@ cssmin: {
 
 uncss: {
    options: {
-      ignore: [/\.j-/],
+      ignore: [/\.j-/, /:checked/, /:not/, /\.error/],
       stylesheets: ['css/default.css']
    },
    default: {

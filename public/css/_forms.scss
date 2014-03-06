@@ -1,0 +1,97 @@
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+/* Variables
+   ========================================================================== */
+
+$forms-border-width: 1px;
+
+
+/* Elements
+   ========================================================================== */
+
+fieldset {
+   @extend %aloof;
+}
+
+label {
+   @include linespan(1);
+   display: block;
+}
+
+input,
+textarea,
+select,
+button[type="submit"] {
+   @include linespan(1.5);
+   @include blank-lines(.5, after);
+   @extend %trim-trailing-lines;
+   display: block;
+   box-sizing: border-box;
+}
+
+input,
+textarea {
+   width: 100%;
+   border: $forms-border-width solid grey;
+   transition: border-color .5s;
+   &.error {
+      border-color: red;
+   }
+   &:focus {
+      border-color: blue;
+   }
+}
+
+input {
+   padding: 0 .5em;
+}
+
+.checkbox-wrapper {
+   @include blank-lines(.5, after);
+   @extend %trim-trailing-lines;
+   display: flex;
+   flex-direction: row-reverse;
+   label {
+      flex: 1;
+      margin-left: .5em;
+      cursor: pointer;
+   }
+   input {
+      margin-bottom: 0;
+   }
+}
+
+   input[type="checkbox"] {
+      @include linespan(1);
+      width: $leading;
+      cursor: pointer;
+      vertical-align: top;
+      &:checked {
+         background: {
+            size: 85%;
+            position: center;
+            repeat: no-repeat;
+         }
+      }
+   }
+
+textarea {
+   @include linespan(5.5);
+   padding: calc(#{$leading * .25} - #{$forms-border-width}) .5em;
+   line-height: $leading;
+}
+
+button[type="submit"] {
+   @extend %center;
+   padding: 0 1em;
+   transition: color .2s, background .2s;
+   &:hover, &:focus {
+      outline: none;
+      background: blue;
+      color: white;
+   }
+}
+
+

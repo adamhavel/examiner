@@ -1,0 +1,72 @@
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+
+body {
+   @extend %dimmable;
+   background: none;
+}
+
+.layout-wrapper {
+   @extend %center;
+   box-sizing: border-box;
+   padding: 0 $gutter;
+   max-width: $layout-width;
+   @include media-query(palm) {
+      padding: 0 ($gutter / 2);
+   }
+}
+
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+$navigation-height: $leading * 1.5;
+
+.page-header {
+   @include blank-lines(1, after);
+   padding-bottom: $navigation-height;
+}
+
+   .site-logo {
+
+   }
+
+
+/* Navigation
+   ========================================================================== */
+
+.site-nav {
+   @extend %sticky;
+   margin-bottom: -($navigation-height);
+   a {
+      display: block;
+      height: $navigation-height;
+      line-height: $navigation-height;
+   }
+   @include media-query(desk) {
+      &.j-stick {
+         left: 0;
+         right: 0;
+      }
+   }
+}
+
+
+/* ==========================================================================
+   Main content
+   ========================================================================== */
+
+.main-content {
+   @include blank-lines(1, after);
+}
+
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.page-footer {
+
+}

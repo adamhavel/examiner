@@ -1,0 +1,88 @@
+/* ==========================================================================
+   Modifiers
+   ========================================================================== */
+
+%trim-trailing-lines {
+   :not(.grid__item) > &:last-child {
+      margin-bottom: 0;
+   }
+}
+
+%aloof {
+   @extend %trim-trailing-lines;
+   @include blank-lines(1, trailing);
+}
+
+%island {
+   @extend %trim-trailing-lines;
+   @include blank-lines(1, leading);
+   @include blank-lines(1, trailing);
+}
+
+%islet {
+   @extend %trim-trailing-lines;
+   @include blank-lines(2, leading);
+   @include blank-lines(2, trailing);
+}
+
+%flared {
+   & > * {
+      margin-left: $gutter;
+      &:first-child {
+         margin-left: 0;
+      }
+   }
+}
+
+%center {
+   margin-left: auto;
+   margin-right: auto;
+}
+
+%dimmable {
+   @include before() {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      background: black;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .5s, width .001s .5s, height .001s .5s;
+      backface-visibility: hidden;
+   }
+   &.j-dim {
+      @include before() {
+         width: 100%;
+         height: 100%;
+         opacity: .85;
+         transition: width .001s, height .001s, opacity .5s .001s;
+      }
+   }
+}
+
+%sticky {
+   @include media-query(desk) {
+      &.j-stick {
+         position: fixed;
+         top: 0;
+         backface-visibility: hidden;
+      }
+   }
+}
+
+/* Progressive enhancement
+   ========================================================================== */
+
+.desk--extra, %desk--extra {
+   @include media-query(portable) {
+      display: none !important;
+   }
+}
+
+.considerable--extra, %considerable--extra {
+   @include media-query(palm) {
+      display: none !important;
+   }
+}

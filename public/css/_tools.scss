@@ -1,0 +1,97 @@
+/* ==========================================================================
+   Tools
+   ========================================================================== */
+
+/* Mixins
+   ========================================================================== */
+
+@mixin media-query($type) {
+   @each $breakpoint in $breakpoints {
+      $name: nth($breakpoint, 1);
+      $declaration: nth($breakpoint, 2);
+      @if $type == $name and $declaration {
+         @media only screen and #{$declaration} {
+            @content;
+         }
+      }
+   }
+}
+
+@mixin linespan($lines: 1) {
+   height: $lines * $leading;
+}
+
+@mixin blank-lines($lines: 1, $direction: trailing, $type: margin) {
+   $space: $lines * $leading;
+   @if $direction == trailing {
+      #{$type}-bottom: $space;
+   } @else if $direction == leading {
+      #{$type}-top: $space;
+   }
+}
+
+@mixin before($content: '') {
+   &:before {
+      content: $content;
+      @content;
+   }
+}
+
+@mixin after($content: '') {
+   &:after {
+      content: $content;
+      @content;
+   }
+}
+
+@mixin position($top: null, $right: null, $bottom: null, $left: null) {
+   position: absolute;
+   @each $data in top $top, right $right, bottom $bottom, left $left {
+      #{nth($data, 1)}: nth($data, 2);
+   }
+}
+
+@mixin size($width, $height: null) {
+   width: $width;
+   @if $height == null  {
+      height: $width;
+   } @else {
+      height: $height;
+   }
+}
+
+@mixin aspect-ratio($width: 1, $height: 1) {
+   $ratio: ($height / $width) * 100;
+   position: relative;
+   padding-bottom: $ratio * 1%;
+}
+
+@mixin hidden-from-elderly() {
+   @media only screen {
+      @content;
+   }
+}
+
+@mixin no-js() {
+   .no-js & {
+      @content;
+   }
+}
+
+
+/* Misc
+   ========================================================================== */
+
+/**
+ * Expose media query breakpoints to JavaScript.
+ * Use: window.getComputedStyle(document.body).getPropertyValue('animation-name');
+ */
+body {
+   animation-name: none;
+   @each $breakpoint in $breakpoints {
+      $type: nth($breakpoint, 1);
+      @include media-query($type) {
+         animation-name: #{$type};
+      }
+   }
+}

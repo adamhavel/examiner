@@ -1,0 +1,117 @@
+/* ==========================================================================
+   Fixed navigation
+   ========================================================================== */
+
+/* Variables
+   ========================================================================== */
+
+$fixed-header-height: $leading * 2;
+
+
+/* Directives
+   ========================================================================== */
+
+@include media-query(portable) {
+
+   body {
+      padding-top: $fixed-header-height + $leading;
+      @include no-js {
+         padding-top: 0;
+      }
+   }
+
+   .page-header {
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 0 $gutter $fixed-header-height;
+      background: white;
+      transform: translateY(-100%) translateY($fixed-header-height);
+      transition: transform .3s ease-out, opacity .5s;
+      backface-visibility: hidden;
+      &.j-detached {
+         opacity: 0;
+      }
+      &:hover {
+         opacity: 1;
+      }
+      &.j-active {
+         transform: translateY(0);
+         opacity: 1;
+      }
+      @include no-js {
+         @include blank-lines(1, after);
+         position: relative;
+         transform: none;
+      }
+   }
+
+      .site-logo {
+         a {
+            @include position($bottom: 0, $left: auto);
+            line-height: $fixed-header-height;
+            text-decoration: none;
+         }
+         img {
+            display: none;
+         }
+      }
+
+      .search-form {
+         @include position($bottom: 0, $right: ($gutter * 3));
+         width: 40%;
+         height: $fixed-header-height;
+         padding: ($leading / 2) 0;
+         box-sizing: border-box;
+      }
+
+      .site-nav {
+         margin: 0;
+         cursor: pointer;
+         li {
+            display: block;
+            margin: 0;
+         }
+         a {
+            display: block;
+            text-align: center;
+         }
+         &:before, &:after {
+            @include position($bottom: 0, $right: 0);
+            width: $gutter * 2;
+            height: $fixed-header-height;
+            transition: opacity, transform;
+            transition-duration: .75s;
+            background: {
+               repeat: no-repeat;
+               position: center;
+               size: $gutter * 1;
+            }
+         }
+         @include after() {
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%2298%22%20viewBox%3D%220%200%20120%2098%22%3E%3Cpath%20d%3D%22M0%200h120v18h-120zM0%2040h120v18h-120zM0%2080h120v18h-120z%22%2F%3E%3C%2Fsvg%3E');
+         }
+         @include before() {
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20d%3D%22M-.001%2086.957l86.956-86.956%2013.043%2013.043-86.956%2086.956zM86.955%20100l-86.956-86.956%2013.044-13.044%2086.956%2086.956z%22%2F%3E%3C%2Fsvg%3E');
+            opacity: 0;
+         }
+         .page-header.j-active & {
+            &:after {
+               opacity: 0;
+               transform: rotate(-720deg);
+            }
+            &:before {
+               opacity: 1;
+               transform: rotate(-720deg);
+            }
+         }
+         @include no-js {
+            &:after, &:before {
+               display: none;
+            }
+         }
+      }
+
+}

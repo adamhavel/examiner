@@ -31,6 +31,8 @@
       "beforeEach",
       "after",
       "afterEach",
-      "it"
+      "it",
+      "Modernizr",
+      "FastClick"
    ]
 }

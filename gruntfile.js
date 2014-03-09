@@ -36,6 +36,23 @@ concat: {
    }
 },
 
+modernizr: {
+   default: {
+      'devFile': 'public/lib/modernizr/modernizr.js',
+      'outputFile': 'public/lib/modernizr/modernizr.custom.js',
+      'extra': {
+         'shiv': false
+      },
+      'uglify': false,
+      'files': {
+         'src': [
+            'client/**/*.js',
+            'public/css/default.min.css'
+         ]
+      },
+   }
+},
+
 uglify: {
    app: {
       options: {
@@ -53,9 +70,15 @@ uglify: {
          'public/lib/angular/**/*.min.js',
          // load angular production modules, i.e. not mocks
          'public/lib/angular-*/**/*.min.js',
-         'public/lib/fastclick/**/*.js'
+         'public/lib/modernizr/modernizr.custom.js'
       ],
       dest: 'public/lib/libs.min.js'
+   },
+   ondemand: {
+      src: [
+         'public/lib/fastclick/lib/fastclick.js'
+      ],
+      dest: 'public/js/ondemand/app.touch.min.js'
    },
    shims: {
       src: [
@@ -87,6 +110,14 @@ autoprefixer: {
 },
 
 remfallback: {
+   default: {
+      files: {
+         'public/css/default.css': ['public/css/default.css']
+      }
+   }
+},
+
+cmq: {
    default: {
       files: {
          'public/css/default.css': ['public/css/default.css']
@@ -392,6 +423,8 @@ grunt.loadNpmTasks('grunt-nodemon');
 grunt.loadNpmTasks('grunt-concurrent');
 grunt.loadNpmTasks('grunt-autoprefixer');
 grunt.loadNpmTasks('grunt-remfallback');
+grunt.loadNpmTasks('grunt-combine-media-queries');
+grunt.loadNpmTasks('grunt-modernizr');
 grunt.loadNpmTasks('grunt-uncss');
 grunt.loadNpmTasks('grunt-hashres');
 grunt.loadNpmTasks('grunt-exec');
@@ -411,7 +444,7 @@ grunt.registerTask('makecss', function(option) {
       grunt.task.run('uncss');
    }
    grunt.task.run([
-      /*'remfallback',*/ 'autoprefixer', 'cssmin', 'csslint'
+      /*'remfallback',*/ 'autoprefixer', 'cqm', 'cssmin', 'csslint'
    ]);
 });
 
@@ -440,7 +473,7 @@ grunt.registerTask('init', function(option) {
       grunt.task.run('makecss');
    }
    grunt.task.run([
-      'uglify:libs', 'uglify:shims', 'makejs', 'jshint:server', 'makeicons'
+      'modernizr', 'uglify:libs', 'uglify:shims', 'uglify:ondemand', 'makejs', 'jshint:server', 'makeicons'
    ]);
 });
 

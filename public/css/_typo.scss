@@ -1,0 +1,137 @@
+/* ==========================================================================
+   Typography
+   http://modularscale.com/scale/?px1=16&px2=528&ra1=1.5
+   ========================================================================== */
+
+html {
+   line-height: $line-height;
+   font-size: 1em;
+   font-family: sans-serif;
+   color: black;
+   font-feature-settings: 'liga', 'kern';
+   @include media-query(palm) {
+      font-feature-settings: 'liga' 0, 'kern' 0;
+   }
+}
+
+
+/* Links
+   ========================================================================== */
+
+a {
+   color: red;
+   text-decoration: underline;
+   transition: color .25s;
+   &:hover,
+   &:focus,
+   &:active {
+      color: blue;
+   }
+}
+
+
+/* Headings
+   ========================================================================== */
+
+.heading {
+   @extend %aloof;
+   line-height: $leading;
+   font-family: serif;
+   font-weight: 400;
+   font-feature-settings: 'liga', 'kern', 'swsh', 'calt';
+   &.alpha {
+      line-height: 1;
+   }
+   p + & {
+      @include blank-lines(2, before);
+   }
+}
+
+.alpha, %alpha {
+   font-size: 2.897rem;
+}
+
+.beta, %beta {
+   font-size: 2.25rem;
+}
+
+.gamma, %gamma {
+   font-size: 1.931rem;
+}
+
+.delta, %delta {
+   font-size: 1.5rem;
+}
+
+.epsilon, %epsilon {
+   font-size: 1.288rem;
+}
+
+
+/* One-liners
+   ========================================================================== */
+
+.kilo, %kilo {
+   font-size: 3.375rem;
+}
+.mega, %mega {
+   font-size: 6.519rem;
+}
+.giga, %giga {
+   font-size: 9.778rem;
+}
+
+
+/* Paragraphs
+   ========================================================================== */
+
+p {
+   @extend %aloof;
+}
+
+
+/* Lists
+   ========================================================================== */
+
+.block-list, %block-list {
+   @extend %aloof;
+   display: block;
+   li {
+      display: block;
+   }
+}
+
+.bullet-list, %bullet-list {
+   @extend %block-list;
+   li {
+      padding-left: #{$line-height}em;
+      @include before('●') {
+         float: left;
+         width: #{$line-height}em;
+         margin-left: -#{$line-height}em;
+         text-align: center;
+      }
+   }
+}
+
+.inline-list, %inline-list {
+   li {
+      display: inline-block;
+      vertical-align: middle;
+   }
+}
+
+/**
+ * 1. ':first-child' is used to support IE8.
+ */
+.pipe-list, %pipe-list {
+   @extend %inline-list;
+   li {
+      &:before {
+         content: ' | ';
+      }
+      &:first-child:before { /* 1. */
+         display: none;
+      }
+   }
+}

@@ -1,0 +1,58 @@
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+
+/* Variables
+   ========================================================================== */
+
+$table-border-width: 2px;
+$table-pinch: $table-border-width / 2;
+
+
+/* Elements
+   ========================================================================== */
+
+table {
+   max-width: 100%;
+   margin: calc(#{$leading * 1.5} - #{$table-pinch}) auto;
+   border: $table-border-width solid rgba(black, .5);
+   word-wrap: break-word;
+   &:first-child {
+      margin-top: -$table-pinch;
+   }
+   &.numbered {
+      counter-increment: table;
+   }
+   @include media-query(portable) {
+      width: 100%;
+      table-layout: fixed;
+   }
+}
+
+caption {
+   margin-top: calc(#{$leading / 2} - #{$table-pinch});
+   margin-bottom: calc(#{$leading / 2} + #{$table-pinch});
+   caption-side: bottom;
+   table.numbered &:before {
+      content: 'Table ' counter(table) '. ';
+   }
+}
+
+th, td {
+   padding: calc(#{$leading / 2} - #{$table-pinch}) 1em;
+   border-top: $table-border-width solid rgba(black, .5);
+}
+
+th {
+   text-align: center;
+   font-weight: 700;
+   vertical-align: bottom;
+}
+
+td {
+   vertical-align: top;
+   &.numeric {
+      text-align: right;
+      font-feature-settings: 'tnum';
+   }
+}

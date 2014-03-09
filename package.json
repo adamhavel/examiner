@@ -1,12 +1,12 @@
 {
-  "name": "mean-seed",
+  "name": "examiner",
   "description": "",
   "version": "0.1.0",
   "private": false,
   "author": "Adam Havel <havel.adam@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "http://github.com/rizzenvrinn/mean-seed"
+    "url": "http://github.com/rizzenvrinn/examiner"
   },
   "scripts": {
     "start": "node server/server.js"

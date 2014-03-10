@@ -9,13 +9,6 @@
       size: auto 60%;
       position: left;
    }
-   &[type] {
-      padding-left: $gutter * (5/4);
-      background: {
-         size: auto 70%;
-         position: ($gutter / 4) center;
-      }
-   }
    &--right {
       padding-left: 0;
       padding-right: $gutter;

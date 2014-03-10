@@ -15,7 +15,7 @@ $leading: $line-height * 1rem;
 
 $gutter: 1.5em;
 $main-content-width: $line-length + (4 * $gutter);
-$sidebar-width: ($line-length / 3) + $gutter;
+$sidebar-width: ($line-length / 4) + $gutter;
 $padding-width: 2 * $gutter;
 $layout-width: $main-content-width + $sidebar-width + $padding-width;
 

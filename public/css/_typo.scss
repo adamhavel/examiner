@@ -7,7 +7,6 @@ html {
    line-height: $line-height;
    font-size: 1em;
    font-family: "PT Serif", serif;
-   color: black;
    color: rgba(black, .75);
    font-feature-settings: 'liga', 'kern';
    @include media-query(palm) {
@@ -49,7 +48,7 @@ a {
 }
 
 .alpha, %alpha {
-   font-size: 2.897rem;
+   font-size: 2.458rem;
 }
 
 .beta, %beta {
@@ -57,7 +56,7 @@ a {
 }
 
 .gamma, %gamma {
-   font-size: 1.931rem;
+   font-size: 1.639rem;
 }
 
 .delta, %delta {
@@ -65,7 +64,7 @@ a {
 }
 
 .epsilon, %epsilon {
-   font-size: 1.288rem;
+   font-size: .728rem;
 }
 
 
@@ -88,6 +87,9 @@ a {
 
 p {
    @extend %aloof;
+   &::selection {
+      //background: map-get($colors, yellow);
+   }
 }
 
 

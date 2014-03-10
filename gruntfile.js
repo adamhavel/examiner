@@ -24,15 +24,15 @@ jshint: {
 },
 
 concat: {
-   options: {
-      separator: ';'
-   },
    bundle: {
       src: [
          'public/lib/libs.min.js',
          'public/js/app.min.js'
       ],
       dest: 'public/js/app.min.js',
+      options: {
+         separator: ';'
+      }
    }
 },
 
@@ -70,7 +70,8 @@ uglify: {
          'public/lib/angular/**/*.min.js',
          // load angular production modules, i.e. not mocks
          'public/lib/angular-*/**/*.min.js',
-         'public/lib/modernizr/modernizr.custom.js'
+         'public/lib/modernizr/modernizr.custom.js',
+         'public/lib/prism/prism.js'
       ],
       dest: 'public/lib/libs.min.js'
    },

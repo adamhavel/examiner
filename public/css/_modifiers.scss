@@ -3,7 +3,7 @@
    ========================================================================== */
 
 %trim-trailing-lines {
-   :not(.grid__item) > &:last-child {
+   /*:not(.grid__item) > */&:last-child {
       margin-bottom: 0;
    }
 }

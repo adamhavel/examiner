@@ -50,6 +50,7 @@ a {
       font-weight: 700;
    }
    &.beta {
+      line-height: $leading * 2;
       font-family: "PT Sans Narrow", serif;
    }
    &--section {

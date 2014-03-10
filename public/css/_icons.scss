@@ -2,18 +2,25 @@
    Icons
    ========================================================================== */
 
-.icon {
-   padding-left: #{$line-height}em;
+.icon, %icon {
+   padding-left: $gutter;
    background: {
       repeat: no-repeat;
-      size: auto 80%;
-      position: left center;
+      size: auto 60%;
+      position: left;
    }
    &[type] {
-      padding-left: #{$line-height + $line-height/4}em;
+      padding-left: $gutter * (5/4);
       background: {
          size: auto 70%;
-         position: #{$line-height/4}em center;
+         position: ($gutter / 4) center;
       }
    }
+   &--right {
+      padding-left: 0;
+      padding-right: $gutter;
+      background-position: right;
+   }
 }
+
+@import "icons-data";

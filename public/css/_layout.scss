@@ -4,7 +4,7 @@
 
 body {
    @extend %dimmable;
-   background: none;
+   background: map-get($colors, blue);
 }
 
 .layout-wrapper {
@@ -22,36 +22,34 @@ body {
    Header
    ========================================================================== */
 
-$navigation-height: $leading * 2;
+$navigation-height: $leading * 1;
 
 .page-header {
-   @include blank-lines(1, trailing);
    padding-bottom: $navigation-height;
+   @include blank-lines(1, leading);
+   @include blank-lines(2, trailing);
 }
 
    .site-logo {
 
    }
 
-
-/* Navigation
-   ========================================================================== */
-
-.site-nav {
-   @extend %sticky;
-   height: $navigation-height;
-   margin-bottom: -($navigation-height);
-   box-sizing: border-box;
-   @include media-query(desk) {
-      &.j-stick {
-         left: 0;
-         right: 0;
+   .top-nav {
+      @extend %sticky;
+      height: $navigation-height;
+      margin-bottom: -($navigation-height);
+      box-sizing: border-box;
+      text-align: right;
+      @include media-query(desk) {
+         &.j-stick {
+            left: 0;
+            right: 0;
+         }
+      }
+      &__item {
+         display: block;
       }
    }
-   &__item {
-      display: block;
-   }
-}
 
 
 /* ==========================================================================
@@ -60,7 +58,63 @@ $navigation-height: $leading * 2;
 
 .main-content {
    @include blank-lines(1, trailing);
+   @include blank-lines(2, both, padding);
+   @include taper(2);
+   position: relative;
+   z-index: 100;
+   float: right;
+   max-width: $main-content-width;
+   box-sizing: border-box;
+   background: map-get($colors, paper);
+   box-shadow: .25em .25em 0 0 rgba(black, .05);
 }
+
+
+/* Sidebar
+   ========================================================================== */
+
+.sidebar {
+   @include blank-lines(2, leading, padding);
+   width: $sidebar-width;
+   box-sizing: border-box;
+
+}
+
+   .site-nav {
+      text-align: right;
+      &__item {
+         @extend %delta;
+         @include linespan(2);
+         @include blank-lines(.5, trailing);
+         display: inline-block;
+         xdisplay: block;
+         padding: 0 $leading;
+         box-sizing: border-box;
+         line-height: $leading * 2;
+         border-bottom: 1px solid rgba(black, .075);
+         font-family: "PT Sans Narrow", sans-serif;
+         text-decoration: none;
+         color: black;
+         color: rgba(black, .4);
+         transition: transform, color, box-shadow, background-color;
+         transition-duration: .3s;
+         backface-visibility: hidden;
+         &.urgent {
+            color: rgba(map-get($colors, red), .9);
+         }
+         &:hover, &.active {
+            transform: translateX($leading / 2);
+            background-color: map-get($colors, yellow);
+            box-shadow: inset #{-($leading / 2 + .2rem)} 0 .2rem 0 rgba(black, .05),
+                        .5rem .15rem 0 0 rgba(black, .05);
+            color: rgba(black, .5);
+         }
+         &.icon--right {
+            padding-right: calc(#{$leading} + #{$gutter});
+            background-position: calc(100% - #{$leading});
+         }
+      }
+   }
 
 
 /* ==========================================================================

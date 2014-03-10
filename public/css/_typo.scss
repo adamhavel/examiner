@@ -6,8 +6,9 @@
 html {
    line-height: $line-height;
    font-size: 1em;
-   font-family: sans-serif;
+   font-family: "PT Serif", serif;
    color: black;
+   color: rgba(black, .75);
    font-feature-settings: 'liga', 'kern';
    @include media-query(palm) {
       font-feature-settings: 'liga' 0, 'kern' 0;
@@ -19,7 +20,7 @@ html {
    ========================================================================== */
 
 a {
-   color: red;
+   color: map-get($colors, red);
    text-decoration: underline;
    transition: color .25s;
    &:hover,
@@ -36,14 +37,14 @@ a {
 .heading {
    @extend %aloof;
    line-height: $leading;
-   font-family: serif;
-   font-weight: 400;
+   font-family: "PT Sans Narrow", serif;
+   font-weight: 700;
    font-feature-settings: 'liga', 'kern', 'swsh', 'calt';
    &.alpha {
-      line-height: 1;
+      line-height: $leading * 2;
    }
    p + & {
-      @include blank-lines(2, before);
+      @include blank-lines(2, leading);
    }
 }
 

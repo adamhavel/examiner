@@ -342,7 +342,7 @@ watch: {
       }
    },
    css: {
-      files: ['public/css/*.scss'],
+      files: ['public/css/**/*.scss'],
       tasks: ['makecss'],
       options: {
          livereload: true,
@@ -444,7 +444,7 @@ grunt.registerTask('makecss', function(option) {
       grunt.task.run('uncss');
    }
    grunt.task.run([
-      /*'remfallback',*/ 'autoprefixer', 'cqm', 'cssmin', 'csslint'
+      /*'remfallback',*/ 'autoprefixer', 'cmq', 'cssmin', 'csslint'
    ]);
 });
 

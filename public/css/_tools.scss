@@ -27,6 +27,21 @@
       #{$type}-bottom: $space;
    } @else if $direction == leading {
       #{$type}-top: $space;
+   } @else if $direction == both {
+      #{$type}-top: $space;
+      #{$type}-bottom: $space;
+   }
+}
+
+@mixin taper($amount: 1, $side: both, $type: padding) {
+   $space: $amount * $gutter;
+   @if $side == left {
+      #{$type}-left: $space;
+   } @else if $side == right {
+      #{$type}-right: $space;
+   } @else if $side == both {
+      #{$type}-left: $space;
+      #{$type}-right: $space;
    }
 }
 
@@ -70,6 +85,11 @@
    @media only screen {
       @content;
    }
+}
+
+@mixin rgba($color, $background, $opacity, $property: color) {
+   #{$property}: mix($color, $background, $opacity * 100%);
+   #{$property}: rgba($color, $opacity);
 }
 
 @mixin no-js() {

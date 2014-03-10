@@ -1,7 +1,9 @@
-var express = require('express');
-var app = express();
+var express = require('express'),
+    path = require('path'),
+    app = express();
+
 app.use(express.compress());
-app.use(express.static('../public'));
+app.use(express.static(path.resolve('../public')));
 
 app.get('/', function(req, res) {
    res.send('Hello World!');

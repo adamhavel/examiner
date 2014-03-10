@@ -26,8 +26,9 @@ $fixed-header-height: $leading * 2;
       top: 0;
       left: 0;
       right: 0;
+      margin: 0;
       padding: 0 $gutter $fixed-header-height;
-      background: white;
+      background: red;
       transform: translateY(-100%) translateY($fixed-header-height);
       transition: transform .3s ease-out, opacity .5s;
       backface-visibility: hidden;
@@ -67,20 +68,21 @@ $fixed-header-height: $leading * 2;
          box-sizing: border-box;
       }
 
-      .site-nav {
+      .top-nav {
+         height: auto;
          margin: 0;
          cursor: pointer;
          li {
             display: block;
             margin: 0;
          }
-         a {
+         &__item {
             display: block;
             text-align: center;
          }
          &:before, &:after {
             @include position($bottom: 0, $right: 0);
-            width: $gutter * 2;
+            width: $gutter * 3;
             height: $fixed-header-height;
             transition: opacity, transform;
             transition-duration: .75s;

@@ -2,6 +2,21 @@
    Components
    ========================================================================== */
 
+/* Exam
+   ========================================================================== */
+
+.exam {
+   &__section {
+      @include blank-lines(2, trailing);
+      @extend %trim-trailing-lines;
+   }
+   &__question {
+      @include blank-lines(2, trailing);
+      @extend %trim-trailing-lines;
+   }
+}
+
+
 /* Breadcrumbs
    ========================================================================== */
 
@@ -50,30 +65,3 @@
       }
    }
 }
-
-
-/* Slideshow
-   ========================================================================== */
-
-.slideshow {
-   @include aspect-ratio(4,3);
-   overflow: hidden;
-}
-
-   .slideshow__item {
-      @include position($top: 0, $left: 0);
-      @include size(100%);
-      z-index: -1;
-      opacity: 0;
-      transition: opacity .5s;
-      backface-visibility: hidden;
-      &.j-active {
-         z-index: 1;
-         opacity: 1;
-      }
-      img {
-         @include size(100%);
-         @include position($top: 50%, $left: 50%);
-         transform: translate(-50%, -50%);
-      }
-   }

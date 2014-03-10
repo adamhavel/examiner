@@ -25,9 +25,10 @@ body {
 $navigation-height: $leading * 1;
 
 .page-header {
-   padding-bottom: $navigation-height;
-   @include blank-lines(1, leading);
-   @include blank-lines(1, trailing);
+   @include blank-lines(1, both);
+   margin-left: $sidebar-width;
+   //padding-bottom: $navigation-height;
+   font-family: "Roboto";
 }
 
    .site-logo {
@@ -35,20 +36,31 @@ $navigation-height: $leading * 1;
    }
 
    .top-nav {
-      @extend %sticky;
-      height: $navigation-height;
-      margin-bottom: -($navigation-height);
+      //@extend %sticky;
+      //height: $navigation-height;
+      //margin-bottom: -($navigation-height);
       box-sizing: border-box;
       text-align: right;
-      @include media-query(desk) {
-         &.j-stick {
-            left: 0;
-            right: 0;
-         }
-      }
       &__item {
          display: block;
       }
+   }
+
+   .time {
+      @extend %kilo;
+      @extend %icon;
+      @extend %icon--watch;
+      display: block;
+      display: none;
+      padding-left: $gutter;
+      margin-left: $gutter;
+      line-height: 1;
+      background: {
+         size: auto 160%;
+         position: top left;
+      }
+      font-weight: 400;
+      color: rgba(black, .5);
    }
 
 
@@ -62,8 +74,8 @@ $navigation-height: $leading * 1;
    @include taper(2);
    position: relative;
    z-index: 100;
-   float: right;
    max-width: $main-content-width;
+   margin-left: $sidebar-width;
    box-sizing: border-box;
    background: map-get($colors, paper);
    box-shadow: .25em .25em 0 0 rgba(black, .05);
@@ -75,6 +87,7 @@ $navigation-height: $leading * 1;
 
 .sidebar {
    @include blank-lines(2, leading, padding);
+   float: left;
    width: $sidebar-width;
    box-sizing: border-box;
 
@@ -83,32 +96,40 @@ $navigation-height: $leading * 1;
    .site-nav {
       text-align: right;
       &__item {
-         @extend %delta;
          @include linespan(2);
          @include blank-lines(.5, trailing);
          display: inline-block;
          padding: 0 $leading;
          box-sizing: border-box;
          line-height: $leading * 2;
-         border-bottom: 1px solid rgba(black, .075);
-         font-family: "PT Sans Narrow", sans-serif;
+         border-bottom: 1px solid rgba(black, .1);
+         font-family: "Roboto", sans-serif;
+         font-weight: 300;
          text-decoration: none;
+         font-size: 1.2em;
          color: rgba(black, .4);
-         transition: transform, color, box-shadow, background-color;
+         transition: transform, opacity, color, box-shadow, background-color;
          transition-duration: .3s;
          backface-visibility: hidden;
+         opacity: .3;
          &.urgent {
             color: rgba(map-get($colors, red), .9);
          }
-         &:hover, &.active {
-            transform: translateX($leading / 2);
+         &:hover,
+         &:focus,
+         &.active {
+            transform: translateX($leading / 1.75);
             background-color: map-get($colors, yellow);
-            box-shadow: inset #{-($leading / 2 + .2rem)} 0 .2rem 0 rgba(black, .05),
+            box-shadow: inset #{-($leading / 1.75 + .2rem)} 0 .2rem 0 rgba(black, .05),
                         .5rem .2rem 0 0 rgba(black, .05);
             color: rgba(black, .5);
+            opacity: 1;
+         }
+         .site-nav:hover & {
+            opacity: 1;
          }
          &.icon--right {
-            padding-right: calc(#{$leading} + #{$gutter});
+            padding-right: calc(#{$leading} + #{$gutter * 1.25});
             background-position: calc(100% - #{$leading});
          }
       }

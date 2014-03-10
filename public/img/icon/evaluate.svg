@@ -3,14 +3,16 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-<g opacity="0.5">
-	<defs>
-		<rect id="SVGID_1_" opacity="0.5" width="32" height="32"/>
-	</defs>
-	<clipPath id="SVGID_2_">
-		<use xlink:href="#SVGID_1_"  overflow="visible"/>
-	</clipPath>
-	<path clip-path="url(#SVGID_2_)" d="M28.868,4.259C20.58,9.34,14.567,15.75,11.865,18.968l-6.617-5.184l-2.922,2.355l11.434,11.628
-		c1.968-5.041,8.2-14.891,15.81-21.891L28.868,4.259z"/>
+<g enable-background="new    ">
+	<g>
+		<defs>
+			<rect id="SVGID_1_" width="32" height="32"/>
+		</defs>
+		<clipPath id="SVGID_2_">
+			<use xlink:href="#SVGID_1_"  overflow="visible"/>
+		</clipPath>
+		<path clip-path="url(#SVGID_2_)" d="M28.868,4.259C20.58,9.34,14.567,15.75,11.865,18.968l-6.617-5.184l-2.922,2.355L13.76,27.768
+			c1.968-5.041,8.2-14.892,15.811-21.892L28.868,4.259z"/>
+	</g>
 </g>
 </svg>

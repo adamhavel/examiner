@@ -13,7 +13,8 @@ code {
 
 pre {
    @extend %islet;
-   font-size: .8em;
+   font-size: .9em;
+   line-height: $leading;
    overflow: auto;
 }
 

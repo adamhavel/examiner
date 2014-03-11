@@ -2,17 +2,29 @@
    Icons
    ========================================================================== */
 
-.icon, %icon {
-   padding-left: $gutter;
-   background: {
-      repeat: no-repeat;
-      size: auto 60%;
-      position: left;
+%icon {
+   @include before() {
+      position: relative;
+      top: -.1em;
+      display: inline-block;
+      height: #{$line-height}em;
+      width: $gutter;
+      margin-right: $gutter / 2;
+      margin-left: 0;
+      background: {
+         position: center;
+         size: 100% auto;
+         repeat: no-repeat;
+      }
+      opacity: .5;
+      vertical-align: middle;
    }
    &--right {
-      padding-left: 0;
-      padding-right: $gutter;
-      background-position: right;
+      direction: rtl;
+      &:before {
+         margin-right: 0;
+         margin-left: $gutter / 2;
+      }
    }
 }
 

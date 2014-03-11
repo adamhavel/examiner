@@ -90,12 +90,12 @@ $navigation-height: $leading * 1;
    float: left;
    width: $sidebar-width;
    box-sizing: border-box;
-
 }
 
    .site-nav {
       text-align: right;
       &__item {
+         @extend %icon--right;
          @include linespan(2);
          @include blank-lines(.5, trailing);
          display: inline-block;
@@ -127,10 +127,6 @@ $navigation-height: $leading * 1;
          }
          .site-nav:hover & {
             opacity: 1;
-         }
-         &.icon--right {
-            padding-right: calc(#{$leading} + #{$gutter * 1.25});
-            background-position: calc(100% - #{$leading});
          }
       }
    }

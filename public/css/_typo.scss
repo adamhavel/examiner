@@ -41,7 +41,7 @@ a {
 .heading {
    @extend %aloof;
    line-height: $leading;
-   font-family: "PT Sans", serif;
+   font-family: "Roboto", serif;
    font-weight: 400;
    font-feature-settings: 'liga', 'kern', 'swsh', 'calt';
    &.alpha {
@@ -54,14 +54,20 @@ a {
       font-family: "PT Sans Narrow", serif;
    }
    &--section {
+      @include blank-lines(.5, trailing, padding);
       @include blank-lines(.5, trailing);
-      padding-bottom: calc(#{$leading / 2} - 1px);
-      border-bottom: 1px solid rgba(black, .2);
+      position: relative;
+      @include after() {
+         @include position($left: 0, $right: 0, $bottom: 0);
+         height: 2px;
+         border: solid rgba(black, .3);
+         border-width: 1px 0;
+      }
    }
    &--subsection {
       @include blank-lines(.5, trailing);
       padding-bottom: calc(#{$leading / 2} - 1px);
-      border-bottom: 1px solid rgba(black, .1);
+      border-bottom: 1px solid rgba(black, .2);
    }
 }
 
@@ -78,7 +84,7 @@ a {
 }
 
 .delta, %delta {
-   font-size: 1.5rem;
+   font-size: 1.4rem;
 }
 
 .epsilon, %epsilon {

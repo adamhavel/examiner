@@ -10,11 +10,18 @@
       @include blank-lines(2, trailing);
       @extend %trim-trailing-lines;
    }
-   &__question {
+}
+
+   .question {
       @include blank-lines(2, trailing);
       @extend %trim-trailing-lines;
+      &__points {
+         float: right;
+         font-family: "Roboto";
+         font-weight: 400;
+         font-style: italic;
+      }
    }
-}
 
 
 /* Breadcrumbs

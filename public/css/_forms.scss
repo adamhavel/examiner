@@ -78,7 +78,7 @@ input {
    }
 
 textarea {
-   @include linespan(5.5);
+   height: auto;
    padding: calc(#{$leading * .25} - #{$forms-border-width}) .5em;
    line-height: $leading;
 }

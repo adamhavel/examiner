@@ -17,9 +17,15 @@
       @extend %trim-trailing-lines;
       &__points {
          float: right;
-         font-family: "Roboto";
-         font-weight: 400;
          font-style: italic;
+      }
+      &__answer {
+         height: auto;
+         box-sizing: border-box;
+         padding-left: $gutter * .75;
+         outline: 0;
+         border-left: 2px solid rgba(black, .3);
+         transition: height, background .2s;
       }
    }
 

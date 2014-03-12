@@ -67,7 +67,7 @@ a {
    &--subsection {
       @include blank-lines(.5, trailing);
       padding-bottom: calc(#{$leading / 2} - 1px);
-      border-bottom: 1px solid rgba(black, .2);
+      border-bottom: 1px solid rgba(black, .3);
    }
 }
 

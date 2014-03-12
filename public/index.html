@@ -100,7 +100,7 @@
 
                <p>Necessitatibus, quidem, saepe aspernatur velit consequuntur provident nostrum qui ratione ipsum eum rerum blanditiis itaque praesentium eius fugiat voluptates tempora. Perspiciatis, vitae temporibus natus itaque ipsam reprehenderit corporis veniam quia.</p>
 
-               <pre class="question__answer" contenteditable><code class="language-javascript">var src = f.src.filter(function(filepath) {
+               <pre class="question__answer" contenteditable spellcheck="false"><code class="language-javascript">var src = f.src.filter(function(filepath) {
    // Warn on and remove invalid source files (if nonull was set).
    if (!grunt.file.exists(filepath)) {
       grunt.log.warn('Source file "' + filepath + '" not found.');
@@ -114,17 +114,27 @@
 });</code></pre>
 
             <script>
+
                var test = document.querySelector('.question__answer');
-               var testCode = test.querySelector('code');
+               //test.spellcheck = false;
                test.addEventListener('keydown', function(e) {
-                  var sel = window.getSelection();
-                  //Prism.highlightAll();
+
                   if (e.keyCode == 9) {
-                       e.preventDefault();
-                       document.execCommand("InsertHTML", true, '   ');
+                     e.preventDefault();
+                     document.execCommand('InsertHTML', true, '   ');
+                  } else if (e.keyCode == 13) {
+                     e.preventDefault();
+                     document.execCommand('InsertHTML', true, '\n');
                   }
+                  //Prism.highlightElement(test);
                   //sel.collapse(testCode, 2);
                   //console.log(testCode.innerText);
+               });
+               test.addEventListener('input', function(e) {
+                  var code = this.firstChild;
+                  var text = code.innerText;
+                  code.innerText = text;
+                  Prism.highlightElement(code);
                });
             </script>
 

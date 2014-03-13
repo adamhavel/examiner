@@ -10,6 +10,27 @@
       @include blank-lines(2, trailing);
       @extend %trim-trailing-lines;
    }
+   &__contents {
+      position: fixed;
+      overflow: hidden;
+      top: $leading * 4;
+      left: calc(50% + #{($layout-width / 2) - $gutter});
+      padding-left: $gutter;
+      font-family: "Roboto", sans-serif;
+      font-weight: 300;
+      a {
+         @extend %icon--right;
+         display: inline-block;
+         text-decoration: none;
+         color: rgba(black, .6);
+         opacity: .3;
+         transition: opacity .2s;
+      }
+      &:hover a,
+      a.active {
+         opacity: 1;
+      }
+   }
 }
 
    .question {
@@ -37,44 +58,5 @@
    @extend %pipe-list;
    li:before {
       content: ' > ';
-   }
-}
-
-
-/* Media
-   ========================================================================== */
-
-.media {
-   @extend %aloof;
-   display: flex;
-   align-items: flex-start;
-   &__figure {
-      @include blank-lines(.25, leading);
-      margin-right: $gutter;
-   }
-   &__content {
-      flex: 1;
-   }
-}
-
-
-/* Search form
-   ========================================================================== */
-
-.search-form {
-   &__input {
-      float: left;
-      width: calc(100% - #{$gutter * 1.5});
-      margin-bottom: 0;
-   }
-   &__submit {
-      float: left;
-      width: $gutter;
-      padding: 0;
-      margin-left: $gutter / 2;
-      font-size: 0;
-      &:hover, &:focus {
-         outline: none;
-      }
    }
 }

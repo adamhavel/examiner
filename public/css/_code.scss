@@ -12,7 +12,7 @@ code {
 }
 
 pre {
-   @extend %islet;
+   @extend %island;
    font-size: .9em;
    line-height: $leading;
    overflow: auto;

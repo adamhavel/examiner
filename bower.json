@@ -10,6 +10,7 @@
     "fastclick": "~0.6.12",
     "polyfills": "latest",
     "modernizr": "~2.7.2",
-    "prism": "gh-pages"
+    "prism": "gh-pages",
+    "angular-animate": "~1.2.14"
   }
 }

@@ -72,8 +72,6 @@ $navigation-height: $leading * 1;
    @include blank-lines(3, trailing);
    @include blank-lines(2, both, padding);
    @include taper(2);
-   position: relative;
-   z-index: 100;
    max-width: $main-content-width;
    margin-left: $sidebar-width;
    box-sizing: border-box;
@@ -94,6 +92,8 @@ $navigation-height: $leading * 1;
 
    .site-nav {
       text-align: right;
+      overflow: hidden;
+      transform: translateZ(0);
       &__item {
          @extend %icon--right;
          @include linespan(2);
@@ -110,7 +110,6 @@ $navigation-height: $leading * 1;
          color: rgba(black, .4);
          transition: transform, opacity, color, box-shadow, background-color;
          transition-duration: .3s;
-         backface-visibility: hidden;
          opacity: .3;
          &.urgent {
             color: rgba(map-get($colors, red), .9);

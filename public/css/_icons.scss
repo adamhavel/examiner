@@ -4,8 +4,6 @@
 
 %icon {
    @include before() {
-      position: relative;
-      top: -.1em;
       display: inline-block;
       height: #{$line-height}em;
       width: $gutter;
@@ -13,11 +11,11 @@
       margin-left: 0;
       background: {
          position: center;
-         size: 100% auto;
+         size: contain;
          repeat: no-repeat;
       }
       opacity: .5;
-      vertical-align: middle;
+      vertical-align: text-top;
    }
    &--right {
       direction: rtl;

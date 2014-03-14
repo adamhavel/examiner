@@ -111,12 +111,12 @@ $navigation-height: $leading * 1;
          transition: transform, opacity, color, box-shadow, background-color;
          transition-duration: .3s;
          opacity: .3;
-         &.urgent {
+         &.ng-urgent {
             color: rgba(map-get($colors, red), .9);
          }
          &:hover,
          &:focus,
-         &.active {
+         &.ng-active {
             transform: translateX($leading / 1.75);
             background-color: map-get($colors, yellow);
             box-shadow: inset #{-($leading / 1.75 + .2rem)} 0 .2rem 0 rgba(black, .05),

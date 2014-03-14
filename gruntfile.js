@@ -63,15 +63,16 @@ uglify: {
    },
    libs: {
       options: {
-         mangle: false
+         mangle: true
       },
       src: [
+         'public/lib/modernizr/modernizr.custom.js',
+         'public/lib/prism/prism.js',
+         'public/lib/fabric/dist/fabric.js',
          // load angular first
          'public/lib/angular/**/*.min.js',
          // load angular production modules, i.e. not mocks
-         'public/lib/angular-*/**/*.min.js',
-         'public/lib/modernizr/modernizr.custom.js',
-         'public/lib/prism/prism.js'
+         'public/lib/angular-*/**/*.min.js'
       ],
       dest: 'public/lib/libs.min.js'
    },
@@ -148,7 +149,7 @@ cssmin: {
 
 uncss: {
    options: {
-      ignore: [/\.j-/, /:checked/, /:not/, /\.error/],
+      ignore: [/\.ng-/, /\.j-/, /:checked/, /:not/, /\.error/],
       stylesheets: ['css/default.css']
    },
    default: {
@@ -423,7 +424,6 @@ grunt.loadNpmTasks('grunt-contrib-imagemin');
 grunt.loadNpmTasks('grunt-nodemon');
 grunt.loadNpmTasks('grunt-concurrent');
 grunt.loadNpmTasks('grunt-autoprefixer');
-grunt.loadNpmTasks('grunt-remfallback');
 grunt.loadNpmTasks('grunt-combine-media-queries');
 grunt.loadNpmTasks('grunt-modernizr');
 grunt.loadNpmTasks('grunt-uncss');
@@ -445,7 +445,7 @@ grunt.registerTask('makecss', function(option) {
       grunt.task.run('uncss');
    }
    grunt.task.run([
-      /*'remfallback',*/ 'autoprefixer', 'cmq', 'cssmin', 'csslint'
+      'autoprefixer', 'cmq', 'cssmin', 'csslint'
    ]);
 });
 

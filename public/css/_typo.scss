@@ -69,6 +69,9 @@ a {
       padding-bottom: calc(#{$leading / 2} - 1px);
       border-bottom: 1px solid rgba(black, .3);
    }
+   &--caption {
+      @include blank-lines(0, trailing);
+   }
 }
 
 .alpha, %alpha {

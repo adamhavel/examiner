@@ -24,6 +24,11 @@
          margin-left: $gutter / 2;
       }
    }
+   &--negative {
+      &:before {
+         filter: invert(100%);
+      }
+   }
 }
 
 @import "icons-data";

@@ -23,12 +23,12 @@
          color: rgba(black, .6);
          opacity: .3;
          transition: opacity .2s;
-         &.done {
+         &.ng-done {
             text-decoration: line-through;
          }
       }
       &:hover a,
-      a.active {
+      a.ng-active {
          opacity: 1;
       }
    }
@@ -41,13 +41,47 @@
          float: right;
          font-style: italic;
       }
+      &__image {
+         @extend %island;
+         display: block;
+         width: 100%;
+      }
       &__answer {
-         height: auto;
+         @extend %aloof;
+         display: block;
+         padding: calc(#{$leading / 2} - 1px) ($gutter * .75);
          box-sizing: border-box;
-         padding-left: $gutter * .75;
+         border: 1px solid rgba(black, .1);
          outline: 0;
-         border-left: 2px solid rgba(black, .3);
-         transition: height, background .2s;
+      }
+   }
+
+
+/* Canvas
+   ========================================================================== */
+
+.canvas {
+   @extend %aloof;
+   .question__answer {
+      padding: 0;
+   }
+}
+
+   .tools {
+      padding-top: 10px;
+      &__item {
+         @extend %t-button;
+         @extend %icon;
+         @include size(3em);
+         padding: 0;
+         text-align: center;
+         &:before {
+            @include size(100%);
+            display: block;
+            margin: 0;
+            background-size: 80%;
+            opacity: .6;
+         }
       }
    }
 

@@ -8,6 +8,12 @@
    }
 }
 
+%trim-leading-lines {
+   /*:not(.grid__item) > */&:first-child {
+      margin-top: 0;
+   }
+}
+
 %aloof {
    @extend %trim-trailing-lines;
    @include blank-lines(1, trailing);
@@ -15,23 +21,16 @@
 
 %island {
    @extend %trim-trailing-lines;
+   @extend %trim-leading-lines;
    @include blank-lines(1, leading);
    @include blank-lines(1, trailing);
 }
 
 %islet {
    @extend %trim-trailing-lines;
+   @extend %trim-leading-lines;
    @include blank-lines(2, leading);
    @include blank-lines(2, trailing);
-}
-
-%flared {
-   & > * {
-      margin-left: $gutter;
-      &:first-child {
-         margin-left: 0;
-      }
-   }
 }
 
 %center {

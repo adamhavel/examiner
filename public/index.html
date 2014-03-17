@@ -86,7 +86,7 @@
 
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure, animi assumenda ea velit voluptatem numquam dolore architecto magni ratione. Earum aut incidunt maxime eum exercitationem sed cupiditate ex expedita voluptas!</p>
 
-            <section class="question" id="question-a-1">
+            <article class="question" id="question-a-1">
 
                <h1 class="delta heading heading--subsection question__heading">
                   Question A.1
@@ -109,11 +109,11 @@
 });</code></pre>
 
                <h2 class="epsilon heading heading--caption">Your answer</h2>
-               <p class="question__answer" contenteditable spellcheck="false"></p>
+               <p class="question__answer" contenteditable spellcheck="false" placeholder="Type here..."></p>
 
-            </section>
+            </article>
 
-            <section class="question" id="question-a-2">
+            <article class="question" id="question-a-2">
 
                <h1 class="delta heading heading--subsection">
                   Question A.2
@@ -139,7 +139,7 @@
 });</code></pre>
 
 
-            </section>
+            </article>
 
          </section>
 
@@ -151,7 +151,7 @@
 
             <p>Necessitatibus, quidem, saepe aspernatur velit consequuntur provident nostrum qui ratione ipsum eum rerum blanditiis itaque praesentium eius fugiat voluptates tempora. Perspiciatis, vitae temporibus natus itaque ipsam reprehenderit corporis veniam quia.</p>
 
-            <section class="question" id="question-b-1">
+            <article class="question" id="question-b-1">
 
                <h1 class="delta heading heading--subsection question__heading">
                   Question B.1
@@ -164,7 +164,10 @@
                <div class="canvas j-canvas">
                   <canvas id="question-b-1-answer" class="question__answer"></canvas>
                   <ul class="inline-list tools">
-                     <li><button class="tools__item icon--write j-canvas-paint"></button></li>
+                     <li><button class="tools__item icon--paint j-canvas-tool j-canvas-paint"></button></li>
+                     <li><button class="tools__item icon--write j-canvas-tool j-canvas-rect"></button></li>
+                     <li><button class="tools__item icon--write j-canvas-tool j-canvas-line"></button></li>
+                     <li><button class="tools__item icon--trash j-canvas-tool j-canvas-remove"></button></li>
                   </ul>
                </div>
 
@@ -172,23 +175,28 @@
                   var canvasWrapper = document.querySelector('.j-canvas');
                   var canvas = canvasWrapper.querySelector('canvas');
                   canvas.width = canvasWrapper.clientWidth;
-                  canvas.height = 380;
-                  canvas = new fabric.Canvas(canvas.id);
-
-                  var rect = new fabric.Rect({
-                     width : 60,
-                     height : 70,
-                     fill : 'red'
+                  canvas.height = 380
+                  canvas = new fabric.Canvas(canvas.id, {
+                     selection: false,
+                     defaultCursor: 'crosshair'
                   });
 
-                  rect.set({
-                     top: canvas.height / 10,
-                     left: canvas.width / 10
-                  });
 
-                  canvas.add(rect);
 
-                  fabric.loadSVGFromURL('img/icon/exams.svg', function(objects, options) {
+
+                  var isMouseDown = false,
+                      canvasTools = canvasWrapper.querySelectorAll('.j-canvas-tool'),
+                      pointer, obj,
+                      mouseDownHandler, mouseMoveHandler, mouseUpHandler;
+
+                  /*canvas.setBackgroundImage('img/icon/exams.svg', canvas.renderAll.bind(canvas), {
+                     width: canvas.width,
+                     height: canvas.height,
+                     originX: 'left',
+                     originY: 'top'
+                  });*/
+
+                  /*fabric.loadSVGFromURL('img/icon/exams.svg', function(objects, options) {
                      var obj = fabric.util.groupSVGElements(objects, options);
                      obj.set({
                         left: 0,
@@ -198,20 +206,182 @@
                      });
                      obj.set('selectable', false);
                      canvas.add(obj).sendToBack(obj).renderAll();
+                  });*/
+
+                  canvasWrapper.querySelector('.j-canvas-paint').addEventListener('click', function() {
+                     if (!this.classList.contains('j-active')) {
+                        for (var i = canvasTools.length; i--;) {
+                           canvasTools[i].classList.remove('j-active');
+                        }
+
+                        this.classList.add('j-active');
+
+                        canvas.off('mouse:down', mouseDownHandler);
+                        canvas.off('mouse:move', mouseMoveHandler);
+                        canvas.off('mouse:up', mouseUpHandler);
+
+                        canvas.isDrawingMode = true;
+                     }
                   });
 
-                  var paintButton = canvasWrapper.querySelector('.j-canvas-paint');
+                  canvasWrapper.querySelector('.j-canvas-rect').addEventListener('click', function() {
+                     if (!this.classList.contains('j-active')) {
 
-                  paintButton.addEventListener('click', function() {
-                     this.classList.toggle('j-active');
-                     canvas.isDrawingMode = !canvas.isDrawingMode;
+                        for (var i = canvasTools.length; i--;) {
+                           canvasTools[i].classList.remove('j-active');
+                        }
+
+                        canvas.getObjects().forEach(function(obj) {
+                           obj.set({
+                              selectable: false
+                           });
+                        });
+
+                        canvas.isDrawingMode = false;
+                        this.classList.add('j-active');
+
+                        canvas.off('mouse:down', mouseDownHandler);
+                        canvas.off('mouse:move', mouseMoveHandler);
+                        canvas.off('mouse:up', mouseUpHandler);
+
+                        mouseDownHandler = function(o) {
+                           isMouseDown = true;
+                           pointer = canvas.getPointer(o.e);
+                           obj = new fabric.Rect({
+                              strokeWidth: 1,
+                              fill: 'rgba(255, 255, 255, 0)',
+                              stroke: 'rgba(0, 0, 0, 1)',
+                              originX: 'left',
+                              originY: 'top',
+                              top: pointer.y,
+                              left: pointer.x,
+                              selectable: false
+                           });
+                           canvas.add(obj);
+                        };
+
+                        mouseMoveHandler = function(o) {
+                           if (!isMouseDown) {
+                              return;
+                           }
+                           var currentPointer = canvas.getPointer(o.e);
+                           obj.set({
+                              width: currentPointer.x - pointer.x,
+                              height: currentPointer.y - pointer.y
+                           });
+                           canvas.renderAll();
+                        };
+
+                        mouseUpHandler = function(o) {
+                           isMouseDown = false;
+                        };
+
+                        canvas.on('mouse:down', mouseDownHandler);
+                        canvas.on('mouse:move', mouseMoveHandler);
+                        canvas.on('mouse:up', mouseUpHandler);
+                     }
                   });
+
+                  canvasWrapper.querySelector('.j-canvas-line').addEventListener('click', function() {
+                     if (!this.classList.contains('j-active')) {
+                        for (var i = canvasTools.length; i--;) {
+                           canvasTools[i].classList.remove('j-active');
+                        }
+
+                        canvas.getObjects().forEach(function(obj) {
+                           obj.set({
+                              selectable: false
+                           });
+                        });
+
+                        canvas.isDrawingMode = false;
+                        this.classList.add('j-active');
+
+                        canvas.off('mouse:down', mouseDownHandler);
+                        canvas.off('mouse:move', mouseMoveHandler);
+                        canvas.off('mouse:up', mouseUpHandler);
+
+                        mouseDownHandler = function(o) {
+                           isMouseDown = true;
+                           pointer = canvas.getPointer(o.e);
+                           obj = new fabric.Line([pointer.x, pointer.y, pointer.x, pointer.y], {
+                              strokeWidth: 1,
+                              stroke: 'rgba(0, 0, 0, 0.75)',
+                              originX: 'center',
+                              originY: 'center'
+                           });
+                           canvas.add(obj);
+                           selectable: false
+                        };
+
+                        mouseMoveHandler = function(o) {
+                           if (!isMouseDown) {
+                              return;
+                           }
+                           pointer = canvas.getPointer(o.e);
+                           obj.set({
+                              x2: pointer.x,
+                              y2: pointer.y
+                           });
+                           canvas.renderAll();
+                        };
+
+                        mouseUpHandler = function(o) {
+                           isMouseDown = false;
+                        };
+
+                        canvas.on('mouse:down', mouseDownHandler);
+                        canvas.on('mouse:move', mouseMoveHandler);
+                        canvas.on('mouse:up', mouseUpHandler);
+                     }
+                  });
+
+                  canvasWrapper.querySelector('.j-canvas-remove').addEventListener('click', function() {
+                     if (canvas.getActiveObject()) {
+                        canvas.remove(canvas.getActiveObject());
+                     } else if (canvas.getActiveGroup()) {
+                        canvas.getActiveGroup().forEachObject(function(obj) {
+                           canvas.remove(obj);
+                        });
+                        canvas.discardActiveGroup();
+                        canvas.renderAll();
+                     }
+                  });
+
+                  /*var line;
+
+                  canvas.on('mouse:down', function(o){
+                     isDown = true;
+                     pointer = canvas.getPointer(o.e);
+                     var points = [ pointer.x, pointer.y, pointer.x, pointer.y ];
+                     line = new fabric.Rect({
+                        strokeWidth: 1,
+                        fill: 'rgba(255, 255, 255, 0.5)',
+                        stroke: 'rgba(0, 0, 0, 0.75)',
+                        originX: 'left',
+                        originY: 'top',
+                        top: pointer.y,
+                        left: pointer.x
+                     });
+                     canvas.add(line);
+                   });
+
+                  canvas.on('mouse:move', function(o){
+                     if (!isDown) return;
+                     var newPointer = canvas.getPointer(o.e);
+                     line.set({ width: newPointer.x - pointer.x, height: newPointer.y - pointer.y });
+                     canvas.renderAll();
+                  });
+
+                  canvas.on('mouse:up', function(o){
+                     isDown = false;
+                  });*/
 
                </script>
 
                <p>Necessitatibus, quidem, saepe aspernatur velit consequuntur provident nostrum qui ratione ipsum eum rerum blanditiis itaque praesentium eius fugiat voluptates tempora. Perspiciatis, vitae temporibus natus itaque ipsam reprehenderit corporis veniam quia.</p>
 
-            </section>
+            </article>
 
          </section>
 

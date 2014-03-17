@@ -70,7 +70,8 @@ a {
       border-bottom: 1px solid rgba(black, .3);
    }
    &--caption {
-      @include blank-lines(0, trailing);
+      margin-bottom: 0;
+      font-style: italic;
    }
 }
 

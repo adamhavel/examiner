@@ -3,13 +3,13 @@
    ========================================================================== */
 
 %trim-trailing-lines {
-   /*:not(.grid__item) > */&:last-child {
+   &:last-child {
       margin-bottom: 0;
    }
 }
 
 %trim-leading-lines {
-   /*:not(.grid__item) > */&:first-child {
+   &:first-child {
       margin-top: 0;
    }
 }

@@ -164,9 +164,12 @@
                <div class="canvas j-canvas">
                   <canvas id="question-b-1-answer" class="question__answer"></canvas>
                   <ul class="inline-list tools">
+                     <li><button class="tools__item icon--paint j-canvas-tool j-canvas-select"></button></li>
                      <li><button class="tools__item icon--paint j-canvas-tool j-canvas-paint"></button></li>
                      <li><button class="tools__item icon--write j-canvas-tool j-canvas-rect"></button></li>
+                     <li><button class="tools__item icon--write j-canvas-tool j-canvas-circle"></button></li>
                      <li><button class="tools__item icon--write j-canvas-tool j-canvas-line"></button></li>
+                     <li><button class="tools__item icon--write j-canvas-tool j-canvas-text"></button></li>
                      <li><button class="tools__item icon--trash j-canvas-tool j-canvas-remove"></button></li>
                   </ul>
                </div>
@@ -175,19 +178,17 @@
                   var canvasWrapper = document.querySelector('.j-canvas');
                   var canvas = canvasWrapper.querySelector('canvas');
                   canvas.width = canvasWrapper.clientWidth;
-                  canvas.height = 380
+                  canvas.height = canvas.width / (16/9);
                   canvas = new fabric.Canvas(canvas.id, {
                      selection: false,
                      defaultCursor: 'crosshair'
                   });
-
-
-
+                  canvas.calcOffset();
 
                   var isMouseDown = false,
                       canvasTools = canvasWrapper.querySelectorAll('.j-canvas-tool'),
-                      pointer, obj,
-                      mouseDownHandler, mouseMoveHandler, mouseUpHandler;
+                      pointer,
+                      obj;
 
                   /*canvas.setBackgroundImage('img/icon/exams.svg', canvas.renderAll.bind(canvas), {
                      width: canvas.width,
@@ -208,132 +209,203 @@
                      canvas.add(obj).sendToBack(obj).renderAll();
                   });*/
 
-                  canvasWrapper.querySelector('.j-canvas-paint').addEventListener('click', function() {
+                  var activateTool = function(toolHandler) {
                      if (!this.classList.contains('j-active')) {
+
                         for (var i = canvasTools.length; i--;) {
                            canvasTools[i].classList.remove('j-active');
                         }
-
                         this.classList.add('j-active');
 
-                        canvas.off('mouse:down', mouseDownHandler);
-                        canvas.off('mouse:move', mouseMoveHandler);
-                        canvas.off('mouse:up', mouseUpHandler);
+                        canvas.getObjects().forEach(function(obj) {
+                           obj.set({
+                              selectable: false,
+                              editable: false
+                           });
+                           obj.exitEditing();
+                        });
+                        canvas.discardActiveGroup();
+                        canvas.selection = false;
 
-                        canvas.isDrawingMode = true;
+                        canvas.isDrawingMode = false;
+                        canvas.defaultCursor = 'crosshair';
+
+                        canvas.off('mouse:down');
+                        canvas.off('mouse:move');
+                        canvas.off('mouse:up');
+
+                        if (toolHandler) {
+                           canvas.on('mouse:down', toolHandler.mouseDown);
+                           canvas.on('mouse:move', toolHandler.mouseMove);
+                           canvas.on('mouse:up', toolHandler.mouseUp);
+                        }
+
+                        canvas.renderAll();
                      }
+                  }
+
+                  canvasWrapper.querySelector('.j-canvas-select').addEventListener('click', function() {
+                     (activateTool.bind(this))(null);
+                     canvas.selection = true;
+                     canvas.getObjects().forEach(function(obj) {
+                        obj.set({
+                           selectable: true
+                        });
+                        obj.setCoords();
+                     });
+                     canvas.defaultCursor = 'default';
+                  });
+
+                  var rectHandler = {
+                     mouseDown: function(o) {
+                        isMouseDown = true;
+                        pointer = canvas.getPointer(o.e);
+                        obj = new fabric.Rect({
+                           strokeWidth: 1,
+                           fill: 'rgba(255, 255, 255, .5)',
+                           stroke: 'rgba(0, 0, 0, .8)',
+                           originX: 'left',
+                           originY: 'top',
+                           top: pointer.y,
+                           left: pointer.x,
+                           selectable: false,
+                           uniScaleTransform: true
+                        });
+                        canvas.add(obj);
+                     },
+                     mouseMove: function(o) {
+                        if (!isMouseDown) {
+                           return;
+                        }
+                        var currentPointer = canvas.getPointer(o.e);
+                        obj.set({
+                           width: currentPointer.x - pointer.x,
+                           height: currentPointer.y - pointer.y
+                        });
+                        canvas.renderAll();
+                     },
+                     mouseUp: function(o) {
+                        isMouseDown = false;
+                     }
+                  };
+
+                  var circleHandler = {
+                     mouseDown: function(o) {
+                        isMouseDown = true;
+                        pointer = canvas.getPointer(o.e);
+                        obj = new fabric.Ellipse({
+                           strokeWidth: 1,
+                           fill: 'rgba(255, 255, 255, .5)',
+                           stroke: 'rgba(0, 0, 0, .8)',
+                           top: pointer.y,
+                           left: pointer.x,
+                           originY: 'top',
+                           originX: 'left',
+                           selectable: false,
+                           rx: 1,
+                           ry: 1
+                        });
+                        canvas.add(obj);
+                     },
+                     mouseMove: function(o) {
+                        if (!isMouseDown) {
+                           return;
+                        }
+                        var currentPointer = canvas.getPointer(o.e);
+                        obj.set({
+                           rx: Math.abs(currentPointer.x - pointer.x),
+                           ry: Math.abs(currentPointer.y - pointer.y)
+                        });
+                        canvas.renderAll();
+                     },
+                     mouseUp: function(o) {
+                        isMouseDown = false;
+                        obj.set({
+                           width: obj.rx * 2,
+                           height: obj.ry * 2,
+                           top: obj.top - obj.ry + 1,
+                           left: obj.left - obj.rx + 1
+                        });
+                        canvas.renderAll();
+                     }
+                  };
+
+                  var lineHandler = {
+                     mouseDown: function(o) {
+                        isMouseDown = true;
+                        pointer = canvas.getPointer(o.e);
+                        obj = new fabric.Line([pointer.x, pointer.y, pointer.x, pointer.y], {
+                           strokeWidth: 1,
+                           stroke: 'rgba(0, 0, 0, 0.8)',
+                           originX: 'center',
+                           originY: 'center',
+                           selectable: false,
+                        });
+                        canvas.add(obj);
+                     },
+                     mouseMove: function(o) {
+                        if (!isMouseDown) {
+                           return;
+                        }
+                        pointer = canvas.getPointer(o.e);
+                        obj.set({
+                           x2: pointer.x,
+                           y2: pointer.y
+                        });
+                        canvas.renderAll();
+                     },
+                     mouseUp: function(o) {
+                        isMouseDown = false;
+                     }
+                  };
+
+                  var textHandler = {
+                     mouseDown: function(o) {
+                        isMouseDown = true;
+                        pointer = canvas.getPointer(o.e);
+                        obj = new fabric.IText('', {
+                           fontFamily: 'arial black',
+                           selectable: false,
+                           originX: 'center',
+                           originY: 'center',
+                           lockUniScaling: true,
+                           textAlign: 'center'
+                        });
+                     },
+                     mouseMove: function() {},
+                     mouseUp: function(o) {
+                        isMouseDown = false;
+                        pointer = canvas.getPointer(o.e);
+                        obj.set({
+                           top: pointer.y,
+                           left: pointer.x
+                        });
+                        canvas.add(obj);
+                        canvas.setActiveObject(obj);
+                        obj.enterEditing();
+                        canvas.renderAll();
+                     }
+                  };
+
+                  canvasWrapper.querySelector('.j-canvas-paint').addEventListener('click', function() {
+                     (activateTool.bind(this))(null);
+                     canvas.isDrawingMode = true;
                   });
 
                   canvasWrapper.querySelector('.j-canvas-rect').addEventListener('click', function() {
-                     if (!this.classList.contains('j-active')) {
+                     (activateTool.bind(this))(rectHandler);
+                  });
 
-                        for (var i = canvasTools.length; i--;) {
-                           canvasTools[i].classList.remove('j-active');
-                        }
-
-                        canvas.getObjects().forEach(function(obj) {
-                           obj.set({
-                              selectable: false
-                           });
-                        });
-
-                        canvas.isDrawingMode = false;
-                        this.classList.add('j-active');
-
-                        canvas.off('mouse:down', mouseDownHandler);
-                        canvas.off('mouse:move', mouseMoveHandler);
-                        canvas.off('mouse:up', mouseUpHandler);
-
-                        mouseDownHandler = function(o) {
-                           isMouseDown = true;
-                           pointer = canvas.getPointer(o.e);
-                           obj = new fabric.Rect({
-                              strokeWidth: 1,
-                              fill: 'rgba(255, 255, 255, 0)',
-                              stroke: 'rgba(0, 0, 0, 1)',
-                              originX: 'left',
-                              originY: 'top',
-                              top: pointer.y,
-                              left: pointer.x,
-                              selectable: false
-                           });
-                           canvas.add(obj);
-                        };
-
-                        mouseMoveHandler = function(o) {
-                           if (!isMouseDown) {
-                              return;
-                           }
-                           var currentPointer = canvas.getPointer(o.e);
-                           obj.set({
-                              width: currentPointer.x - pointer.x,
-                              height: currentPointer.y - pointer.y
-                           });
-                           canvas.renderAll();
-                        };
-
-                        mouseUpHandler = function(o) {
-                           isMouseDown = false;
-                        };
-
-                        canvas.on('mouse:down', mouseDownHandler);
-                        canvas.on('mouse:move', mouseMoveHandler);
-                        canvas.on('mouse:up', mouseUpHandler);
-                     }
+                  canvasWrapper.querySelector('.j-canvas-circle').addEventListener('click', function() {
+                     (activateTool.bind(this))(circleHandler);
                   });
 
                   canvasWrapper.querySelector('.j-canvas-line').addEventListener('click', function() {
-                     if (!this.classList.contains('j-active')) {
-                        for (var i = canvasTools.length; i--;) {
-                           canvasTools[i].classList.remove('j-active');
-                        }
+                     (activateTool.bind(this))(lineHandler);
+                  });
 
-                        canvas.getObjects().forEach(function(obj) {
-                           obj.set({
-                              selectable: false
-                           });
-                        });
-
-                        canvas.isDrawingMode = false;
-                        this.classList.add('j-active');
-
-                        canvas.off('mouse:down', mouseDownHandler);
-                        canvas.off('mouse:move', mouseMoveHandler);
-                        canvas.off('mouse:up', mouseUpHandler);
-
-                        mouseDownHandler = function(o) {
-                           isMouseDown = true;
-                           pointer = canvas.getPointer(o.e);
-                           obj = new fabric.Line([pointer.x, pointer.y, pointer.x, pointer.y], {
-                              strokeWidth: 1,
-                              stroke: 'rgba(0, 0, 0, 0.75)',
-                              originX: 'center',
-                              originY: 'center'
-                           });
-                           canvas.add(obj);
-                           selectable: false
-                        };
-
-                        mouseMoveHandler = function(o) {
-                           if (!isMouseDown) {
-                              return;
-                           }
-                           pointer = canvas.getPointer(o.e);
-                           obj.set({
-                              x2: pointer.x,
-                              y2: pointer.y
-                           });
-                           canvas.renderAll();
-                        };
-
-                        mouseUpHandler = function(o) {
-                           isMouseDown = false;
-                        };
-
-                        canvas.on('mouse:down', mouseDownHandler);
-                        canvas.on('mouse:move', mouseMoveHandler);
-                        canvas.on('mouse:up', mouseUpHandler);
-                     }
+                  canvasWrapper.querySelector('.j-canvas-text').addEventListener('click', function() {
+                     (activateTool.bind(this))(textHandler);
                   });
 
                   canvasWrapper.querySelector('.j-canvas-remove').addEventListener('click', function() {
@@ -347,35 +419,6 @@
                         canvas.renderAll();
                      }
                   });
-
-                  /*var line;
-
-                  canvas.on('mouse:down', function(o){
-                     isDown = true;
-                     pointer = canvas.getPointer(o.e);
-                     var points = [ pointer.x, pointer.y, pointer.x, pointer.y ];
-                     line = new fabric.Rect({
-                        strokeWidth: 1,
-                        fill: 'rgba(255, 255, 255, 0.5)',
-                        stroke: 'rgba(0, 0, 0, 0.75)',
-                        originX: 'left',
-                        originY: 'top',
-                        top: pointer.y,
-                        left: pointer.x
-                     });
-                     canvas.add(line);
-                   });
-
-                  canvas.on('mouse:move', function(o){
-                     if (!isDown) return;
-                     var newPointer = canvas.getPointer(o.e);
-                     line.set({ width: newPointer.x - pointer.x, height: newPointer.y - pointer.y });
-                     canvas.renderAll();
-                  });
-
-                  canvas.on('mouse:up', function(o){
-                     isDown = false;
-                  });*/
 
                </script>
 

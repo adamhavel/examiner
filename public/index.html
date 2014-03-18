@@ -217,15 +217,14 @@
                         }
                         this.classList.add('j-active');
 
+                        canvas.deactivateAllWithDispatch();
+                        canvas.selection = false;
                         canvas.getObjects().forEach(function(obj) {
                            obj.set({
-                              selectable: false,
-                              editable: false
+                              editable: false,
+                              selectable: false
                            });
-                           obj.exitEditing();
                         });
-                        canvas.discardActiveGroup();
-                        canvas.selection = false;
 
                         canvas.isDrawingMode = false;
                         canvas.defaultCursor = 'crosshair';
@@ -244,32 +243,20 @@
                      }
                   }
 
-                  canvasWrapper.querySelector('.j-canvas-select').addEventListener('click', function() {
-                     (activateTool.bind(this))(null);
-                     canvas.selection = true;
-                     canvas.getObjects().forEach(function(obj) {
-                        obj.set({
-                           selectable: true
-                        });
-                        obj.setCoords();
-                     });
-                     canvas.defaultCursor = 'default';
-                  });
-
                   var rectHandler = {
                      mouseDown: function(o) {
                         isMouseDown = true;
                         pointer = canvas.getPointer(o.e);
                         obj = new fabric.Rect({
-                           strokeWidth: 1,
-                           fill: 'rgba(255, 255, 255, .5)',
-                           stroke: 'rgba(0, 0, 0, .8)',
+                           strokeWidth: 2,
+                           fill: 'rgba(255, 255, 255, .25)',
+                           stroke: 'rgba(0, 0, 0, .75)',
                            originX: 'left',
                            originY: 'top',
                            top: pointer.y,
                            left: pointer.x,
                            selectable: false,
-                           uniScaleTransform: true
+                           perPixelTargetFind: true
                         });
                         canvas.add(obj);
                      },
@@ -294,16 +281,17 @@
                         isMouseDown = true;
                         pointer = canvas.getPointer(o.e);
                         obj = new fabric.Ellipse({
-                           strokeWidth: 1,
-                           fill: 'rgba(255, 255, 255, .5)',
-                           stroke: 'rgba(0, 0, 0, .8)',
+                           strokeWidth: 2,
+                           fill: 'rgba(255, 255, 255, .25)',
+                           stroke: 'rgba(0, 0, 0, .75)',
                            top: pointer.y,
                            left: pointer.x,
                            originY: 'top',
                            originX: 'left',
                            selectable: false,
                            rx: 1,
-                           ry: 1
+                           ry: 1,
+                           perPixelTargetFind: true
                         });
                         canvas.add(obj);
                      },
@@ -335,11 +323,12 @@
                         isMouseDown = true;
                         pointer = canvas.getPointer(o.e);
                         obj = new fabric.Line([pointer.x, pointer.y, pointer.x, pointer.y], {
-                           strokeWidth: 1,
-                           stroke: 'rgba(0, 0, 0, 0.8)',
+                           strokeWidth: 2,
+                           stroke: 'rgba(0, 0, 0, 0.75)',
                            originX: 'center',
                            originY: 'center',
                            selectable: false,
+                           perPixelTargetFind: true
                         });
                         canvas.add(obj);
                      },
@@ -363,29 +352,64 @@
                      mouseDown: function(o) {
                         isMouseDown = true;
                         pointer = canvas.getPointer(o.e);
-                        obj = new fabric.IText('', {
-                           fontFamily: 'arial black',
-                           selectable: false,
-                           originX: 'center',
-                           originY: 'center',
-                           lockUniScaling: true,
-                           textAlign: 'center'
+                        var isInsideTextObject = false;
+                        canvas.getObjects().forEach(function(objOnCanvas) {
+                           if (objOnCanvas.get('type') === 'i-text') {
+                              var bounds = objOnCanvas.getBoundingRect();
+                              if (
+                                 pointer.x >= bounds.left
+                                 && pointer.x <= bounds.left + bounds.width
+                                 && pointer.y >= bounds.top
+                                 && pointer.y <= bounds.top + bounds.height
+                              ) {
+                                 objOnCanvas.enterEditing();
+                                 isInsideTextObject = true;
+                                 obj = null;
+                              }
+                           }
                         });
+                        if (!isInsideTextObject) {
+                           obj = new fabric.IText('', {
+                              fontFamily: 'Roboto',
+                              selectable: false,
+                              originX: 'center',
+                              originY: 'center',
+                              lockUniScaling: true,
+                              textAlign: 'center',
+                              fontSize: 24,
+                              fontWeight: 300,
+                              fill: 'rgba(0, 0, 0, 1)'
+                           });
+                        }
                      },
                      mouseMove: function() {},
                      mouseUp: function(o) {
                         isMouseDown = false;
-                        pointer = canvas.getPointer(o.e);
-                        obj.set({
-                           top: pointer.y,
-                           left: pointer.x
-                        });
-                        canvas.add(obj);
-                        canvas.setActiveObject(obj);
-                        obj.enterEditing();
-                        canvas.renderAll();
+                        if (obj) {
+                           pointer = canvas.getPointer(o.e);
+                           obj.set({
+                              top: pointer.y,
+                              left: pointer.x
+                           });
+                           canvas.add(obj);
+                           canvas.setActiveObject(obj);
+                           obj.enterEditing();
+                           canvas.renderAll();
+                        }
                      }
                   };
+
+                  canvasWrapper.querySelector('.j-canvas-select').addEventListener('click', function() {
+                     (activateTool.bind(this))(null);
+                     canvas.selection = true;
+                     canvas.getObjects().forEach(function(obj) {
+                        obj.set({
+                           selectable: true
+                        });
+                        obj.setCoords();
+                     });
+                     canvas.defaultCursor = 'default';
+                  });
 
                   canvasWrapper.querySelector('.j-canvas-paint').addEventListener('click', function() {
                      (activateTool.bind(this))(null);
@@ -406,6 +430,15 @@
 
                   canvasWrapper.querySelector('.j-canvas-text').addEventListener('click', function() {
                      (activateTool.bind(this))(textHandler);
+                     canvas.getObjects().forEach(function(obj) {
+                        if (obj.get('type') === 'i-text') {
+                           obj.set({
+                              selectable: true,
+                              editable: true
+                           });
+                        }
+                     });
+                     canvas.defaultCursor = 'text';
                   });
 
                   canvasWrapper.querySelector('.j-canvas-remove').addEventListener('click', function() {

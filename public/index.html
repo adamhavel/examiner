@@ -164,13 +164,14 @@
                <div class="canvas j-canvas">
                   <canvas id="question-b-1-answer" class="question__answer"></canvas>
                   <ul class="inline-list tools">
-                     <li><button class="tools__item icon--paint j-canvas-tool j-canvas-select"></button></li>
+                     <li><button class="tools__item icon--arrow j-canvas-tool j-canvas-select"></button></li>
                      <li><button class="tools__item icon--paint j-canvas-tool j-canvas-paint"></button></li>
-                     <li><button class="tools__item icon--write j-canvas-tool j-canvas-rect"></button></li>
-                     <li><button class="tools__item icon--write j-canvas-tool j-canvas-circle"></button></li>
-                     <li><button class="tools__item icon--write j-canvas-tool j-canvas-line"></button></li>
-                     <li><button class="tools__item icon--write j-canvas-tool j-canvas-text"></button></li>
+                     <li><button class="tools__item icon--rect j-canvas-tool j-canvas-rect"></button></li>
+                     <li><button class="tools__item icon--circle j-canvas-tool j-canvas-circle"></button></li>
+                     <li><button class="tools__item icon--line j-canvas-tool j-canvas-line"></button></li>
+                     <li><button class="tools__item icon--type j-canvas-tool j-canvas-type"></button></li>
                      <li><button class="tools__item icon--trash j-canvas-tool j-canvas-remove"></button></li>
+                     <li><button class="tools__item icon--create j-canvas-tool j-canvas-undo"></button></li>
                   </ul>
                </div>
 
@@ -189,6 +190,36 @@
                       canvasTools = canvasWrapper.querySelectorAll('.j-canvas-tool'),
                       pointer,
                       obj;
+
+                  var states = [JSON.stringify(canvas)];
+
+                  canvas.on('object:added', function(e) {
+                     if (!isMouseDown) {
+                        if (states.length === 10) {
+                           states.shift();
+                        }
+                        states.push(JSON.stringify(canvas));
+                        console.log(states);
+                     }
+                  });
+
+                  canvas.on('object:modified', function(e) {
+                     if (!isMouseDown) {
+                        if (states.length === 10) {
+                           states.shift();
+                        }
+                        states.push(JSON.stringify(canvas));
+                        console.log(states);
+                     }
+                  });
+
+                  canvas.on('text:editing:exited', function(e) {
+                     if (!e.target.text) {
+                        canvas.remove(e.target);
+                     } else {
+                        canvas.fire('object:modified', { target: obj });
+                     }
+                  });
 
                   /*canvas.setBackgroundImage('img/icon/exams.svg', canvas.renderAll.bind(canvas), {
                      width: canvas.width,
@@ -273,6 +304,7 @@
                      },
                      mouseUp: function(o) {
                         isMouseDown = false;
+                        canvas.fire('object:modified', { target: obj });
                      }
                   };
 
@@ -315,6 +347,7 @@
                            left: obj.left - obj.rx + 1
                         });
                         canvas.renderAll();
+                        canvas.fire('object:modified', { target: obj });
                      }
                   };
 
@@ -345,10 +378,11 @@
                      },
                      mouseUp: function(o) {
                         isMouseDown = false;
+                        canvas.fire('object:modified', { target: obj });
                      }
                   };
 
-                  var textHandler = {
+                  var typeHandler = {
                      mouseDown: function(o) {
                         isMouseDown = true;
                         pointer = canvas.getPointer(o.e);
@@ -428,8 +462,8 @@
                      (activateTool.bind(this))(lineHandler);
                   });
 
-                  canvasWrapper.querySelector('.j-canvas-text').addEventListener('click', function() {
-                     (activateTool.bind(this))(textHandler);
+                  canvasWrapper.querySelector('.j-canvas-type').addEventListener('click', function() {
+                     (activateTool.bind(this))(typeHandler);
                      canvas.getObjects().forEach(function(obj) {
                         if (obj.get('type') === 'i-text') {
                            obj.set({
@@ -439,6 +473,17 @@
                         }
                      });
                      canvas.defaultCursor = 'text';
+                  });
+
+                  canvasWrapper.querySelector('.j-canvas-undo').addEventListener('click', function() {
+                     if (states.length > 1) {
+                        canvas.getObjects().forEach(function(obj) {
+                           canvas.remove(obj);
+                        });
+                        states.pop();
+                        canvas.loadFromJSON(states.pop());
+                        canvas.renderAll();
+                     }
                   });
 
                   canvasWrapper.querySelector('.j-canvas-remove').addEventListener('click', function() {

@@ -1,3 +1,19 @@
+.icon--arrow, %icon--arrow {
+   @extend %icon;
+   &:before {
+      background-image: url('../img/icon-arrow.png');
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20d%3D%22M0%200h32v32h-32z%22%2F%3E%3C%2Fdefs%3E%3CclipPath%20id%3D%22b%22%3E%3Cuse%20xlink%3Ahref%3D%22%23a%22%20overflow%3D%22visible%22%2F%3E%3C%2FclipPath%3E%3Cpath%20clip-path%3D%22url(%23b)%22%20d%3D%22M16.649%2018.424l5.65.649-12.186-15.158-.408%2019.462.547-.529%203.582-3.467%202.75%207.686c.218.607.789.986%201.4.986.167%200%20.336-.028.5-.087.607-.218.986-.789.986-1.399%200-.167-.028-.336-.087-.501l-2.734-7.642z%22%2F%3E%3C%2Fsvg%3E'), none;
+   }
+}
+
+.icon--circle, %icon--circle {
+   @extend %icon;
+   &:before {
+      background-image: url('../img/icon-circle.png');
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20d%3D%22M0%200h32v32h-32z%22%2F%3E%3C%2Fdefs%3E%3CclipPath%20id%3D%22b%22%3E%3Cuse%20xlink%3Ahref%3D%22%23a%22%20overflow%3D%22visible%22%2F%3E%3C%2FclipPath%3E%3Cpath%20clip-path%3D%22url(%23b)%22%20d%3D%22M26.347%2016c0%205.742-4.655%2010.397-10.397%2010.397s-10.397-4.655-10.397-10.397%204.655-10.397%2010.397-10.397c5.742.001%2010.397%204.655%2010.397%2010.397%22%2F%3E%3C%2Fsvg%3E'), none;
+   }
+}
+
 .icon--create, %icon--create {
    @extend %icon;
    &:before {
@@ -14,11 +30,27 @@
    }
 }
 
+.icon--line, %icon--line {
+   @extend %icon;
+   &:before {
+      background-image: url('../img/icon-line.png');
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20d%3D%22M0%200h32v32h-32z%22%2F%3E%3C%2Fdefs%3E%3CclipPath%20id%3D%22b%22%3E%3Cuse%20xlink%3Ahref%3D%22%23a%22%20overflow%3D%22visible%22%2F%3E%3C%2FclipPath%3E%3Cpath%20clip-path%3D%22url(%23b)%22%20d%3D%22M3.987%202.634l25.312%2025.312-1.36%201.36-25.312-25.312z%22%2F%3E%3C%2Fsvg%3E'), none;
+   }
+}
+
 .icon--paint, %icon--paint {
    @extend %icon;
    &:before {
       background-image: url('../img/icon-paint.png');
       background-image: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20d%3D%22M0%200h32v32h-32z%22%2F%3E%3C%2Fdefs%3E%3CclipPath%20id%3D%22b%22%3E%3Cuse%20xlink%3Ahref%3D%22%23a%22%20overflow%3D%22visible%22%2F%3E%3C%2FclipPath%3E%3Cpath%20clip-path%3D%22url(%23b)%22%20d%3D%22M28.847%204.159l-2.155-1.365-2.232-1.415-10.266%2016.407c-1.43-.185-2.916.396-3.738%202.44-1.84%205.391-7.461%205.224-7.461%205.224s8.035%205.122%2013.795.014c1.201-1.065%201.681-2.644%201.382-4.108l10.675-17.197zm-12.895%2013.564l1.325-2.091%201.901%201.205-1.325%202.092-1.901-1.206z%22%2F%3E%3C%2Fsvg%3E'), none;
+   }
+}
+
+.icon--rect, %icon--rect {
+   @extend %icon;
+   &:before {
+      background-image: url('../img/icon-rect.png');
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20d%3D%22M0%200h32v32h-32z%22%2F%3E%3C%2Fdefs%3E%3CclipPath%20id%3D%22b%22%3E%3Cuse%20xlink%3Ahref%3D%22%23a%22%20overflow%3D%22visible%22%2F%3E%3C%2FclipPath%3E%3Cpath%20clip-path%3D%22url(%23b)%22%20d%3D%22M5.463%205.473h20.892v21.009h-20.892z%22%2F%3E%3C%2Fsvg%3E'), none;
    }
 }
 
@@ -43,6 +75,14 @@
    &:before {
       background-image: url('../img/icon-trash.png');
       background-image: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20d%3D%22M3.2%203.2h25.6v25.6h-25.6z%22%2F%3E%3C%2Fdefs%3E%3CclipPath%20id%3D%22b%22%3E%3Cuse%20xlink%3Ahref%3D%22%23a%22%20overflow%3D%22visible%22%2F%3E%3C%2FclipPath%3E%3Cpath%20clip-path%3D%22url(%23b)%22%20d%3D%22M9.39%2026.986h13.158l1.262-14.382h-15.682l1.262%2014.382zm15.061-19.264h-4.112v-.468c0-1.247-1.01-2.257-2.257-2.257h-4.225c-1.248%200-2.257%201.01-2.258%202.257v.468h-4.113c-.587%200-1.063.476-1.063%201.064v2.566h19.092v-2.566c0-.588-.477-1.064-1.064-1.064m-5.651%200h-5.662v-.468c0-.396.322-.718.718-.719h4.225c.396.001.718.322.719.719v.468z%22%2F%3E%3C%2Fsvg%3E'), none;
+   }
+}
+
+.icon--type, %icon--type {
+   @extend %icon;
+   &:before {
+      background-image: url('../img/icon-type.png');
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20d%3D%22M0%200h32v32h-32z%22%2F%3E%3C%2Fdefs%3E%3CclipPath%20id%3D%22b%22%3E%3Cuse%20xlink%3Ahref%3D%22%23a%22%20overflow%3D%22visible%22%2F%3E%3C%2FclipPath%3E%3Cpath%20clip-path%3D%22url(%23b)%22%20d%3D%22M18.423%202.97h6.138l3.686%2025.998h-5.891l-.547-5.344h-9.578l-2.928%205.344h-5.678l14.798-25.998zm-3.775%2016.174h6.597l-1.076-10.23-5.521%2010.23z%22%2F%3E%3C%2Fsvg%3E'), none;
    }
 }
 

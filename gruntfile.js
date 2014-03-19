@@ -67,13 +67,18 @@ uglify: {
       },
       src: [
          'public/lib/modernizr/modernizr.custom.js',
-         'public/lib/prism/prism.js',
          // load angular first
          'public/lib/angular/**/*.min.js',
          // load angular production modules, i.e. not mocks
          'public/lib/angular-*/**/*.min.js'
       ],
       dest: 'public/lib/libs.min.js'
+   },
+   libs_highlight: {
+      src: [
+         'public/lib/prism/prism.js',
+      ],
+      dest: 'public/js/ondemand/app.highlight.min.js'
    },
    libs_touch: {
       src: [
@@ -479,7 +484,7 @@ grunt.registerTask('init', function(option) {
       grunt.task.run('makecss');
    }
    grunt.task.run([
-      'modernizr', 'uglify:libs', 'uglify:shims', 'uglify:libs_touch', 'uglify:libs_canvas', 'makejs', 'jshint:server', 'makeicons'
+      'modernizr', 'uglify:libs', 'uglify:shims', 'uglify:libs_touch', 'uglify:libs_canvas', 'uglify:libs_highlight', 'makejs', 'jshint:server', 'makeicons'
    ]);
 });
 

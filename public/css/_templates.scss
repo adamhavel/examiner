@@ -7,13 +7,16 @@
 
 %t-button {
    display: inline-block;
-   padding: .25em .75em;
-   background: darken(map-get($colors, paper), 2%);
-   border: 1px solid rgba(black, .3);
-   border-radius: .5em;
-   transition: background-color .1s;
+   background-color: darken(white, 10%);
+   box-shadow: 1px 1px 0 0 rgba(black, .3);
+   transition: background-color .25s;
    &:active,
    &.j-active {
+      box-shadow: inset 1px 1px 0 0 rgba(black, .3);
       background-color: map-get($colors, yellow);
+   }
+   &.j-disabled {
+      box-shadow: none;
+      cursor: default;
    }
 }

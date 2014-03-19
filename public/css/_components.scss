@@ -74,11 +74,11 @@
 }
 
    .tools {
-      padding-top: 10px;
+      @include blank-lines(.5, leading, padding);
       &__item {
          @extend %t-button;
          @extend %icon;
-         @include size(3em);
+         @include size($leading * 1.5);
          padding: 0;
          text-align: center;
          &:before {
@@ -87,6 +87,10 @@
             margin: 0;
             background-size: 80%;
             opacity: .6;
+            transition: opacity .1s;
+         }
+         &.j-disabled:before {
+            opacity: .25;
          }
       }
    }

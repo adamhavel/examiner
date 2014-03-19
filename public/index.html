@@ -169,9 +169,9 @@
                      <li><button class="tools__item icon--circle j-canvas-tool j-canvas-circle"></button></li>
                      <li><button class="tools__item icon--line j-canvas-tool j-canvas-line"></button></li>
                      <li><button class="tools__item icon--type j-canvas-tool j-canvas-type"></button></li>
-                     <li><button class="tools__item icon--trash j-canvas-tool j-canvas-remove"></button></li>
-                     <li><button class="tools__item icon--create j-canvas-tool j-canvas-undo"></button></li>
-                     <li><button class="tools__item icon--create j-canvas-tool j-canvas-redo"></button></li>
+                     <li><button class="tools__item icon--trash j-canvas-tool j-canvas-remove j-disabled"></button></li>
+                     <li><button class="tools__item icon--create j-canvas-tool j-canvas-undo j-disabled"></button></li>
+                     <li><button class="tools__item icon--create j-canvas-tool j-canvas-redo j-disabled"></button></li>
                   </ul>
                </div>
 
@@ -258,7 +258,7 @@
             canvas.width = canvasWrapper.clientWidth;
             canvas.height = canvas.width / (16/9);
 
-            var canvasTools = [
+            /*var canvasTools = [
                {
                   name: 'select',
                   icon: 'arrow',
@@ -270,7 +270,7 @@
 
             var canvasToolsElement = document.createElement('ul');
 
-            canvasWrapper.appendChild(canvasToolsElement);
+            canvasWrapper.appendChild(canvasToolsElement);*/
 
             canvas = new fabric.Canvas(canvas.id, {
                selection: false,
@@ -284,10 +284,18 @@
 
                var states = [JSON.stringify(canvas)],
                    currentState = 0,
-                   limit = 10;
+                   limit = 25;
+
+               api.canUndo = function() {
+                  return (currentState > 0);
+               };
+
+               api.canRedo = function() {
+                  return (currentState < states.length - 1);
+               };
 
                api.undo = function() {
-                  if (currentState > 0) {
+                  if (api.canUndo()) {
                      canvas.getObjects().forEach(function(obj) {
                         canvas.remove(obj);
                      });
@@ -305,7 +313,7 @@
                };
 
                api.redo = function() {
-                  if (currentState < states.length - 1) {
+                  if (api.canRedo()) {
                      canvas.getObjects().forEach(function(obj) {
                         canvas.remove(obj);
                      });
@@ -621,10 +629,30 @@
 
             canvasWrapper.querySelector('.j-canvas-undo').addEventListener('click', function() {
                History.undo();
+               if (History.canUndo()) {
+                  canvasWrapper.querySelector('.j-canvas-undo').classList.remove('j-disabled');
+               } else {
+                  canvasWrapper.querySelector('.j-canvas-undo').classList.add('j-disabled');
+               }
+               if (History.canRedo()) {
+                  canvasWrapper.querySelector('.j-canvas-redo').classList.remove('j-disabled');
+               } else {
+                  canvasWrapper.querySelector('.j-canvas-redo').classList.add('j-disabled');
+               }
             });
 
             canvasWrapper.querySelector('.j-canvas-redo').addEventListener('click', function() {
                History.redo();
+               if (History.canUndo()) {
+                  canvasWrapper.querySelector('.j-canvas-undo').classList.remove('j-disabled');
+               } else {
+                  canvasWrapper.querySelector('.j-canvas-undo').classList.add('j-disabled');
+               }
+               if (History.canRedo()) {
+                  canvasWrapper.querySelector('.j-canvas-redo').classList.remove('j-disabled');
+               } else {
+                  canvasWrapper.querySelector('.j-canvas-redo').classList.add('j-disabled');
+               }
             });
 
             canvasWrapper.querySelector('.j-canvas-remove').addEventListener('click', function() {
@@ -638,6 +666,27 @@
                }
                canvas.renderAll();
                canvas.fire('object:modified', { target: obj });
+            });
+
+            canvas.on('object:modified', function(e) {
+               if (History.canUndo()) {
+                  canvasWrapper.querySelector('.j-canvas-undo').classList.remove('j-disabled');
+               } else {
+                  canvasWrapper.querySelector('.j-canvas-undo').classList.add('j-disabled');
+               }
+               if (History.canRedo()) {
+                  canvasWrapper.querySelector('.j-canvas-redo').classList.remove('j-disabled');
+               } else {
+                  canvasWrapper.querySelector('.j-canvas-redo').classList.add('j-disabled');
+               }
+            });
+
+            canvas.on('object:selected', function(e) {
+               canvasWrapper.querySelector('.j-canvas-remove').classList.remove('j-disabled');
+            });
+
+            canvas.on('selection:cleared', function(e) {
+               canvasWrapper.querySelector('.j-canvas-remove').classList.add('j-disabled');
             });
 
             window.addEventListener('keydown', function(e) {

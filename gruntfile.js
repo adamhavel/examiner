@@ -362,7 +362,7 @@ watch: {
       }
    },
    html: {
-      files: ['public/index.html', 'public/templates/*.html'],
+      files: ['public/*.html', 'public/templates/*.html'],
       options: {
          livereload: true,
          spawn: false

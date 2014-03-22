@@ -355,10 +355,3 @@ table {
    display: table;
    clear: both;
 }
-
-article,
-section,
-header,
-footer {
-   @extend %clear;
-}

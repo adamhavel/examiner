@@ -104,18 +104,14 @@
 
 .exam-preview {
    @extend %t-preview;
-   @include blank-lines(2, trailing);
-   text-align: center;
-   .side {
-      @include taper(.5);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+   @include blank-lines(1.5, trailing);
+   .content {
+      transition: color, border-color, border-width, background, box-shadow;
+      transition-duration: .3s;
    }
    &__student {
       line-height: 1;
       font-family: "PT Sans Narrow", sans-serif;
-      xfont-weight: 700;
    }
    &__subject {
       margin-bottom: 0;
@@ -127,8 +123,85 @@
    }
    &.ng-urgent {
       color: brand(red) !important;
-      .front.side {
-         border-color: brand(red) !important;
+      .content {
+         border-color: brand(red);
       }
    }
+   &:hover {
+      .content {
+         @extend %t-sheet;
+      }
+   }
+}
+
+/* Category preview
+   ========================================================================== */
+
+.category-preview {
+   @extend %t-preview;
+   @include blank-lines(1.5, trailing);
+   transition: transform .3s;
+   .content {
+      transition: color, border-color, border-width, background, box-shadow;
+      transition-duration: .3s;
+      @include before {
+         @include position($top: 3px, $left: 0, $right: 0);
+         height: 3px;
+         border: solid rgba(black, .5);
+         border-width: 1px 0;
+         transition: opacity .3s;
+      }
+   }
+   &:before, &:after {
+      @extend %t-sheet;
+      @include position($top: 0, $left: 0);
+      @include size(100%);
+      content: '';
+      z-index: -1;
+      background: darken(white, 2%);
+      transition: transform .3s, opacity .15s .15s;
+      opacity: 0;
+   }
+   &:after {
+      background: darken(white, 3%);
+      z-index: -2;
+   }
+   &:hover {
+      transform: translate(-3px, 3px);
+      .content {
+         @extend %t-sheet;
+         &:before {
+            opacity: 0;
+         }
+      }
+      &:before, &:after {
+         transition: transform .3s, opacity .1s;
+         opacity: 1;
+      }
+      &:before {
+         transform: translate(3px, -3px);
+      }
+      &:after {
+         transform: translate(7px, -7px);
+      }
+   }
+   &__heading {
+      line-height: 1;
+      font-family: "PT Sans Narrow", sans-serif;
+      &:not(:last-child) {
+         @extend %heading--subsection;
+      }
+   }
+   &__subheading {
+      font-family: "PT Sans", sans-serif;
+      font-style: italic;
+   }
+}
+
+
+/* List
+   ========================================================================== */
+
+.list {
+   @extend %islet;
 }

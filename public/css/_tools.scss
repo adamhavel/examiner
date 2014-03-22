@@ -79,6 +79,10 @@
    $ratio: ($height / $width) * 100;
    position: relative;
    padding-bottom: $ratio * 1%;
+   .content {
+      @include position($top: 0, $left: 0);
+      @include size(100%);
+   }
 }
 
 @mixin hidden-from-elderly() {

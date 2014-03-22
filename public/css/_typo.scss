@@ -38,7 +38,7 @@ a {
 /* Headings
    ========================================================================== */
 
-.heading {
+.heading, %heading {
    @extend %aloof;
    line-height: $leading;
    font-family: "Roboto", serif;

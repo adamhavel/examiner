@@ -29,7 +29,7 @@
 %t-preview {
    @include aspect-ratio(1, 1.414);
    .content {
-      @include taper(1);
+      @include taper(.5);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -45,8 +45,8 @@
 }
 
 %t-sheet {
-   border: 1px solid rgba(black, .1) !important;
+   border: 1px solid rgba(black, .05) !important;
    background: white;
-   box-shadow: 1px 1px 0 0 rgba(black, .35);
+   box-shadow: 1px 1px 0 0 rgba(black, .25);
    color: rgba(black, .6);
 }

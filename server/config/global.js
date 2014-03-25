@@ -5,7 +5,7 @@ module.exports = _.extend(
    {
       root: path.normalize(__dirname + '/..'),
       port: process.env.PORT || 5000,
-      sessionSecret: 'examiner',
+      sessionSecret: 'inconceivable',
       sessionCollection: 'sessions'
    },
    require('./env/' + process.env.NODE_ENV) || {}

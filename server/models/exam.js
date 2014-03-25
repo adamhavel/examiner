@@ -3,13 +3,90 @@ var mongoose = require('mongoose'),
 
 var ExamSchema = new Schema(
    {
-      /*_id: Number,
-      name: String,
-      location: String,
-      added: Date,
-      categories: Array,
-      image: String*/
+      subject: String,
+      date: Date,
+      lang: String,
+      lede: String,
+      duration: Number,
+      sections: [
+         {
+            name: String,
+            lede: String,
+            questions: [
+               {
+                  name: String,
+                  points: Number,
+                  question: [
+                     {
+                        datatype: String,
+                        lang: String,
+                        external: Boolean,
+                        content: String
+                     }
+                  ],
+                  answer: [
+                     {
+                        datatype: String,
+                        lang: String,
+                        solution: String,
+                        content: String
+                     }
+                  ]
+               }
+            ]
+         }
+      ]
+   },
+   {
+      autoIndex: false,
+      collection: 'blueprints'
    }
 );
 
+ExamSchema.index({
+   subject: 1,
+   date: -1,
+   lang: 1
+});
+
 mongoose.model('Exam', ExamSchema);
+
+/*{
+    "_id" : ObjectId("5331b20d69915ad377fbb59b"),
+    "subject" : "MI-MDW",
+    "date" : ISODate("2014-02-10T10:50:42.389Z"),
+    "lang" : "en",
+    "lede" : "Lorem ipsum dolor sit emet",
+    "duration" : 3600,
+    "sections" : [
+        {
+            "name" : "Section A",
+            "lede" : "Lorem ipsum dolor sit emet",
+            "questions" : [
+                {
+                    "name" : null,
+                    "points" : 5,
+                    "question" : [
+                        {
+                            "datatype" : "text",
+                            "content" : "Lorem ipsum dolor sit emet"
+                        },
+                        {
+                            "datatype" : "image",
+                            "external" : true,
+                            "content" : "http://upload.wikimedia.org/wikipedia/en/2/24/Lenna.png"
+                        }
+                    ],
+                    "answer" : [
+                        {
+                            "datatype" : "code",
+                            "lang" : "javascript",
+                            "solution" : "alert('Hello world')",
+                            "content" : "alert()"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}*/

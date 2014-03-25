@@ -11,6 +11,8 @@ fs.readdirSync('./models').forEach(function(model) {
    require('./models/' + model);
 });
 
+console.log('Connectiong to ' + config.db);
+
 var db = mongoose.connect(config.db);
 
 var app = express();

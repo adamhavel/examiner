@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var ExamSchema = new Schema(
+var BlueprintSchema = new Schema(
    {
       subject: String,
       date: Date,
@@ -42,13 +42,13 @@ var ExamSchema = new Schema(
    }
 );
 
-ExamSchema.index({
+BlueprintSchema.index({
    subject: 1,
    date: -1,
    lang: 1
 });
 
-mongoose.model('Exam', ExamSchema);
+mongoose.model('Blueprint', BlueprintSchema);
 
 /*{
     "_id" : ObjectId("5331b20d69915ad377fbb59b"),

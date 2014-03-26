@@ -1,31 +1,60 @@
 var mongoose = require('mongoose'),
-    Exam = mongoose.model('Exam');
+    Blueprint = mongoose.model('Blueprint');
 
 exports.filterBySubject = function(req, res, next, subject) {
-   if (req.blueprintsQuery) {
-      req.blueprintsQuery = req.blueprintsQuery.find({ subject: new RegExp('^' + subject + '$', 'i') });
-   } else {
-      req.blueprintsQuery = Exam.find({ subject: new RegExp('^' + subject + '$', 'i') });
+   var pattern = /^\w{2}-\w{3}$/i;
+   if (!pattern.test(subject)) {
+      return next(new Error ('not a valid subject code'));
    }
-   next();
+   req.storeQuery = (req.storeQuery || Blueprint).find({
+      subject: subject
+   });
+   return next();
+};
+
+exports.filterByDate = function(req, res, next, date) {
+   var pattern = /^\d{4}-\d{1,2}-\d{1,2}$/i;
+   if (!pattern.test(date)) {
+      return next(new Error ('not a valid date'));
+   }
+   var dateArr = date.split('-').map(function (value) {
+      return parseInt(value, 0);
+   });
+   var startDate = new Date(dateArr[0], dateArr[1] - 1, dateArr[2]);
+   var endDate = new Date(dateArr[0], dateArr[1] - 1, dateArr[2] + 1);
+   req.storeQuery = (req.storeQuery || Blueprint).find({
+      date: {$gte: startDate, $lt: endDate}
+   });
+   return next();
 };
 
 exports.filterByLang = function(req, res, next, lang) {
-   if (req.blueprintsQuery) {
-      req.blueprintsQuery = req.blueprintsQuery.find({ lang: new RegExp('^' + lang + '$', 'i') });
-   } else {
-      req.blueprintsQuery = Exam.find({ lang: new RegExp('^' + lang + '$', 'i') });
+   var pattern = /^[a-z]{2}$/i;
+   if (!pattern.test(lang)) {
+      return next(new Error ('not a valid language code'));
    }
-   next();
+   req.storeQuery = (req.storeQuery || Blueprint).find({
+      lang: lang
+   });
+   return next();
 };
 
-exports.get = function(req, res) {
-   var query = req.blueprintsQuery || Exam.find();
-   query.exec(function(err, blueprints) {
+exports.query = function(req, res) {
+   (req.storeQuery || Blueprint.find()).exec(function(err, blueprints) {
       if (err) {
          res.send(500);
       } else {
          res.send(blueprints);
+      }
+   });
+};
+
+exports.get = function(req, res) {
+   req.storeQuery.limit(1).exec(function(err, blueprint) {
+      if (err) {
+         res.send(500);
+      } else {
+         res.send(blueprint[0]);
       }
    });
 };

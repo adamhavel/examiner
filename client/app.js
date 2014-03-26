@@ -1,16 +1,10 @@
-var ng = angular.module('app', [
+'use strict';
+
+angular.module('app', [
    'ngRoute',
    'ngResource',
-   'app.modules',
-   'app.directives',
-   'app.filters'
+   'app.blueprints'
 ]);
 
-ng.config(['$routeProvider', function($routeProvider) {
-   $routeProvider.when('/view', {
-      templateUrl: 'templates/template.html'
-   });
-   $routeProvider.otherwise({
-      redirectTo: '/view'
-   });
-}]);
+angular.module('app.blueprints', []);
+

@@ -67,6 +67,7 @@ uglify: {
       },
       src: [
          'public/lib/modernizr/modernizr.custom.js',
+         'public/lib/lodash/dist/lodash.min.js',
          // load angular first
          'public/lib/angular/**/*.min.js',
          // load angular production modules, i.e. not mocks
@@ -362,7 +363,7 @@ watch: {
       }
    },
    html: {
-      files: ['public/*.html', 'public/templates/*.html'],
+      files: ['public/*.html', 'public/partials/*.html'],
       options: {
          livereload: true,
          spawn: false

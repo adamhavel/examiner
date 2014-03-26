@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('app', [
-   'ngRoute',
+   'ui.router',
    'ngResource',
    'app.blueprints'
 ]);

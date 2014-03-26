@@ -68,10 +68,12 @@ uglify: {
       src: [
          'public/lib/modernizr/modernizr.custom.js',
          'public/lib/lodash/dist/lodash.min.js',
-         // load angular first
-         'public/lib/angular/**/*.min.js',
-         // load angular production modules, i.e. not mocks
-         'public/lib/angular-*/**/*.min.js'
+         'public/lib/angular/angular.min.js',
+         'public/lib/angular-animate/angular-animate.min.js',
+         'public/lib/angular-resource/angular-resource.min.js',
+         'public/lib/angular-ui-router/release/angular-ui-router.min.js',
+         'public/lib/angular-resource/angular-resource.min.js',
+         'public/lib/angular-contenteditable/angular-contenteditable.js'
       ],
       dest: 'public/lib/libs.min.js'
    },

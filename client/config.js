@@ -11,15 +11,15 @@ angular.module('app').config([
          url: '/',
          templateUrl: 'partials/home.html'
       })
-      .state('browse', {
-         url: '/browse',
-         templateUrl: 'partials/browse.html',
+      .state('blueprints', {
+         url: '/blueprints',
+         templateUrl: 'partials/blueprints.html',
          controller: 'BlueprintsController'
       })
       .state('blueprint', {
-         url: '/blueprint/:subject/:date',
-         templateUrl: 'partials/home.html',
-         controller: 'BlueprintsController'
+         url: '/blueprint/:subject/:date/:lang',
+         templateUrl: 'partials/blueprint.html',
+         controller: 'BlueprintController'
       });
 
 }]);

@@ -229,7 +229,8 @@ i {
 button,
 input,
 select,
-textarea {
+textarea,
+p[contenteditable] {
    font-family: inherit; /* 1 */
    font-size: 100%; /* 2 */
    outline: 0;

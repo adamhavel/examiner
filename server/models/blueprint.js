@@ -16,7 +16,7 @@ var BlueprintSchema = new Schema(
                {
                   name: String,
                   points: Number,
-                  question: [
+                  body: [
                      {
                         datatype: String,
                         lang: String,

@@ -4,20 +4,10 @@
 
    <aside class="exam__contents">
       <ol class="block-list">
-         <li>
-            <a class="active" href="#section-a">Section A</a>
+         <li ng-repeat="section in blueprint.sections">
+            <a ng-class="{'ng-active': $index == activeSection}" ng-click="scrollTo(idfyFilter(section.name))" href="">{{section.name}}</a>
             <ol class="block-list">
-               <li><a class="ng-done" ng-click="scrollTo('question-a-1')" href="">Question A.1</a></li>
-               <li><a class="ng-active" href="#question-a-2">Question A.2</a></li>
-               <li><a href="#question-a-1">Question A.3</a></li>
-               <li><a href="#question-a-2">Question A.4</a></li>
-            </ol>
-         </li>
-         <li>
-            <a href="#section-a">Section B</a>
-            <ol class="block-list">
-               <li><a href="#question-a-1">Question B.1</a></li>
-               <li><a href="#question-a-2">Question B.2</a></li>
+               <li ng-repeat="question in section.questions"><a ng-class="{'ng-active': $index == activeQuestion}" ng-click="scrollTo(idfyFilter(question.name))" href="">{{question.name}}</a></li>
             </ol>
          </li>
       </ol>
@@ -25,18 +15,18 @@
 
    <p ng-if="blueprint.lede" class="lede">{{blueprint.lede}}</p>
 
-   <section class="exam__section" id="section-a" ng-repeat="section in blueprint.sections">
+   <section class="exam__section" id="{{section.name | idfy}}" ng-repeat="section in blueprint.sections">
 
       <h1 class="beta heading heading--section">
-         {{section.name || 'Section ' + ($index + 1)}}
+         {{section.name}}
       </h1>
 
       <p ng-if="section.lede">{{section.lede}}</p>
 
-      <article class="question" id="question-a-1" ng-repeat="question in section.questions">
+      <article class="question" id="{{question.name | idfy}}" ng-repeat="question in section.questions">
 
          <h1 class="delta heading heading--subsection question__heading">
-            {{question.name || 'Question ' + ($parent.$index + 1) + '.' + ($index + 1)}}
+            {{question.name}}
             <span class="question__points">{{question.points}} points</span>
          </h1>
 
@@ -62,5 +52,36 @@
       </article>
 
    </section>
+
+   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel, quas consectetur animi. Voluptatum, odio iure reiciendis numquam facere maxime deserunt voluptatem consectetur libero in reprehenderit quo non necessitatibus facilis sequi.</p>
+   <p>Soluta, magnam pariatur doloribus rerum magni consectetur nulla odio impedit totam voluptate nihil molestias dolore placeat harum possimus quos sed sunt cupiditate expedita non adipisci autem quia labore reprehenderit nisi.</p>
+   <p>Temporibus, voluptatibus, dolorum, inventore, vel explicabo ad molestias aspernatur id ducimus aut maxime consequatur quis sit quibusdam fugiat tempore quasi ea. Odio, suscipit porro quibusdam cum perferendis fugit natus rerum!</p>
+   <p>Non, iste eum dolorem ipsa sint perferendis autem sequi omnis neque magnam. Sint, rem in nemo! Sint, totam, a, sed, facere vel harum aperiam quos distinctio amet modi eius atque.</p>
+   <p>Et, voluptates praesentium expedita laudantium rerum ad fugiat facilis totam. Ullam, minus, consequuntur eum nihil quis cum. Quis, magnam similique officia blanditiis ducimus aliquid tenetur. Magnam, ratione veniam non incidunt?</p>
+   <p>Laboriosam, explicabo beatae voluptas cum expedita vitae cupiditate quos velit consequatur corporis tenetur provident porro recusandae accusantium similique eaque voluptates eligendi minus modi non repudiandae magnam voluptatum harum nisi commodi.</p>
+   <p>Quis, iste, explicabo, ullam fugiat nisi nihil at qui eum quos aliquid eius repudiandae error itaque veritatis labore asperiores distinctio. Sapiente, autem, animi iusto eveniet totam magnam hic possimus explicabo!</p>
+   <p>Magnam, cupiditate, quas odio perferendis dicta enim eveniet esse vitae quidem saepe incidunt recusandae dolor corrupti laboriosam perspiciatis nisi et architecto expedita omnis autem libero error at obcaecati deleniti veniam!</p>
+   <p>Blanditiis, ipsa, nulla, ratione, sit fuga fugiat exercitationem sunt eaque commodi dolorem eveniet hic numquam modi quisquam asperiores aperiam at dolore quas libero aliquam. Eos qui similique voluptatem iusto totam!</p>
+   <p>Necessitatibus, veritatis, aperiam autem magni quae quam iusto suscipit ea sapiente atque. Est, suscipit nemo porro iure totam beatae sit! Aspernatur, commodi, dicta assumenda sapiente similique sunt voluptas culpa facilis.</p>
+   <p>Iste, nobis, quo perspiciatis fuga animi necessitatibus dicta ipsa incidunt. Nihil atque nulla vel officiis doloremque provident dolorum ex cum! Magnam, nobis minus neque deleniti consequatur provident recusandae ducimus molestias!</p>
+   <p>Voluptatem, eveniet cumque sed quis nesciunt soluta ipsum quisquam nam consequuntur molestiae atque quas tenetur nobis tempore fugiat totam tempora ad dolorum est repellendus corporis molestias iste quasi aliquid alias.</p>
+   <p>Excepturi, fugiat, impedit commodi soluta inventore voluptatum officia quam. Delectus, animi, quisquam ratione ut fugiat at neque quibusdam placeat ab dicta sed illo dolore deleniti reprehenderit cum blanditiis temporibus atque!</p>
+   <p>Nemo, nihil, vero error unde veritatis natus dolor cupiditate sed? Voluptates, alias, repellat, sapiente numquam ullam qui aliquid aliquam perspiciatis sed optio perferendis magni laudantium sunt. Quasi rem sed ut!</p>
+   <p>Perferendis, molestias, id quis ea necessitatibus similique sunt repudiandae provident sit maxime dolorum sed debitis odit quisquam magni pariatur ad ab ut quasi dolores nostrum veritatis ullam voluptate itaque excepturi.</p>
+   <p>Expedita blanditiis explicabo nam reprehenderit distinctio animi consequuntur. Aspernatur, ea minus necessitatibus animi repellat tenetur libero corrupti provident iste quas! Placeat ex dolores vero voluptas eligendi deserunt ullam expedita inventore.</p>
+   <p>Porro, nemo laboriosam atque optio nihil repellat error excepturi. Vel, delectus, non, quae, vitae soluta esse officia praesentium temporibus obcaecati repellat modi consequatur nulla nemo maiores atque a magnam deleniti?</p>
+   <p>Eaque, quos sed aliquid et in provident repellat totam. Officiis, ea voluptatibus consequatur expedita quidem natus fuga aperiam incidunt eveniet delectus. Reiciendis, cum, esse distinctio at doloremque laboriosam officia fugiat.</p>
+   <p>Veritatis eaque alias cum quo voluptas. Inventore, voluptate, veritatis autem in fuga aliquid praesentium odit impedit aliquam et provident maiores omnis nemo fugiat soluta libero ut natus laborum aspernatur vitae!</p>
+   <p>Ipsum, ipsam dolores sequi quis. Impedit, recusandae, voluptate aliquam beatae mollitia deleniti laboriosam unde quia! Voluptatum, harum enim optio maxime commodi voluptate ipsum voluptatibus quaerat temporibus quia architecto distinctio ab.</p>
+   <p>Exercitationem, mollitia, quam, porro, ipsum incidunt reiciendis doloremque quisquam aliquid ipsa quod omnis recusandae perspiciatis unde sequi laudantium nam ut earum iure nisi tempore quo officiis quidem libero doloribus dolorem.</p>
+   <p>Ipsum, est molestiae ipsa nihil repellat delectus voluptatibus deleniti vero nemo officia. Commodi, facilis, quasi illum eius eveniet sequi voluptas sed perspiciatis fugit libero id repudiandae odio vero. Iure, numquam.</p>
+   <p>Nihil, earum, ducimus, eaque, modi voluptas hic deserunt illo consequatur ad nisi inventore aliquid libero esse iste vero veniam veritatis officiis dignissimos incidunt animi? Magni enim dolorum cum in laborum.</p>
+   <p>Fuga, deleniti praesentium eligendi nobis ad facere natus quisquam odio eos repellendus vel voluptatum nostrum mollitia corrupti sequi. Explicabo, officiis facere perspiciatis quos? Optio, amet consequuntur vero vel eligendi dolor!</p>
+   <p>Esse, at, illo reiciendis ipsa sequi cumque quaerat voluptatibus officia ad enim ipsum saepe ea id praesentium voluptatum temporibus alias quis placeat necessitatibus beatae quibusdam dolorem pariatur ab reprehenderit earum.</p>
+   <p>Ad adipisci officia error. Quasi, iusto, optio esse perspiciatis sit soluta sunt non veritatis nisi fugiat nostrum molestiae possimus facere blanditiis est incidunt amet unde nulla tempora rerum quis quaerat.</p>
+   <p>Ducimus, error, ipsam aliquid excepturi veritatis beatae natus doloremque architecto minus adipisci in facere qui! Laborum, sequi, deleniti, unde, a provident impedit rerum necessitatibus aperiam corrupti aspernatur deserunt sint ratione.</p>
+   <p>Obcaecati, sint impedit eius qui eos dolor excepturi ipsam quo quidem similique voluptatum quasi quae unde exercitationem cumque ullam quod reiciendis atque possimus debitis a soluta praesentium maxime rerum saepe.</p>
+   <p>Molestias, saepe, dolores, tenetur fugiat voluptatibus doloribus vel libero impedit mollitia officiis sed ex assumenda. Voluptate, sapiente, consectetur, quod, sint quas modi facere enim doloribus assumenda adipisci sit possimus cum!</p>
+   <p>Animi ex necessitatibus minima dolore sint. Molestiae, reprehenderit ducimus beatae veritatis rem eligendi nisi facere odit omnis fuga unde quod consequuntur alias maiores accusantium iure temporibus culpa. Nobis, veniam, rem!</p>
 
 </article>

@@ -7,6 +7,3 @@ angular.module('app', [
    'contenteditable',
    'app.blueprints'
 ]);
-
-angular.module('app.blueprints', []);
-

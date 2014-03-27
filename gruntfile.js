@@ -412,7 +412,7 @@ exec: {
 },
 
 concurrent: {
-   dev: ['exec:mongo', 'nodemon:dev', 'watch'],
+   init: ['exec:mongo', 'init', 'nodemon:dev', 'watch'],
    options: {
       logConcurrentOutput: true
    }
@@ -498,7 +498,7 @@ grunt.registerTask('init', function(option) {
 grunt.registerTask('default', function() {
    grunt.option('force', true);
    grunt.task.run([
-      'init', 'concurrent:dev'
+      'concurrent'
    ]);
 });
 

@@ -7,5 +7,5 @@ angular.module('app.blueprints')
    }])
 
    .factory('Blueprint', ['$resource', function($resource) {
-      return $resource('blueprint/:subject/:date/:lang', { lang: 'en' });
+      return $resource('blueprint/:subject/:date/:lang', null);
    }]);

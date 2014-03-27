@@ -1,8 +1,6 @@
 angular.module('app').config([
-   '$stateProvider', '$urlRouterProvider', '$locationProvider',
-   function($stateProvider, $urlRouterProvider, $locationProvider) {
-
-   //$locationProvider.html5Mode(true).hashPrefix('!');
+   '$stateProvider', '$urlRouterProvider',
+   function($stateProvider, $urlRouterProvider) {
 
    $urlRouterProvider.otherwise('/');
 

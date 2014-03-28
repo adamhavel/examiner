@@ -43,6 +43,8 @@ exports.query = function(req, res) {
    (req.storeQuery || Blueprint.find()).exec(function(err, blueprints) {
       if (err) {
          res.send(500);
+      } else if (!blueprints.length) {
+         res.send(404);
       } else {
          res.send(blueprints);
       }
@@ -53,6 +55,8 @@ exports.get = function(req, res) {
    req.storeQuery.limit(1).exec(function(err, blueprint) {
       if (err) {
          res.send(500);
+      } else if (!blueprint.length) {
+         res.send(404);
       } else {
          res.send(blueprint[0]);
       }

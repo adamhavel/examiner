@@ -24,6 +24,10 @@ module.exports = function(app, db) {
       })
    }));
 
+   app.all(/^(?!\/api\/).*/, function(req, res, next) {
+      res.sendfile('index.html', { root: config.root + '/../public' });
+   });
+
    // load routes
    var routesDir = config.root + '/routes';
    fs.readdirSync(routesDir).forEach(function(route) {

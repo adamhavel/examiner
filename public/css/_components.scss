@@ -7,8 +7,36 @@
 
 .exam {
    &__section {
-      @include blank-lines(2, trailing);
+      @include blank-lines(3, trailing);
       @extend %trim-trailing-lines;
+      @extend %vertical-slide;
+      > header {
+         @include blank-lines(.5, trailing);
+         position: relative;
+         display: flex;
+         align-items: center;
+         @include before() {
+            @include position($left: 0, $right: 0, $bottom: 0);
+            height: 2px;
+            border: solid rgba(black, .5);
+            border-width: 1px 0;
+         }
+         .heading {
+            @include blank-lines(.5, trailing);
+            flex: 1;
+         }
+      }
+   }
+   &__points {
+      @extend %delta;
+      height: $leading;
+      line-height: $leading;
+      font-family: "Roboto", sans-serif;
+      font-style: italic;
+      header > & {
+         width: 20%;
+         text-align: right;
+      }
    }
    &__contents {
       position: fixed;
@@ -26,20 +54,41 @@
          &.ng-done {
             text-decoration: line-through;
          }
+         &:empty:after {
+            content: '(untitled)';
+         }
       }
       &:hover a,
       a.ng-active {
          opacity: 1;
       }
+      li {
+         @extend %vertical-slide;
+      }
+   }
+   &__date {
+      @extend %strip;
+      display: inline-block;
+      height: $leading * 2;
+      font-weight: 700;
+      cursor: pointer;
    }
 }
 
    .question {
       @include blank-lines(2, trailing);
       @extend %trim-trailing-lines;
-      &__points {
-         float: right;
-         font-style: italic;
+      @extend %vertical-slide;
+      > header {
+         @include blank-lines(.5, trailing);
+         padding-bottom: calc(#{$leading / 2} - 1px);
+         border-bottom: 1px solid rgba(black, .5);
+         display: flex;
+         align-items: center;
+         .heading {
+            flex: 1;
+            margin-bottom: 0;
+         }
       }
       &__image {
          @extend %island;
@@ -54,11 +103,6 @@
          padding: calc(#{$leading / 2} - 1px) ($gutter * .75);
          box-sizing: border-box;
          border: 1px solid rgba(black, .25);
-         outline: 0;
-         &[contenteditable]:empty:before {
-            content: attr(placeholder);
-            color: rgba(black, .25);
-         }
       }
    }
 
@@ -74,31 +118,50 @@
    }
 }
 
-   .tools {
-      @include blank-lines(.5, leading, padding);
-      &__item {
-         @extend %t-button;
-         @extend %icon;
-         @include size($leading * 1.5);
-         padding: 0;
-         text-align: center;
-         &:before {
-            @include size(100%);
-            display: block;
-            margin: 0;
-            background-size: 80%;
-            opacity: .6;
-            transition: opacity .1s;
-         }
-         &.j-disabled:before {
-            opacity: .25;
-         }
+
+/* Tools
+   ========================================================================== */
+
+.tools {
+   font-size: 0;
+   &__item {
+      @extend %icon;
+      @include size($leading * 1);
+      display: block;
+      background: none;
+      transition: transform .1s;
+      &:before {
+         @include size(100%);
+         display: block;
+         margin: 0;
+         background-size: 100%;
+         opacity: .6;
+         transition: opacity .1s;
       }
-      canvas + & {
-         //
-         //background: red;
+      &:hover {
+         transform: scale(1.5);
+      }
+      &[disabled] {
+         &:hover {
+            transform: none;
+         }
+         &:before {
+            opacity: .1;
+         }
       }
    }
+   &--binary {
+      display: inline-flex;
+      flex-direction: column;
+      vertical-align: bottom;
+   }
+   &--binary > &__item {
+      @include size($leading / 2);
+   }
+   canvas + & {
+
+   }
+}
 
 /* Exam preview
    ========================================================================== */
@@ -194,7 +257,7 @@
       line-height: 1;
       font-family: "PT Sans Narrow", sans-serif;
       &:not(:last-child) {
-         @extend %heading--subsection;
+         //@extend %heading--subsection;
       }
    }
    &__subheading {
@@ -209,4 +272,12 @@
 
 .list {
    @extend %islet;
+}
+
+
+/* Button
+   ========================================================================== */
+
+button {
+
 }

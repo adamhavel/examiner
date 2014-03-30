@@ -1,0 +1,80 @@
+<article class="exam">
+
+   <h1 class="alpha heading exam__heading">{{blueprint.subject | uppercase}} &mdash; <input class="exam__date" type="date" ng-model="blueprint.date" required></h1>
+
+   <aside class="exam__contents">
+      <ol class="block-list">
+         <li ng-repeat="section in blueprint.sections">
+            <a ng-class="{'ng-active': $index == activeSection}" ng-smooth-scroll ng-href="{{url}}#{{section.name | idfy}}">{{section.name}}</a>
+            <ol class="block-list">
+               <li ng-repeat="question in section.questions"><a ng-class="{'ng-active': $index == activeQuestion}" ng-smooth-scroll ng-href="{{url}}#{{question.name | idfy}}">{{question.name}}</a></li>
+            </ol>
+         </li>
+      </ol>
+   </aside>
+
+   <p class="lede" ng-model="blueprint.lede" contenteditable spellcheck="false"></p>
+
+   <button ng-click="addSection()">Add section</button>
+
+   <section class="exam__section" id="{{section.name | idfy}}" ng-repeat="section in blueprint.sections">
+
+      <header>
+         <h1 class="beta heading" ng-model="section.name" contenteditable spellcheck="false"></h1>
+         <ul class="inline-list tools">
+            <li><button title="Add question" class="tools__item icon--bubble" ng-click="addQuestion($index)">Add question</button></li>
+            <li><button title="Move up" class="tools__item icon--up" ng-disabled="$first" ng-click="moveSection($index, -1)">Move section up</button></li>
+            <li><button title="Move down" class="tools__item icon--down" ng-disabled="$last" ng-click="moveSection($index, 1)">Move section down</button></li>
+            <li><button title="Remove section" class="tools__item icon--trash" ng-click="removeSection($index)">Remove section</button></li>
+         </ul>
+         <p class="exam__points">
+            {{section.points}} {{section.points != 1 ? 'points' : 'point'}}
+         </p>
+      </header>
+
+      <p class="lede" contenteditable spellcheck="false">{{section.lede}}</p>
+
+      <article class="question" id="{{question.name | idfy}}" ng-repeat="question in section.questions">
+
+         <header>
+            <h1 ng-model="question.name" class="delta heading question__heading" contenteditable spellcheck="false"></h1>
+            <ul class="inline-list tools">
+               <li><button title="Move up" class="tools__item icon--up" ng-disabled="$first" ng-click="moveQuestion($parent.$index, $index, -1)">Move question up</button></li>
+               <li><button title="Move down" class="tools__item icon--down" ng-disabled="$last" ng-click="moveQuestion($parent.$index, $index, 1)">Move question down</button></li>
+               <li><button title="Remove question" class="tools__item icon--trash" ng-click="removeQuestion($parent.$index, $index)">Remove question</button></li>
+            </ul>
+            <p class="exam__points">
+               <span class="tools tools--binary">
+                  <button title="Raise" class="tools__item icon--raise" ng-click="">Raise</button>
+                  <button title="Lower" class="tools__item icon--lower" ng-click="">Lower</button>
+               </span>
+               {{question.points}} {{question.points != 1 ? 'points' : 'point'}}
+            </p>
+         </header>
+
+
+
+         <div ng-repeat="chunk in question.body" ng-switch on="chunk.datatype">
+            <p ng-switch-when="text" ng-model="chunk.content" contenteditable spellcheck="false"></p>
+            <img ng-switch-when="image" class="question__image" ng-src="{{chunk.content}}">
+            <pre ng-switch-when="code" class="j-code"><code class="language-{{chunk.lang}}">{{chunk.content}}</code></pre>
+         </div>
+
+         <div ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">
+            <div ng-if="chunk.content">
+               <h2 class="heading heading--caption">Hint</h2>
+               <p ng-switch-when="text" class="question__answer">{{chunk.content}}</p>
+               <pre ng-switch-when="code" class="question__answer j-code"><code class="language-{{chunk.lang}}">{{chunk.content}}</code></pre>
+            </div>
+            <div ng-if="chunk.solution">
+               <h2 class="heading heading--caption">Solution</h2>
+               <p ng-switch-when="text" class="question__answer">{{chunk.solution}}</p>
+               <pre ng-switch-when="code" class="question__answer j-code"><code class="language-{{chunk.lang}}">{{chunk.solution}}</code></pre>
+            </div>
+         </div>
+
+      </article>
+
+   </section>
+
+</article>

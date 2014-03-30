@@ -71,6 +71,29 @@
    }
 }
 
+%strip {
+   width: auto;
+   height: auto;
+   background: none;
+   border: 0;
+   padding: 0;
+}
+
+
+/* Editable
+   ========================================================================== */
+
+%editable {
+   &[contenteditable] {
+      outline: 0;
+      &:empty:after {
+         content: 'Type here...';
+         color: rgba(black, .25);
+      }
+   }
+}
+
+
 /* Progressive enhancement
    ========================================================================== */
 

@@ -73,6 +73,7 @@ $navigation-height: $leading * 1;
    @include blank-lines(2, both, padding);
    @include taper(2);
    max-width: $main-content-width;
+   min-height: $main-content-width * 1.414;
    margin-left: $sidebar-width;
    box-sizing: border-box;
    border: 1px solid rgba(black, .05);

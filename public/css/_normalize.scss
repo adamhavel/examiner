@@ -219,6 +219,7 @@ i {
    font-style: normal;
 }
 
+
 /* Forms
    ========================================================================== */
 
@@ -229,8 +230,7 @@ i {
 button,
 input,
 select,
-textarea,
-p[contenteditable] {
+textarea {
    font-family: inherit; /* 1 */
    font-size: 100%; /* 2 */
    outline: 0;

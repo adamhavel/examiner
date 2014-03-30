@@ -12,6 +12,7 @@ var BlueprintSchema = new Schema(
          {
             name: String,
             lede: String,
+            points: Number,
             questions: [
                {
                   name: String,

@@ -1,1 +1,1 @@
-angular.module('app.blueprints', []);
+angular.module('app.blueprints', ['app.blueprints.create']);

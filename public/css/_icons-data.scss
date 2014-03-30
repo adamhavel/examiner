@@ -6,6 +6,14 @@
    }
 }
 
+.icon--bubble, %icon--bubble {
+   @extend %icon;
+   &:before {
+      background-image: url('../img/icon-bubble.png');
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20d%3D%22M0%200h32v32h-32z%22%2F%3E%3C%2Fdefs%3E%3CclipPath%20id%3D%22b%22%3E%3Cuse%20xlink%3Ahref%3D%22%23a%22%20overflow%3D%22visible%22%2F%3E%3C%2FclipPath%3E%3Cpath%20clip-path%3D%22url(%23b)%22%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M16.065%204.322c-7.535-.148-13.737%204.495-13.853%2010.371-.04%202.042.661%203.965%201.909%205.611%202.146%202.757-.196%207.498-.196%207.498l6.916-2.979c1.49.471%203.109.745%204.806.778%207.535.148%2013.737-4.495%2013.853-10.371s-5.899-10.759-13.435-10.908%22%2F%3E%3C%2Fsvg%3E'), none;
+   }
+}
+
 .icon--circle, %icon--circle {
    @extend %icon;
    &:before {
@@ -19,6 +27,14 @@
    &:before {
       background-image: url('../img/icon-create.png');
       background-image: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cg%20enable-background%3D%22new%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20d%3D%22M0%200h32v32h-32z%22%2F%3E%3C%2Fdefs%3E%3CclipPath%20id%3D%22b%22%3E%3Cuse%20xlink%3Ahref%3D%22%23a%22%20overflow%3D%22visible%22%2F%3E%3C%2FclipPath%3E%3Cpath%20clip-path%3D%22url(%23b)%22%20d%3D%22M26.131%2010.753c-.508-.507-.736-1.187-.691-1.851l-.853-.852s-5.196-5.965-11.267-2.503l.288.36%202.264-.352-1.866.851.35.438c2.52-.379%207.061%201.435%205.563%203.312l-4.425%204.425-.01-.01c-.305.291-.668.485-1.051.583l-11.929%2010.895%203.734%203.734%2010.872-11.902c.1-.417.309-.813.633-1.136l.126-.114%204.745-4.745c.609.001%201.261.192%201.727.657.486.486.717%201.129.696%201.765l1.403%201.404%202.906-2.904-1.363-1.363c-.665.045-1.344-.184-1.852-.692%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E'), none;
+   }
+}
+
+.icon--down, %icon--down {
+   @extend %icon;
+   &:before {
+      background-image: url('../img/icon-down.png');
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20d%3D%22M0%200h32v32h-32z%22%2F%3E%3C%2Fdefs%3E%3CclipPath%20id%3D%22b%22%3E%3Cuse%20xlink%3Ahref%3D%22%23a%22%20overflow%3D%22visible%22%2F%3E%3C%2FclipPath%3E%3Cpath%20clip-path%3D%22url(%23b)%22%20d%3D%22M11.911%203.401v11.298h-7.471l11.452%2013.874%2011.451-13.874h-7.471v-11.298z%22%2F%3E%3C%2Fsvg%3E'), none;
    }
 }
 
@@ -54,6 +70,14 @@
    }
 }
 
+.icon--lower, %icon--lower {
+   @extend %icon;
+   &:before {
+      background-image: url('../img/icon-lower.png');
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20d%3D%22M-5.95-1.2h45v45h-45z%22%2F%3E%3C%2Fdefs%3E%3CclipPath%20id%3D%22b%22%3E%3Cuse%20xlink%3Ahref%3D%22%23a%22%20overflow%3D%22visible%22%2F%3E%3C%2FclipPath%3E%3Cpath%20clip-path%3D%22url(%23b)%22%20d%3D%22M16.472%2030.558l-14.671-18.597h29.344z%22%2F%3E%3C%2Fsvg%3E'), none;
+   }
+}
+
 .icon--paint, %icon--paint {
    @extend %icon;
    &:before {
@@ -62,11 +86,27 @@
    }
 }
 
+.icon--raise, %icon--raise {
+   @extend %icon;
+   &:before {
+      background-image: url('../img/icon-raise.png');
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20d%3D%22M-6.5-11.201h45v45h-45z%22%2F%3E%3C%2Fdefs%3E%3CclipPath%20id%3D%22b%22%3E%3Cuse%20xlink%3Ahref%3D%22%23a%22%20overflow%3D%22visible%22%2F%3E%3C%2FclipPath%3E%3Cpath%20clip-path%3D%22url(%23b)%22%20d%3D%22M15.921%201.969l14.672%2018.595h-29.344z%22%2F%3E%3C%2Fsvg%3E'), none;
+   }
+}
+
 .icon--rect, %icon--rect {
    @extend %icon;
    &:before {
       background-image: url('../img/icon-rect.png');
       background-image: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20d%3D%22M0%200h32v32h-32z%22%2F%3E%3C%2Fdefs%3E%3CclipPath%20id%3D%22b%22%3E%3Cuse%20xlink%3Ahref%3D%22%23a%22%20overflow%3D%22visible%22%2F%3E%3C%2FclipPath%3E%3Cpath%20clip-path%3D%22url(%23b)%22%20d%3D%22M5.463%205.473h20.892v21.009h-20.892z%22%2F%3E%3C%2Fsvg%3E'), none;
+   }
+}
+
+.icon--remove, %icon--remove {
+   @extend %icon;
+   &:before {
+      background-image: url('../img/icon-remove.png');
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20d%3D%22M0%200h32v32h-32z%22%2F%3E%3C%2Fdefs%3E%3CclipPath%20id%3D%22b%22%3E%3Cuse%20xlink%3Ahref%3D%22%23a%22%20overflow%3D%22visible%22%2F%3E%3C%2FclipPath%3E%3Cpath%20clip-path%3D%22url(%23b)%22%20d%3D%22M26.435%2023.207l-7.244-7.244%207.243-7.242-3.232-3.233-7.243%207.243-7.243-7.243-3.233%203.233%207.243%207.242-7.243%207.244%203.233%203.232%207.243-7.243%207.243%207.243z%22%2F%3E%3C%2Fsvg%3E'), none;
    }
 }
 
@@ -99,6 +139,14 @@
    &:before {
       background-image: url('../img/icon-type.png');
       background-image: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20d%3D%22M0%200h32v32h-32z%22%2F%3E%3C%2Fdefs%3E%3CclipPath%20id%3D%22b%22%3E%3Cuse%20xlink%3Ahref%3D%22%23a%22%20overflow%3D%22visible%22%2F%3E%3C%2FclipPath%3E%3Cpath%20clip-path%3D%22url(%23b)%22%20d%3D%22M18.423%202.97h6.138l3.686%2025.998h-5.891l-.547-5.344h-9.578l-2.928%205.344h-5.678l14.798-25.998zm-3.775%2016.174h6.597l-1.076-10.23-5.521%2010.23z%22%2F%3E%3C%2Fsvg%3E'), none;
+   }
+}
+
+.icon--up, %icon--up {
+   @extend %icon;
+   &:before {
+      background-image: url('../img/icon-up.png');
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20d%3D%22M0%200h32v32h-32z%22%2F%3E%3C%2Fdefs%3E%3CclipPath%20id%3D%22b%22%3E%3Cuse%20xlink%3Ahref%3D%22%23a%22%20overflow%3D%22visible%22%2F%3E%3C%2FclipPath%3E%3Cpath%20clip-path%3D%22url(%23b)%22%20d%3D%22M20.089%2028.599v-11.298h7.471l-11.452-13.874-11.451%2013.874h7.471v11.298z%22%2F%3E%3C%2Fsvg%3E'), none;
    }
 }
 

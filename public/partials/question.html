@@ -1,14 +1,14 @@
 <article class="question" id="{{question.name | idfy}}">
 
    <h1 class="delta heading heading--subsection question__heading">
-      {{question.name}}
+      <span ng-model="question.name" contenteditable spellcheck="false"></span>
       <span class="question__points">{{question.points}} points</span>
    </h1>
 
    <div ng-repeat="chunk in question.body" ng-switch on="chunk.datatype">
       <p ng-switch-when="text">{{chunk.content}}</p>
-      <img class="question__image" ng-switch-when="image" ng-src="{{chunk.content}}">
-      <pre class="j-code" ng-switch-when="code"><code class="language-{{chunk.lang}}">{{chunk.content}}</code></pre>
+      <img ng-switch-when="image" class="question__image" ng-src="{{chunk.content}}">
+      <pre ng-switch-when="code" class="j-code"><code class="language-{{chunk.lang}}">{{chunk.content}}</code></pre>
    </div>
 
    <div ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">

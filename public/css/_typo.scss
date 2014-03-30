@@ -40,8 +40,9 @@ a {
 
 .heading, %heading {
    @extend %aloof;
+   @extend %editable;
    line-height: $leading;
-   font-family: "Roboto", serif;
+   font-family: "PT Sans", serif;
    font-weight: 400;
    font-feature-settings: 'liga', 'kern', 'swsh', 'calt';
    font-size: 1rem;
@@ -53,22 +54,6 @@ a {
    &.beta {
       line-height: $leading * 2;
       font-family: "PT Sans Narrow", serif;
-   }
-   &--section {
-      @include blank-lines(.5, trailing, padding);
-      @include blank-lines(.5, trailing);
-      position: relative;
-      @include after() {
-         @include position($left: 0, $right: 0, $bottom: 0);
-         height: 2px;
-         border: solid rgba(black, .5);
-         border-width: 1px 0;
-      }
-   }
-   &--subsection {
-      @include blank-lines(.5, trailing);
-      padding-bottom: calc(#{$leading / 2} - 1px);
-      border-bottom: 1px solid rgba(black, .5);
    }
    &--caption {
       margin-bottom: 0;
@@ -116,9 +101,16 @@ a {
 
 p {
    @extend %aloof;
+   @extend %editable;
    &.lede {
+      @include blank-lines(2, trailing);
+      @extend %trim-trailing-lines;
       font-style: italic;
    }
+}
+
+span {
+   @extend %editable;
 }
 
 
@@ -155,10 +147,6 @@ p {
    li {
       display: inline-block;
       vertical-align: middle;
-      margin-left: $gutter / 2;
-      &:first-child {
-         margin-left: 0;
-      }
    }
 }
 

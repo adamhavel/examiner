@@ -14,14 +14,19 @@ angular.module('app').config([
             templateUrl: 'partials/home.html'
          })
          .state('blueprints', {
-            url: '/blueprints',
+            url: '/blueprints{filter:.*}',
             templateUrl: 'partials/blueprints.html',
             controller: 'BlueprintsController'
          })
          .state('blueprint', {
             url: '/blueprint/:subject/:date/:lang',
             templateUrl: 'partials/blueprint.html',
-            controller: 'BlueprintController'
+            controller: 'BlueprintViewController'
+         })
+         .state('create', {
+            url: '/new/:subject',
+            templateUrl: 'partials/create.html',
+            controller: 'BlueprintCreateController'
          });
 
    }

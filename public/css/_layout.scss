@@ -111,7 +111,7 @@ $navigation-height: $leading * 1;
          font-size: 1.2em;
          color: rgba(black, .75);
          transition: transform, opacity, color, box-shadow, background-color;
-         transition-duration: .3s;
+         transition-duration: .25s;
          opacity: .3;
          &.ng-urgent {
             color: rgba(brand(red), .9);

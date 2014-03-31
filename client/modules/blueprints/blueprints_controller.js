@@ -26,12 +26,12 @@ angular.module('app.blueprints')
       }, function(blueprints) {
          blueprints.forEach(function(blueprint) {
             var subject = blueprint.subject;
-            if ($scope.subjects.indexOf(subject) == -1) {
+            if ($scope.subjects.indexOf(subject) === -1) {
                $scope.subjects.push(blueprint.subject);
             }
          });
-      }, function(err) {
-
+      }, function() {
+         $state.go('blueprints');
       });
 
       $scope.dateFilter = dateFilter;
@@ -52,7 +52,7 @@ angular.module('app.blueprints')
                question.name = question.name || 'Question ' + (i+1) + '.' + (j+1);
             });
          });
-      }, function(err) {
+      }, function() {
          $state.go('blueprints');
       });
 

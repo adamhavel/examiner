@@ -74,7 +74,7 @@ uglify: {
          'public/lib/angular-ui-router/release/angular-ui-router.min.js',
          'public/lib/angular-resource/angular-resource.min.js',
          'public/lib/angular-contenteditable/angular-contenteditable.js',
-         'public/lib/angular-dragdrop/src/aangular-dragdrop.min.js',
+         'public/lib/angular-webstorage/angular-webstorage.js',
       ],
       dest: 'public/lib/libs.min.js'
    },

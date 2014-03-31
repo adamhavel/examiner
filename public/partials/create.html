@@ -23,9 +23,9 @@
          <h1 class="beta heading" ng-model="section.name" contenteditable spellcheck="false"></h1>
          <ul class="inline-list tools">
             <li><button title="Add question" class="tools__item icon--bubble" ng-click="addQuestion($index)">Add question</button></li>
-            <li><button title="Move up" class="tools__item icon--up" ng-disabled="$first" ng-click="moveSection($index, -1)">Move section up</button></li>
-            <li><button title="Move down" class="tools__item icon--down" ng-disabled="$last" ng-click="moveSection($index, 1)">Move section down</button></li>
-            <li><button title="Remove section" class="tools__item icon--trash" ng-click="removeSection($index)">Remove section</button></li>
+            <li><button title="Move up" class="tools__item icon--up" ng-disabled="$first" ng-click="move(blueprint.sections, $index, -1)">Move section up</button></li>
+            <li><button title="Move down" class="tools__item icon--down" ng-disabled="$last" ng-click="move(blueprint.sections, $index, 1)">Move section down</button></li>
+            <li><button title="Remove section" class="tools__item icon--trash" ng-click="remove(blueprint.sections, $index)">Remove section</button></li>
          </ul>
          <p class="exam__points">
             {{section.points}} {{section.points != 1 ? 'points' : 'point'}}
@@ -39,25 +39,27 @@
          <header>
             <h1 ng-model="question.name" class="delta heading question__heading" contenteditable spellcheck="false"></h1>
             <ul class="inline-list tools">
-               <li><button title="Move up" class="tools__item icon--up" ng-disabled="$first" ng-click="moveQuestion($parent.$index, $index, -1)">Move question up</button></li>
-               <li><button title="Move down" class="tools__item icon--down" ng-disabled="$last" ng-click="moveQuestion($parent.$index, $index, 1)">Move question down</button></li>
-               <li><button title="Remove question" class="tools__item icon--trash" ng-click="removeQuestion($parent.$index, $index)">Remove question</button></li>
+               <li><button title="Add paragraph" class="tools__item icon--type" ng-click="addParagraph(question)">Add paragraph</button></li>
+               <li><button title="Add code" class="tools__item icon--type" ng-click="addCode(question)">Add code</button></li>
+               <li><button title="Add external image" class="tools__item icon--type" ng-click="addExternalImage(question)">Add external image</button></li>
+               <li><button title="Add canvas" class="tools__item icon--type" ng-click="addCanvas(question)">Add canvas</button></li>
+               <li><button title="Move up" class="tools__item icon--up" ng-disabled="$first" ng-click="move(section.questions, $index, -1)">Move question up</button></li>
+               <li><button title="Move down" class="tools__item icon--down" ng-disabled="$last" ng-click="move(section.questions, $index, 1)">Move question down</button></li>
+               <li><button title="Remove question" class="tools__item icon--trash" ng-click="remove(section.questions, $index)">Remove question</button></li>
             </ul>
             <p class="exam__points">
                <span class="tools tools--binary">
-                  <button title="Raise" class="tools__item icon--raise" ng-click="">Raise</button>
-                  <button title="Lower" class="tools__item icon--lower" ng-click="">Lower</button>
+                  <button title="Raise" class="tools__item icon--raise" ng-click="raisePoints(section, question)">Raise</button>
+                  <button title="Lower" class="tools__item icon--lower" ng-click="lowerPoints(section, question)" ng-disabled="question.points < 2">Lower</button>
                </span>
                {{question.points}} {{question.points != 1 ? 'points' : 'point'}}
             </p>
          </header>
 
-
-
          <div ng-repeat="chunk in question.body" ng-switch on="chunk.datatype">
             <p ng-switch-when="text" ng-model="chunk.content" contenteditable spellcheck="false"></p>
             <img ng-switch-when="image" class="question__image" ng-src="{{chunk.content}}">
-            <pre ng-switch-when="code" class="j-code"><code class="language-{{chunk.lang}}">{{chunk.content}}</code></pre>
+            <pre ng-switch-when="code" class="j-code" contenteditable spellcheck="false"><code class="language-{{chunk.lang}}">{{chunk.content}}</code></pre>
          </div>
 
          <div ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">

@@ -5,6 +5,7 @@ angular.module('app', [
    'ngResource',
    'ngAnimate',
    'contenteditable',
+   'webStorageModule',
    'app.blueprints',
    'app.exams'
 ]);

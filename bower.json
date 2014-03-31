@@ -15,6 +15,6 @@
     "prism": "gh-pages",
     "fabric": "~1.4.4",
     "lodash": "~2.4.1",
-    "angular-dragdrop": "~1.0.6"
+    "angular-webstorage": "~0.10.3"
   }
 }

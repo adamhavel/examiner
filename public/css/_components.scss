@@ -25,6 +25,15 @@
             @include blank-lines(.5, trailing);
             flex: 1;
          }
+         .tools {
+            opacity: .25;
+            transition: opacity .25s;
+         }
+      }
+      &:hover {
+         > header .tools {
+            opacity: 1;
+         }
       }
    }
    &__points {
@@ -37,6 +46,7 @@
          width: 20%;
          text-align: right;
       }
+
    }
    &__contents {
       position: fixed;
@@ -88,6 +98,15 @@
          .heading {
             flex: 1;
             margin-bottom: 0;
+         }
+         .tools {
+            opacity: .25;
+            transition: opacity .25s;
+         }
+      }
+      &:hover {
+         > header .tools {
+            opacity: 1;
          }
       }
       &__image {

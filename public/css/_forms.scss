@@ -29,6 +29,7 @@ button[type="submit"] {
    @extend %trim-trailing-lines;
    display: block;
    box-sizing: border-box;
+   color: rgba(black, .75);
 }
 
 input,

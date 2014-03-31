@@ -3,6 +3,7 @@
    ========================================================================== */
 
 code {
+   @extend %editable;
    font-family: Consolas, Monaco, "Andale Mono", monospace;
    white-space: pre;
    word-spacing: normal;
@@ -13,6 +14,7 @@ code {
 
 pre {
    @extend %aloof;
+   @extend %editable;
    font-size: .9em;
    line-height: $leading;
    overflow: auto;

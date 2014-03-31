@@ -2,19 +2,12 @@
 
 angular.module('app.blueprints.create')
 
-   .controller('BlueprintCreateController', ['$scope', '$stateParams', '$state', 'Blueprint',
-   function($scope, $stateParams, $state, Blueprint) {
+   .controller('BlueprintCreateController',
+   ['$scope', '$stateParams', '$state', 'NewBlueprint',
+   function($scope, $stateParams, $state, NewBlueprint) {
 
-      function blankPage() {
-         var blueprint = {
-            subject: $stateParams.subject,
-            date: new Date(),
-            lang: 'en',
-            lede: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione, quidem, ullam dolorum expedita aliquam maiores distinctio esse repudiandae totam magnam saepe iusto ipsam nam a libero suscipit enim architecto nobis!',
-            sections: []
-         };
-         return blueprint;
-      }
+      $scope.blueprint = NewBlueprint.data;
+      $scope.blueprint.subject = $stateParams.subject;
 
       function checkDefaultNames() {
          var sections = $scope.blueprint.sections;
@@ -30,6 +23,33 @@ angular.module('app.blueprints.create')
          });
       }
 
+      function recalculatePoints() {
+         var sections = $scope.blueprint.sections;
+         sections.forEach(function(section) {
+            var points = 0;
+            section.questions.forEach(function(question) {
+               points += question.points;
+            });
+            section.points = points;
+         });
+      }
+
+      $scope.remove = function(parent, index) {
+         parent.splice(index, 1);
+         recalculatePoints();
+         checkDefaultNames();
+      };
+
+      $scope.move = function(parent, index, distance) {
+         var target = index + distance;
+         if (target >= 0 && target < parent.length) {
+            var tmp = parent[target];
+            parent[target] = parent[index];
+            parent[index] = tmp;
+            checkDefaultNames();
+         }
+      };
+
       $scope.addSection = function() {
          var sections = $scope.blueprint.sections;
          var defaultName = 'Section ' + (sections.length + 1);
@@ -39,22 +59,6 @@ angular.module('app.blueprints.create')
             lede: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum, similique, voluptate, libero repellendus doloribus expedita et nihil error fugit tempora facere nulla ab ea dolore nam molestiae excepturi illum at.',
             points: 0
          });
-      };
-
-      $scope.removeSection = function(index) {
-         $scope.blueprint.sections.splice(index, 1);
-         checkDefaultNames();
-      };
-
-      $scope.moveSection = function(index, distance) {
-         var sections = $scope.blueprint.sections;
-         var target = index + distance;
-         if (target >= 0 && target < sections.length) {
-            var tmp = sections[target];
-            sections[target] = sections[index];
-            sections[index] = tmp;
-            checkDefaultNames();
-         }
       };
 
       $scope.addQuestion = function(sectionIndex) {
@@ -75,25 +79,37 @@ angular.module('app.blueprints.create')
          section.points++;
       };
 
-      $scope.removeQuestion = function(sectionIndex, index) {
-         var section = $scope.blueprint.sections[sectionIndex];
-         section.points = section.points - section.questions[index].points;
-         section.questions.splice(index, 1);
-         checkDefaultNames();
+      $scope.raisePoints = function(section, question) {
+         section.points++;
+         question.points++;
       };
 
-      $scope.moveQuestion = function(sectionIndex, index, distance) {
-         var questions = $scope.blueprint.sections[sectionIndex].questions;
-         var target = index + distance;
-         if (target >= 0 && target < questions.length) {
-            var tmp = questions[target];
-            questions[target] = questions[index];
-            questions[index] = tmp;
-            checkDefaultNames();
+      $scope.lowerPoints = function(section, question) {
+         if (question.points > 1) {
+            section.points--;
+            question.points--;
          }
       };
 
-      $scope.blueprint = $scope.blueprint || blankPage();
-      $scope.addSection();
+      $scope.addParagraph = function(question) {
+         question.body.push({
+            datatype: 'text'
+         });
+      };
+
+      $scope.addCode = function(question) {
+         question.body.push({
+            datatype: 'code',
+            content: 'alert(\'Hello world\');'
+         });
+      };
+
+      $scope.addExternalImage = function(question) {
+         question.body.push({
+            datatype: 'image',
+            external: true,
+            content: 'https://gs1.wac.edgecastcdn.net/8019B6/data.tumblr.com/a8d640f9ef130ab0836ecad7f1da46f2/tumblr_mxxg21ARtI1s2rav1o2_r1_1280.jpg'
+         });
+      };
 
    }]);

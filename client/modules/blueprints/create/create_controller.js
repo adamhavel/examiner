@@ -85,7 +85,7 @@ angular.module('app.blueprints.create')
       };
 
       $scope.lowerPoints = function(section, question) {
-         if (question.points > 1) {
+         if (question.points > 0) {
             section.points--;
             question.points--;
          }
@@ -100,6 +100,7 @@ angular.module('app.blueprints.create')
       $scope.addCode = function(question) {
          question.body.push({
             datatype: 'code',
+            lang: 'javascript',
             content: 'alert(\'Hello world\');'
          });
       };

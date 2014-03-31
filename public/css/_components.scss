@@ -99,21 +99,38 @@
             flex: 1;
             margin-bottom: 0;
          }
-         .tools {
-            opacity: .25;
-            transition: opacity .25s;
-         }
+      }
+      .tools {
+         opacity: .25;
+         transition: opacity .25s;
       }
       &:hover {
-         > header .tools {
+          .tools {
             opacity: 1;
          }
       }
+      &__chunk {
+         @extend %vertical-slide;
+         .tools {
+            float: right;
+            margin-left: 1rem;
+         }
+         .tools__item {
+            @include size($leading * .75);
+            @include blank-lines(.125, both);
+         }
+      }
       &__image {
-         @extend %island;
+         @extend %aloof;
          @extend %center;
+         xclear: both;
          display: block;
          max-width: 100%;
+         .tools + & {
+            position: relative;
+            xmax-width: 50%;
+            xtop: -$leading;
+         }
       }
       &__answer {
          @extend %aloof;
@@ -147,7 +164,9 @@
       @extend %icon;
       @include size($leading * 1);
       display: block;
+      margin-left: .25rem;
       background: none;
+      font-size: 1rem;
       transition: transform .1s;
       &:before {
          @include size(100%);

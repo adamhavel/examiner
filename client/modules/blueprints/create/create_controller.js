@@ -82,6 +82,7 @@ angular.module('app.blueprints.create')
       $scope.raisePoints = function(section, question) {
          section.points++;
          question.points++;
+         console.log($scope.blueprint.sections[0].questions[0].body[0].content);
       };
 
       $scope.lowerPoints = function(section, question) {

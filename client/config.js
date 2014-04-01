@@ -36,15 +36,7 @@ angular.module('app').config([
 
       $rootScope.url = $location.path();
 
-      /*$rootScope.$on('$locationChangeStart', function() {
-         if (webStorage.get('restoreToken')) {
-            $rootScope.$emit('load');
-            webStorage.remove('restoreToken');
-         }
-      });*/
-
       window.addEventListener('beforeunload', function() {
-         //webStorage.add('restoreToken', 'true');
          $rootScope.$emit('save');
       });
 

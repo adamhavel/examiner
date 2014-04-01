@@ -81,6 +81,10 @@ uglify: {
    libs_highlight: {
       src: [
          'public/lib/prism/prism.js',
+         'public/lib/bililiteRange/bililiteRange.js',
+         'public/lib/bililiteRange/bililiteRange.fancytext.js',
+         'public/lib/bililiteRange/bililiteRange.util.js',
+         'public/lib/bililiteRange/bililiteRange.undo.js'
       ],
       dest: 'public/js/ondemand/app.highlight.min.js'
    },

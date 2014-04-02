@@ -2,8 +2,8 @@
 
 angular.module('app.blueprints')
 
-   .controller('BlueprintsController', ['$scope', '$stateParams', 'Blueprints', 'dateFilter',
-   function($scope, $stateParams, Blueprints, dateFilter) {
+   .controller('BlueprintsController', ['$scope', '$stateParams', '$state', 'Blueprints', 'dateFilter',
+   function($scope, $stateParams, $state, Blueprints, dateFilter) {
 
       var filter = $stateParams.filter.substr(1).split('/') || null;
       $scope.subject = filter[0] || null;

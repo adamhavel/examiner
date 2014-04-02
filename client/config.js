@@ -31,8 +31,8 @@ angular.module('app').config([
 
    }
 ]).run([
-   '$rootScope', '$location', 'webStorage',
-   function($rootScope, $location, webStorage) {
+   '$rootScope', '$location',
+   function($rootScope, $location) {
 
       $rootScope.url = $location.path();
 

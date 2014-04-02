@@ -82,7 +82,6 @@ angular.module('app.blueprints.create')
       $scope.raisePoints = function(section, question) {
          section.points++;
          question.points++;
-         console.log($scope.blueprint.sections[0].questions[0].body[0].content);
       };
 
       $scope.lowerPoints = function(section, question) {
@@ -106,11 +105,17 @@ angular.module('app.blueprints.create')
          });
       };
 
-      $scope.addExternalImage = function(question) {
+      $scope.addImage = function(question) {
          question.body.push({
             datatype: 'image',
-            external: true,
             content: 'https://gs1.wac.edgecastcdn.net/8019B6/data.tumblr.com/a8d640f9ef130ab0836ecad7f1da46f2/tumblr_mxxg21ARtI1s2rav1o2_r1_1280.jpg'
+         });
+      };
+
+      $scope.addCanvas = function(question) {
+         question.body.push({
+            datatype: 'canvas',
+            content: {}
          });
       };
 

@@ -21,7 +21,6 @@ var BlueprintSchema = new Schema(
                      {
                         datatype: String,
                         lang: String,
-                        external: Boolean,
                         content: String
                      }
                   ],

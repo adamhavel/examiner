@@ -19,15 +19,16 @@ angular.module('app.blueprints.create')
          };
 
          api.save = function() {
-            webStorage.add('blueprint', angular.toJson(api.data));
+            var serializedData = angular.toJson(api.data);//.replace(/(<([^>]+)>)/g, '');
+            webStorage.add('blueprint', serializedData);
+            return serializedData;
          };
 
          (function init() {
-            ongoing = true;
             var storedSession = angular.fromJson(webStorage.get('blueprint'));
             if (storedSession) {
                api.data = storedSession;
-               webStorage.remove('blueprint');
+               //webStorage.remove('blueprint');
                api.data.date = new Date(api.data.date);
             }
          })();

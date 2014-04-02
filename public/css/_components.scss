@@ -115,21 +115,15 @@
             float: right;
             margin-left: 1rem;
          }
-         .tools__item {
-            @include size($leading * .75);
-            @include blank-lines(.125, both);
-         }
       }
       &__image {
          @extend %aloof;
          @extend %center;
-         xclear: both;
+         clear: both;
          display: block;
          max-width: 100%;
          .tools + & {
-            position: relative;
-            xmax-width: 50%;
-            xtop: -$leading;
+
          }
       }
       &__answer {
@@ -148,6 +142,7 @@
 
 .canvas {
    @extend %aloof;
+   clear: both;
    canvas {
       padding: 0;
       image-rendering: optimize-contrast;
@@ -187,6 +182,10 @@
             opacity: .1;
          }
       }
+   }
+   &--small &__item {
+      @include size($leading * .75);
+      @include blank-lines(.125, both);
    }
    &--binary {
       display: inline-flex;

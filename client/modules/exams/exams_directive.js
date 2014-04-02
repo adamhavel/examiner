@@ -13,29 +13,49 @@ angular.module('app.exams')
       };
    })
 
+   .directive('contents', function() {
+      return {
+         restrict: 'E',
+         scope: {
+            document: '=',
+         },
+         templateUrl: 'partials/contents.html',
+         replace: true
+      };
+   })
+
    .directive('snippet', function() {
 
-      function link(scope, element) {
+      function link($scope, $element) {
 
-         var code = element.children('code')[0];
+         var code = $element.children('code')[0];
 
          Modernizr.load({
             load: 'js/ondemand/app.highlight.min.js',
             callback: function () {
-               var editor = bililiteRange.fancyText(code, Prism.highlightElement);
-               bililiteRange(editor).undo(0).data().autoindent = true; // init
-               editor.addEventListener('keydown', function(e) {
-                  if (e.ctrlKey && e.keyCode === 90) {
-                     bililiteRange.undo(e);
-                  }
-                  if (e.ctrlKey && e.keyCode === 89) {
-                     bililiteRange.redo(e);
-                  }
-                  if (e.keyCode === 9) {
-                     e.preventDefault();
-                     document.execCommand('InsertHTML', false, '   ');
-                  }
-               });
+               if ($scope.editable) {
+
+                  var editor = bililiteRange.fancyText(code, Prism.highlightElement);
+                  bililiteRange(editor).undo(0).data().autoindent = true;
+
+                  editor.addEventListener('keydown', function(e) {
+                     if (e.ctrlKey && e.keyCode === 90) {
+                        bililiteRange.undo(e);
+                     } else if (e.ctrlKey && e.keyCode === 89) {
+                        bililiteRange.redo(e);
+                     } else if (e.keyCode === 9) {
+                        e.preventDefault();
+                        document.execCommand('InsertHTML', false, '   ');
+                     }
+                  });
+
+                  $scope.$on('$destroy', function() {
+                     editor.removeEventListener('keydown');
+                  });
+
+               } else {
+                  Prism.highlightElement(code);
+               }
             }
          });
 
@@ -56,7 +76,7 @@ angular.module('app.exams')
 
    .directive('icanvas', function() {
 
-      function link(scope, element) {
+      function link($scope, element) {
 
          function getElements(selector, parent) {
             parent = parent || document;
@@ -81,17 +101,18 @@ angular.module('app.exams')
                    pointer,
                    obj;
 
-               scope.canvas = canvas = new fabric.Canvas(canvas, {
+               $scope.canvas = canvas = new fabric.Canvas(canvas, {
                   selection: false,
-                  defaultCursor: 'crosshair'
+                  defaultCursor: 'crosshair',
+                  backgroundColor: 'white'
                });
                canvas.calcOffset();
 
-               var History = (function(canvas, scope) {
+               var History = (function(canvas, $scope) {
 
                   var api = {};
 
-                  var data = scope.content,
+                  var data = $scope.content,
                       limit = 25;
 
                   api.canUndo = function() {
@@ -117,6 +138,7 @@ angular.module('app.exams')
                            });
                         }
                         canvas.renderAll();
+                        $scope.$apply();
                      }
                   };
 
@@ -135,6 +157,7 @@ angular.module('app.exams')
                            });
                         }
                         canvas.renderAll();
+                        $scope.$apply();
                      }
                   };
 
@@ -148,7 +171,7 @@ angular.module('app.exams')
                         canvas.renderAll();
                      }
 
-                     canvas.on('object:modified', function(e) {
+                     canvas.on('object:modified', function() {
                         if (data.currentState < data.states.length - 1) {
                            data.states = data.states.slice(0, data.currentState + 1);
                         }
@@ -159,12 +182,15 @@ angular.module('app.exams')
                            data.states.shift();
                         }
                         data.states.push(angular.toJson(canvas));
+                        $scope.$apply();
                      });
+
+                     $scope.$apply();
 
                   })();
 
                   return api;
-               })(canvas, scope);
+               })(canvas, $scope);
 
                var activateTool = function(toolHandler) {
                   if (!this.classList.contains('j-active')) {
@@ -205,7 +231,7 @@ angular.module('app.exams')
 
                      canvas.renderAll();
                   }
-               }
+               };
 
                var selectHandler = {
                   init: function() {
@@ -218,13 +244,14 @@ angular.module('app.exams')
                         obj.setCoords();
                      });
                   },
-                  mouseDown: function(o) {
+                  mouseDown: function() {
                      canvas.calcOffset();
                   }
                };
 
                var paintHandler = {
                   init: function() {
+                     canvas.off('path:created');
                      canvas.on('path:created', function(e) {
                         e.path.set({
                            perPixelTargetFind: true
@@ -233,7 +260,7 @@ angular.module('app.exams')
                      });
                      canvas.isDrawingMode = true;
                   },
-                  mouseDown: function(o) {
+                  mouseDown: function() {
                      canvas.calcOffset();
                   }
                };
@@ -267,7 +294,7 @@ angular.module('app.exams')
                      });
                      canvas.renderAll();
                   },
-                  mouseUp: function(o) {
+                  mouseUp: function() {
                      isMouseDown = false;
                      canvas.fire('object:modified', { target: obj });
                   }
@@ -304,7 +331,7 @@ angular.module('app.exams')
                      });
                      canvas.renderAll();
                   },
-                  mouseUp: function(o) {
+                  mouseUp: function() {
                      isMouseDown = false;
                      obj.set({
                         width: obj.rx * 2,
@@ -343,7 +370,7 @@ angular.module('app.exams')
                      });
                      canvas.renderAll();
                   },
-                  mouseUp: function(o) {
+                  mouseUp: function() {
                      isMouseDown = false;
                      canvas.fire('object:modified', { target: obj });
                   }
@@ -376,12 +403,7 @@ angular.module('app.exams')
                      canvas.getObjects().forEach(function(objOnCanvas) {
                         if (objOnCanvas.get('type') === 'i-text') {
                            var bounds = objOnCanvas.getBoundingRect();
-                           if (
-                              pointer.x >= bounds.left
-                              && pointer.x <= bounds.left + bounds.width
-                              && pointer.y >= bounds.top
-                              && pointer.y <= bounds.top + bounds.height
-                           ) {
+                           if (pointer.x >= bounds.left && pointer.x <= bounds.left + bounds.width && pointer.y >= bounds.top && pointer.y <= bounds.top + bounds.height) {
                               objOnCanvas.enterEditing();
                               isInsideTextObject = true;
                               obj = null;
@@ -445,30 +467,10 @@ angular.module('app.exams')
 
                canvasWrapper.querySelector('.j-canvas-undo').addEventListener('click', function() {
                   History.undo();
-                  if (History.canUndo()) {
-                     canvasWrapper.querySelector('.j-canvas-undo').classList.remove('j-disabled');
-                  } else {
-                     canvasWrapper.querySelector('.j-canvas-undo').classList.add('j-disabled');
-                  }
-                  if (History.canRedo()) {
-                     canvasWrapper.querySelector('.j-canvas-redo').classList.remove('j-disabled');
-                  } else {
-                     canvasWrapper.querySelector('.j-canvas-redo').classList.add('j-disabled');
-                  }
                });
 
                canvasWrapper.querySelector('.j-canvas-redo').addEventListener('click', function() {
                   History.redo();
-                  if (History.canUndo()) {
-                     canvasWrapper.querySelector('.j-canvas-undo').classList.remove('j-disabled');
-                  } else {
-                     canvasWrapper.querySelector('.j-canvas-undo').classList.add('j-disabled');
-                  }
-                  if (History.canRedo()) {
-                     canvasWrapper.querySelector('.j-canvas-redo').classList.remove('j-disabled');
-                  } else {
-                     canvasWrapper.querySelector('.j-canvas-redo').classList.add('j-disabled');
-                  }
                });
 
                canvasWrapper.querySelector('.j-canvas-remove').addEventListener('click', function() {
@@ -484,29 +486,16 @@ angular.module('app.exams')
                   canvas.fire('object:modified', { target: obj });
                });
 
-               canvas.on('object:modified', function(e) {
-                  if (History.canUndo()) {
-                     canvasWrapper.querySelector('.j-canvas-undo').classList.remove('j-disabled');
-                  } else {
-                     canvasWrapper.querySelector('.j-canvas-undo').classList.add('j-disabled');
-                  }
-                  if (History.canRedo()) {
-                     canvasWrapper.querySelector('.j-canvas-redo').classList.remove('j-disabled');
-                  } else {
-                     canvasWrapper.querySelector('.j-canvas-redo').classList.add('j-disabled');
-                  }
+               canvas.on('object:selected', function() {
+                  canvasWrapper.querySelector('.j-canvas-remove').disabled = false;
                });
 
-               canvas.on('object:selected', function(e) {
-                  canvasWrapper.querySelector('.j-canvas-remove').classList.remove('j-disabled');
-               });
-
-               canvas.on('selection:cleared', function(e) {
-                  canvasWrapper.querySelector('.j-canvas-remove').classList.add('j-disabled');
+               canvas.on('selection:cleared', function() {
+                  canvasWrapper.querySelector('.j-canvas-remove').disabled = true;
                });
 
                window.addEventListener('keydown', function(e) {
-                  if (e.keyCode == 46) {
+                  if (e.keyCode === 46) {
                      if (canvas.getActiveObject()) {
                         e.preventDefault();
                         canvas.remove(canvas.getActiveObject());
@@ -520,6 +509,16 @@ angular.module('app.exams')
                      canvas.renderAll();
                      canvas.fire('object:modified', { target: obj });
                   }
+               });
+
+               canvasWrapper.querySelector('.j-canvas-remove').disabled = true;
+
+               (activateTool.bind(canvasWrapper.querySelector('.j-canvas-paint')))(paintHandler);
+
+               $scope.$on('$destroy', function() {
+                  canvasTools.forEach(function(tool) {
+                     tool.removeEventListener('click');
+                  });
                });
 
             }

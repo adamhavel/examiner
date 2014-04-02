@@ -39,23 +39,24 @@
 }
 
 %dimmable {
-   @include before() {
+   @include before {
       position: fixed;
       top: 0;
       left: 0;
       width: 0;
       height: 0;
       background: black;
-      pointer-events: none;
       opacity: 0;
       transition: opacity .5s, width .001s .5s, height .001s .5s;
       backface-visibility: hidden;
    }
    &.j-dim {
-      @include before() {
+      pointer-events: none;
+      &:before {
+         z-index: 100;
          width: 100%;
          height: 100%;
-         opacity: .85;
+         opacity: .3;
          transition: width .001s, height .001s, opacity .5s .001s;
       }
    }
@@ -77,6 +78,13 @@
    background: none;
    border: 0;
    padding: 0;
+}
+
+%inset {
+   min-height: $leading * 2;
+   padding: calc(#{$leading / 2} - 1px) ($gutter * .75);
+   box-sizing: border-box;
+   border: 1px solid rgba(black, .25);
 }
 
 

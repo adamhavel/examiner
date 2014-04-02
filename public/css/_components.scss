@@ -2,6 +2,71 @@
    Components
    ========================================================================== */
 
+/* Tools
+   ========================================================================== */
+
+.tools {
+   font-size: 0;
+   &__item {
+      @extend %icon;
+      @include size($leading * 1);
+      display: block;
+      margin-left: .25rem;
+      background: none;
+      font-size: 1rem;
+      transition: transform .1s;
+      &:before {
+         @include size(100%);
+         display: block;
+         margin: 0;
+         background-size: 100%;
+         opacity: .6;
+         transition: opacity .1s;
+      }
+      &:hover,
+      &.j-active {
+         transform: scale(1.5);
+      }
+      &.j-active {
+         position: relative;
+         @include after {
+            @include position($bottom: 0, $left: 20%);
+            @include size(60%);
+            z-index: -1;
+            display: block;
+            background: brand(yellow);
+            border-radius: 50%;
+            backface-visibility: hidden;
+         }
+      }
+      &[disabled] {
+         &:hover {
+            transform: none;
+         }
+         &:before {
+            opacity: .1;
+         }
+      }
+   }
+   &--small &__item {
+      @include size($leading * .75);
+      @include blank-lines(.125, both);
+   }
+   &--flush {
+      float: right;
+      margin-left: 1rem;
+   }
+   &--binary {
+      display: inline-flex;
+      flex-direction: column;
+      vertical-align: bottom;
+   }
+   &--binary &__item {
+      @include size($leading / 2);
+   }
+}
+
+
 /* Exam
    ========================================================================== */
 
@@ -111,10 +176,7 @@
       }
       &__chunk {
          @extend %vertical-slide;
-         .tools {
-            float: right;
-            margin-left: 1rem;
-         }
+         clear: both;
       }
       &__image {
          @extend %aloof;
@@ -127,12 +189,10 @@
          }
       }
       &__answer {
-         @extend %aloof;
-         display: block;
-         min-height: $leading * 2;
-         padding: calc(#{$leading / 2} - 1px) ($gutter * .75);
-         box-sizing: border-box;
-         border: 1px solid rgba(black, .25);
+         > p,
+         > pre {
+            @extend %inset;
+         }
       }
    }
 
@@ -144,61 +204,15 @@
    @extend %aloof;
    clear: both;
    canvas {
-      padding: 0;
+      box-sizing: border-box;
+      border: 1px solid rgba(black, .25);
       image-rendering: optimize-contrast;
    }
-}
-
-
-/* Tools
-   ========================================================================== */
-
-.tools {
-   font-size: 0;
-   &__item {
-      @extend %icon;
-      @include size($leading * 1);
-      display: block;
-      margin-left: .25rem;
-      background: none;
-      font-size: 1rem;
-      transition: transform .1s;
-      &:before {
-         @include size(100%);
-         display: block;
-         margin: 0;
-         background-size: 100%;
-         opacity: .6;
-         transition: opacity .1s;
-      }
-      &:hover {
-         transform: scale(1.5);
-      }
-      &[disabled] {
-         &:hover {
-            transform: none;
-         }
-         &:before {
-            opacity: .1;
-         }
-      }
-   }
-   &--small &__item {
-      @include size($leading * .75);
-      @include blank-lines(.125, both);
-   }
-   &--binary {
-      display: inline-flex;
-      flex-direction: column;
-      vertical-align: bottom;
-   }
-   &--binary > &__item {
-      @include size($leading / 2);
-   }
-   canvas + & {
-
+   &__tools {
+      @include blank-lines(.25, leading);
    }
 }
+
 
 /* Exam preview
    ========================================================================== */
@@ -312,9 +326,19 @@
 }
 
 
-/* Button
+/* Modal
    ========================================================================== */
 
-button {
-
+.modal {
+   @include blank-lines(2, both, padding);
+   @include taper(2);
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   z-index: 1000;
+   transform: translate3d(-50%, -50%, 0);
+   max-width: $main-content-width;
+   box-sizing: border-box;
+   background: brand(paper);
+   pointer-events: auto;
 }

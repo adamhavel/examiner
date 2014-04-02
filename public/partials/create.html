@@ -1,23 +1,16 @@
 <article class="exam">
 
+   <modal content="{{modalContent}}"></modal>
+
    <h1 class="alpha heading exam__heading">{{blueprint.subject | uppercase}} &mdash; <input class="exam__date" type="date" ng-model="blueprint.date" required></h1>
 
-   <aside class="exam__contents">
-      <ol class="block-list">
-         <li ng-repeat="section in blueprint.sections">
-            <a ng-class="{'ng-active': $index == activeSection}" ng-smooth-scroll ng-href="{{url}}#{{section.name | idfy}}">{{section.name}}</a>
-            <ol class="block-list">
-               <li ng-repeat="question in section.questions"><a ng-class="{'ng-active': $index == activeQuestion}" ng-smooth-scroll ng-href="{{url}}#{{question.name | idfy}}">{{question.name}}</a></li>
-            </ol>
-         </li>
-      </ol>
-   </aside>
+   <contents document="blueprint"></contents>
 
    <p class="lede" ng-model="blueprint.lede" contenteditable spellcheck="false" placeholder="Type the intro..."></p>
 
    <button ng-click="addSection()">Add section</button>
 
-   <section class="exam__section" id="{{section.name | idfy}}" ng-repeat="section in blueprint.sections">
+   <section class="exam__section" id="{{section.name || 'Untitled section ' + ($index+1) | idfy}}" ng-repeat="section in blueprint.sections">
 
       <header>
          <h1 class="beta heading" ng-model="section.name" contenteditable spellcheck="false" placeholder="Type the section name..."></h1>
@@ -25,7 +18,7 @@
             <li><button title="Add question" class="tools__item icon--bubble" ng-click="addQuestion($index)">Add question</button></li>
             <li><button title="Move up" class="tools__item icon--up" ng-disabled="$first" ng-click="move(blueprint.sections, $index, -1)">Move section up</button></li>
             <li><button title="Move down" class="tools__item icon--down" ng-disabled="$last" ng-click="move(blueprint.sections, $index, 1)">Move section down</button></li>
-            <li><button title="Remove section" class="tools__item icon--trash" ng-click="remove(blueprint.sections, $index)">Remove section</button></li>
+            <li><button title="Remove section" class="tools__item icon--remove" ng-click="remove(blueprint.sections, $index)">Remove section</button></li>
          </ul>
          <p class="exam__points">
             {{section.points}} {{section.points != 1 ? 'points' : 'point'}}
@@ -34,7 +27,7 @@
 
       <p class="lede" ng-model="section.lede" contenteditable spellcheck="false" placeholder="Type the section intro..."></p>
 
-      <article class="question" id="{{question.name | idfy}}" ng-repeat="question in section.questions">
+      <article class="question" id="{{question.name || 'Untitled question ' + ($index+1) | idfy}}" ng-repeat="question in section.questions">
 
          <header>
             <h1 ng-model="question.name" class="delta heading question__heading" contenteditable spellcheck="false" placeholder="Type the question name..."></h1>
@@ -46,7 +39,7 @@
                <li><button title="Add canvas" class="tools__item icon--canvas" ng-click="addCanvas(question)">Add canvas</button></li>
                <li><button title="Move up" class="tools__item icon--up" ng-disabled="$first" ng-click="move(section.questions, $index, -1)">Move question up</button></li>
                <li><button title="Move down" class="tools__item icon--down" ng-disabled="$last" ng-click="move(section.questions, $index, 1)">Move question down</button></li>
-               <li><button title="Remove question" class="tools__item icon--trash" ng-click="remove(section.questions, $index)">Remove question</button></li>
+               <li><button title="Remove question" class="tools__item icon--remove" ng-click="remove(section.questions, $index)">Remove question</button></li>
             </ul>
             <p class="exam__points">
                <span class="tools tools--binary">
@@ -58,7 +51,7 @@
          </header>
 
          <div class="question__chunk" ng-repeat="chunk in question.body" ng-switch on="chunk.datatype">
-            <ul class="inline-list tools tools--small">
+            <ul class="inline-list tools tools--small tools--flush">
                <li><button title="Move up" class="tools__item icon--up" ng-disabled="$first" ng-click="move(question.body, $index, -1)">Move up</button></li>
                <li><button title="Move down" class="tools__item icon--down" ng-disabled="$last" ng-click="move(question.body, $index, 1)">Move down</button></li>
                <li><button title="Remove" class="tools__item icon--remove" ng-click="remove(question.body, $index)">Remove</button></li>
@@ -69,16 +62,16 @@
             <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="true"></snippet>
          </div>
 
-         <div ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">
+         <div class="question__chunk question__answer" ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">
             <div ng-if="chunk.content">
                <h2 class="heading heading--caption">Hint</h2>
-               <p ng-switch-when="text" class="question__answer">{{chunk.content}}</p>
-               <pre ng-switch-when="code" class="question__answer j-code"><code class="language-{{chunk.lang}}">{{chunk.content}}</code></pre>
+               <p ng-switch-when="text">{{chunk.content}}</p>
+               <pre ng-switch-when="code"><code class="language-{{chunk.lang}}">{{chunk.content}}</code></pre>
             </div>
             <div ng-if="chunk.solution">
                <h2 class="heading heading--caption">Solution</h2>
-               <p ng-switch-when="text" class="question__answer">{{chunk.solution}}</p>
-               <pre ng-switch-when="code" class="question__answer j-code"><code class="language-{{chunk.lang}}">{{chunk.solution}}</code></pre>
+               <p ng-switch-when="text">{{chunk.solution}}</p>
+               <pre ng-switch-when="code"><code class="language-{{chunk.lang}}">{{chunk.solution}}</code></pre>
             </div>
          </div>
 

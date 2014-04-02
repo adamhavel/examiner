@@ -2,37 +2,32 @@
 
 angular.module('app')
 
-   .directive('ngSmoothScroll', function() {
-
-      var elemOffset,
-          previousOffset;
-
-      function smoothScroll() {
-         var currentOffset = window.pageYOffset;
-         var difference = elemOffset - currentOffset;
-         if (difference !== 0 && previousOffset !== currentOffset) {
-            var step = difference / 5;
-            var targetOffset = currentOffset + (difference > 0 ? Math.ceil(step) : Math.floor(step));
-            window.scrollTo(0, targetOffset);
-            requestAnimationFrame(smoothScroll);
-            previousOffset = currentOffset;
-         }
-      }
-
+   .directive('contenteditable', function() {
       return {
          restrict: 'A',
-         scope: {
-            href: '@',
-         },
-         link: function(scope, element) {
+         require: '?ngModel',
+         link: function($scope, $element, attrs, ngModel) {
 
-            element.on('click', function(e) {
-               e.preventDefault();
-               var target = scope.href.substr(scope.href.indexOf('#'));
-               elemOffset = document.querySelector(target).offsetTop - 10;
-               previousOffset = null;
-               requestAnimationFrame(smoothScroll);
+            if (!ngModel) {
+              return;
+            }
+
+            $element.on('keydown', function(e) {
+               if (e.keyCode === 9 || e.keyCode === 13) {
+                  e.preventDefault();
+               }
             });
+
+            $element.on('input', function() {
+               $scope.$apply(function() {
+                  ngModel.$setViewValue($element.text());
+               });
+            });
+
+            ngModel.$render = function() {
+               $element.html(ngModel.$viewValue || '');
+            };
+
          }
       };
    });

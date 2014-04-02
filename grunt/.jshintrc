@@ -36,6 +36,7 @@
       "FastClick",
       "bililiteRange",
       "requestAnimationFrame",
-      "Prism"
+      "Prism",
+      "fabric"
    ]
 }

@@ -1,0 +1,10 @@
+<aside class="exam__contents">
+   <ol class="block-list">
+      <li ng-repeat="section in document.sections">
+         <a ng-class="{'ng-active': $index == activeSection}" smooth-scroll ng-href="{{url}}#{{section.name || 'Untitled section ' + ($index+1) | idfy}}">{{section.name}}</a>
+         <ol class="block-list">
+            <li ng-repeat="question in section.questions"><a ng-class="{'ng-active': $index == activeQuestion}" smooth-scroll ng-href="{{url}}#{{question.name || 'Untitled question ' + ($index+1) | idfy}}">{{question.name}}</a></li>
+         </ol>
+      </li>
+   </ol>
+</aside>

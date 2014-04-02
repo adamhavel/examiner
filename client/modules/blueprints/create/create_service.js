@@ -18,7 +18,31 @@ angular.module('app.blueprints.create')
             sections: []
          };
 
+         api.clear = function() {
+            api.data = {
+               subject: null,
+               date: new Date(),
+               lang: 'en',
+               sections: []
+            };
+         };
+
          api.save = function() {
+            var regExpHTML = /(<([^>]+)>)/g;
+            api.data.sections.forEach(function(section) {
+               section.questions.forEach(function(question) {
+                  question.body.forEach(function(chunk) {
+                     if (chunk.datatype === 'code') {
+                        chunk.content = chunk.content.replace(regExpHTML, '');
+                     }
+                  });
+                  question.answer.forEach(function(chunk) {
+                     if (chunk.datatype === 'code') {
+                        chunk.content = chunk.content.replace(regExpHTML, '');
+                     }
+                  });
+               });
+            });
             var serializedData = angular.toJson(api.data);//.replace(/(<([^>]+)>)/g, '');
             webStorage.add('blueprint', serializedData);
             return serializedData;

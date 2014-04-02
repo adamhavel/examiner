@@ -51,6 +51,7 @@ angular.module('app.blueprints.create')
       };
 
       $scope.addSection = function() {
+         $scope.openModal();
          var sections = $scope.blueprint.sections;
          var defaultName = 'Section ' + (sections.length + 1);
          sections.push({
@@ -93,7 +94,8 @@ angular.module('app.blueprints.create')
 
       $scope.addParagraph = function(question) {
          question.body.push({
-            datatype: 'text'
+            datatype: 'text',
+            content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, magnam, quis, excepturi odit placeat error accusamus maiores at a facere itaque corporis aliquam architecto magni aliquid obcaecati dolores dignissimos pariatur.'
          });
       };
 
@@ -101,14 +103,25 @@ angular.module('app.blueprints.create')
          question.body.push({
             datatype: 'code',
             lang: 'javascript',
-            content: 'alert(\'Hello world\');'
+            content: 'var src = f.src.filter(function(filepath) {
+   // Warn on and remove invalid source files (if nonull was set).
+   if (!grunt.file.exists(filepath)) {
+      grunt.log.warn(\'Source file "\' + filepath + \'" not found.\');
+      return false;
+   } else {
+      return true;
+   }
+}).map(function(filepath) {
+   // Read file source.
+   return grunt.file.read(filepath);
+});'
          });
       };
 
       $scope.addImage = function(question) {
          question.body.push({
             datatype: 'image',
-            content: 'https://gs1.wac.edgecastcdn.net/8019B6/data.tumblr.com/a8d640f9ef130ab0836ecad7f1da46f2/tumblr_mxxg21ARtI1s2rav1o2_r1_1280.jpg'
+            content: 'http://31.media.tumblr.com/e05faf08d9254af029d384ccb2b9e81d/tumblr_msbc2eCq0e1rsuch2o1_1280.jpg'
          });
       };
 

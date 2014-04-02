@@ -4,6 +4,7 @@
 
 code {
    @extend %editable;
+   display: block;
    font-family: Consolas, Monaco, "Andale Mono", monospace;
    white-space: pre;
    word-spacing: normal;

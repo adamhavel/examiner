@@ -330,15 +330,40 @@
    ========================================================================== */
 
 .modal {
-   @include blank-lines(2, both, padding);
-   @include taper(2);
+   @include blank-lines(1, both, padding);
+   @include taper(1);
    position: fixed;
    top: 50%;
    left: 50%;
    z-index: 1000;
    transform: translate3d(-50%, -50%, 0);
-   max-width: $main-content-width;
+   width: $main-content-width * 2/3;
    box-sizing: border-box;
-   background: brand(paper);
+   background: brand(blue);
    pointer-events: auto;
+   &__close {
+      @include position($top: 0, $right: 0);
+   }
+   &__prompt {
+      @extend %gamma;
+      font-family: "Roboto", sans-serif;
+      font-weight: 300;
+      color: rgba(black, .75);
+   }
+   &.ng-animate {
+      transition: transform .2s, opacity .2s;
+   }
+   &.ng-enter {
+      transform: translate3d(-50%, -300%, 0);
+      opacity: 0;
+   }
+   &.ng-enter-active,
+   &.ng-leave {
+      transform: translate3d(-50%, -50%, 0);
+      opacity: 1;
+   }
+   &.ng-leave-active {
+      transform: translate3d(-50%, 300%, 0);
+      opacity: 0;
+   }
 }

@@ -51,7 +51,6 @@ angular.module('app.blueprints.create')
       };
 
       $scope.addSection = function() {
-         $scope.openModal();
          var sections = $scope.blueprint.sections;
          var defaultName = 'Section ' + (sections.length + 1);
          sections.push({
@@ -103,25 +102,29 @@ angular.module('app.blueprints.create')
          question.body.push({
             datatype: 'code',
             lang: 'javascript',
-            content: 'var src = f.src.filter(function(filepath) {
-   // Warn on and remove invalid source files (if nonull was set).
-   if (!grunt.file.exists(filepath)) {
-      grunt.log.warn(\'Source file "\' + filepath + \'" not found.\');
-      return false;
-   } else {
-      return true;
-   }
-}).map(function(filepath) {
-   // Read file source.
-   return grunt.file.read(filepath);
-});'
+            content: 'var src = f.src.filter(function(filepath) {\n' +
+'   // Warn on and remove invalid source files (if nonull was set).\n' +
+'   if (!grunt.file.exists(filepath)) {\n' +
+'      grunt.log.warn(\'Source file "\' + filepath + \'" not found.\');\n' +
+'       return false;\n' +
+'   } else {\n' +
+'      return true;\n' +
+'   }\n' +
+'}).map(function(filepath) {\n' +
+'   // Read file source.\n' +
+'   return grunt.file.read(filepath);\n' +
+'});'
          });
       };
 
       $scope.addImage = function(question) {
-         question.body.push({
-            datatype: 'image',
-            content: 'http://31.media.tumblr.com/e05faf08d9254af029d384ccb2b9e81d/tumblr_msbc2eCq0e1rsuch2o1_1280.jpg'
+         $scope.openModal('input', 'Please provide an image URL.', function(url) {
+            if (url) {
+               question.body.push({
+                  datatype: 'image',
+                  content: url //http://31.media.tumblr.com/e05faf08d9254af029d384ccb2b9e81d/tumblr_msbc2eCq0e1rsuch2o1_1280.jpg
+               });
+            }
          });
       };
 

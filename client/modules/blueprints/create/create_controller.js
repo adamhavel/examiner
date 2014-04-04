@@ -34,10 +34,32 @@ angular.module('app.blueprints.create')
          });
       }
 
+      $scope.cancel = function() {
+         $scope.openModal('confirm', 'Are you sure you want to throw away this blueprint? All work in-progress will be lost.', function(confirmed) {
+            if (confirmed) {
+               NewBlueprint.reset();
+               $state.go('home');
+            }
+         });
+      };
+
       $scope.remove = function(parent, index) {
-         parent.splice(index, 1);
-         recalculatePoints();
-         checkDefaultNames();
+         var item = parent[index];
+         var removeItem = function() {
+            parent.splice(index, 1);
+            recalculatePoints();
+            checkDefaultNames();
+         };
+         if (item.content || item.body || item.questions) {
+            var name = item.name || 'this item';
+            $scope.openModal('confirm', 'Are you sure you want to delete ' + name + ' and all of its contents?', function(confirmed) {
+               if (confirmed) {
+                  removeItem();
+               }
+            }, 'Delete ' + name);
+         } else {
+            removeItem();
+         }
       };
 
       $scope.move = function(parent, index, distance) {
@@ -91,48 +113,79 @@ angular.module('app.blueprints.create')
          }
       };
 
-      $scope.addParagraph = function(question) {
-         question.body.push({
-            datatype: 'text',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, magnam, quis, excepturi odit placeat error accusamus maiores at a facere itaque corporis aliquam architecto magni aliquid obcaecati dolores dignissimos pariatur.'
-         });
-      };
-
-      $scope.addCode = function(question) {
-         question.body.push({
-            datatype: 'code',
-            lang: 'javascript',
-            content: 'var src = f.src.filter(function(filepath) {\n' +
-'   // Warn on and remove invalid source files (if nonull was set).\n' +
-'   if (!grunt.file.exists(filepath)) {\n' +
-'      grunt.log.warn(\'Source file "\' + filepath + \'" not found.\');\n' +
-'       return false;\n' +
-'   } else {\n' +
-'      return true;\n' +
-'   }\n' +
-'}).map(function(filepath) {\n' +
-'   // Read file source.\n' +
-'   return grunt.file.read(filepath);\n' +
-'});'
-         });
-      };
-
-      $scope.addImage = function(question) {
-         $scope.openModal('input', 'Please provide an image URL.', function(url) {
-            if (url) {
-               question.body.push({
-                  datatype: 'image',
-                  content: url //http://31.media.tumblr.com/e05faf08d9254af029d384ccb2b9e81d/tumblr_msbc2eCq0e1rsuch2o1_1280.jpg
+      $scope.addContent = function(question, type, isAnswer) {
+         isAnswer = isAnswer || false;
+         var target = isAnswer ? question.answer : question.body;
+         var content = null;
+         switch (type) {
+            case 'text':
+               content = {
+                  datatype: 'text',
+                  content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, magnam, quis, excepturi odit placeat error accusamus maiores at a facere itaque corporis aliquam architecto magni aliquid obcaecati dolores dignissimos pariatur.'
+               };
+               break;
+            case 'list':
+               content = {
+                  datatype: 'list',
+                  content: [
+                     { content: 'Lorem ipsum dolor sit amet'}
+                  ]
+               };
+               break;
+            case 'code':
+               content = {
+                  datatype: 'code',
+                  lang: 'javascript',
+                  content: 'var src = f.src.filter(function(filepath) {\n' +
+                           '   // Warn on and remove invalid source files (if nonull was set).\n' +
+                           '   if (!grunt.file.exists(filepath)) {\n' +
+                           '      grunt.log.warn(\'Source file "\' + filepath + \'" not found.\');\n' +
+                           '       return false;\n' +
+                           '   } else {\n' +
+                           '      return true;\n' +
+                           '   }\n' +
+                           '}).map(function(filepath) {\n' +
+                           '   // Read file source.\n' +
+                           '   return grunt.file.read(filepath);\n' +
+                           '});'
+               };
+               break;
+            case 'image':
+               $scope.openModal('externalImage', 'Please provide an image URL.', function(url) {
+                  if (url) {
+                     target.push({
+                        datatype: 'image',
+                        content: url //http://31.media.tumblr.com/e05faf08d9254af029d384ccb2b9e81d/tumblr_msbc2eCq0e1rsuch2o1_1280.jpg
+                     });
+                  }
                });
-            }
-         });
+               break;
+            case 'canvas':
+               content = {
+                  datatype: 'canvas',
+                  content: {}
+               };
+               break;
+         }
+         if (content) {
+            target.push(content);
+         }
       };
 
-      $scope.addCanvas = function(question) {
-         question.body.push({
-            datatype: 'canvas',
-            content: {}
-         });
-      };
+      $scope.addHint = function(answer) {
+         $scope.openModal('confirm', 'Take caution. Contents of the hint will be visible to those taking this exam.', function(confirmed) {
+            if (confirmed) {
+               answer.hint = angular.fromJson(angular.toJson(answer.content));
+            }
+         }, 'Add hint');
+      }
+
+      $scope.removeHint = function(answer) {
+         $scope.openModal('confirm', 'Are you sure you want to remove the hint?', function(confirmed) {
+            if (confirmed) {
+               answer.hint = null;
+            }
+         }, 'Remove hint');
+      }
 
    }]);

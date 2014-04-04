@@ -7,6 +7,8 @@
    <p class="lede" ng-model="blueprint.lede" contenteditable spellcheck="false" placeholder="Type the intro..."></p>
 
    <button ng-click="addSection()">Add section</button>
+   <button ng-click="cancel()">Cancel</button>
+   <button ng-click="save()">Save &amp; finish</button>
 
    <section class="exam__section" id="{{section.name || 'Untitled section ' + ($index+1) | idfy}}" ng-repeat="section in blueprint.sections">
 
@@ -30,11 +32,15 @@
          <header>
             <h1 ng-model="question.name" class="delta heading question__heading" contenteditable spellcheck="false" placeholder="Type the question name..."></h1>
             <ul class="inline-list tools">
-               <li><button title="Add paragraph" class="tools__item icon--type" ng-click="addParagraph(question)">Add paragraph</button></li>
-               <li><button title="Add list" class="tools__item icon--list" ng-click="addList(question)">Add list</button></li>
-               <li><button title="Add code" class="tools__item icon--code" ng-click="addCode(question)">Add code</button></li>
-               <li><button title="Add image" class="tools__item icon--photo" ng-click="addImage(question)">Add external image</button></li>
-               <li><button title="Add canvas" class="tools__item icon--canvas" ng-click="addCanvas(question)">Add canvas</button></li>
+               <li><button title="Add paragraph" class="tools__item icon--type" ng-click="addContent(question, 'text', true)">Add paragraph</button></li>
+               <li><button title="Add list" class="tools__item icon--list" ng-click="addContent(question, 'list', true)">Add list</button></li>
+               <li><button title="Add code" class="tools__item icon--code" ng-click="addContent(question, 'code', true)">Add code</button></li>
+               <li><button title="Add canvas" class="tools__item icon--canvas" ng-click="addContent(question, 'canvas', true)">Add canvas</button></li>
+               <li><button title="Add paragraph" class="tools__item icon--type" ng-click="addContent(question, 'text')">Add paragraph</button></li>
+               <li><button title="Add list" class="tools__item icon--list" ng-click="addContent(question, 'list')">Add list</button></li>
+               <li><button title="Add code" class="tools__item icon--code" ng-click="addContent(question, 'code')">Add code</button></li>
+               <li><button title="Add image" class="tools__item icon--photo" ng-click="addContent(question, 'image')">Add external image</button></li>
+               <li><button title="Add canvas" class="tools__item icon--canvas" ng-click="addContent(question, 'canvas')">Add canvas</button></li>
                <li><button title="Move up" class="tools__item icon--up" ng-disabled="$first" ng-click="move(section.questions, $index, -1)">Move question up</button></li>
                <li><button title="Move down" class="tools__item icon--down" ng-disabled="$last" ng-click="move(section.questions, $index, 1)">Move question down</button></li>
                <li><button title="Remove question" class="tools__item icon--remove" ng-click="remove(section.questions, $index)">Remove question</button></li>
@@ -58,18 +64,28 @@
             <img ng-switch-when="image" class="question__image" ng-src="{{chunk.content}}">
             <icanvas ng-switch-when="canvas" content="chunk.content"></icanvas>
             <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="true"></snippet>
+            <list ng-switch-when="list" items="chunk.content" editable="true"></list>
          </div>
 
          <div class="question__chunk question__answer" ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">
-            <div ng-if="chunk.content">
-               <h2 class="heading heading--caption">Hint</h2>
-               <p ng-switch-when="text">{{chunk.content}}</p>
-               <pre ng-switch-when="code"><code class="language-{{chunk.lang}}">{{chunk.content}}</code></pre>
-            </div>
-            <div ng-if="chunk.solution">
-               <h2 class="heading heading--caption">Solution</h2>
-               <p ng-switch-when="text">{{chunk.solution}}</p>
-               <pre ng-switch-when="code"><code class="language-{{chunk.lang}}">{{chunk.solution}}</code></pre>
+            <ul class="inline-list tools tools--small tools--flush">
+               <li ng-show="chunk.hint"><button title="Remove hint" class="tools__item icon--bulb-off" ng-click="removeHint(chunk)">Remove hint</button></li>
+               <li ng-hide="chunk.hint"><button title="Add hint" class="tools__item icon--bulb-on" ng-click="addHint(chunk)">Add hint</button></li>
+               <li><button title="Move up" class="tools__item icon--up" ng-disabled="$first" ng-click="move(question.answer, $index, -1)">Move up</button></li>
+               <li><button title="Move down" class="tools__item icon--down" ng-disabled="$last" ng-click="move(question.answer, $index, 1)">Move down</button></li>
+               <li><button title="Remove" class="tools__item icon--remove" ng-click="remove(question.answer, $index)">Remove</button></li>
+            </ul>
+            <h2 class="heading heading--caption epsilon">Answer</h2>
+            <p ng-switch-when="text" ng-model="chunk.content" contenteditable spellcheck="false" placeholder="Type here..."></p>
+            <icanvas ng-switch-when="canvas" content="chunk.content"></icanvas>
+            <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="true"></snippet>
+            <list ng-switch-when="list" items="chunk.content" editable="true"></list>
+            <div ng-show="chunk.hint" class="question__chunk">
+               <h2 class="heading heading--caption epsilon">Hint</h2>
+               <p ng-switch-when="text" ng-model="chunk.hint" contenteditable spellcheck="false" placeholder="Type here..."></p>
+               <icanvas ng-switch-when="canvas" content="chunk.hint"></icanvas>
+               <snippet ng-switch-when="code" content="chunk.hint" lang="{{chunk.lang}}" editable="true"></snippet>
+               <list ng-switch-when="list" items="chunk.hint" editable="true"></snippet>
             </div>
          </div>
 

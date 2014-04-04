@@ -1,10 +1,18 @@
-<section class="modal" ng-if="type">
+<section class="modal" ng-if="modal" ng-switch on="modal.type">
    <button class="modal__close tools__item icon--remove" ng-click="close()">close</button>
-   <div ng-switch on="type">
-      <form ng-submit="submitImage()">
-         <label for="" class="modal__prompt">{{prompt}}</label>
-         <input type="url" ng-model="$parent.input" required>
-         <button type="submit">Add image</button>
-      </form>
+   <form ng-switch-when="externalImage" ng-submit="submitImage()">
+      <div ng-show="loading">loading</div>
+      <label for="" class="modal__prompt">{{modal.prompt}}</label>
+      <input type="url" ng-model="modal.callback.value" required autofocus>
+      <button type="submit">Add image</button>
+   </form>
+   <div ng-switch-when="confirm">
+      <p class="modal__prompt">{{modal.prompt}}</p>
+      <button ng-click="confirm()">{{modal.secondaryActionLabel || 'Yes, I\'m sure'}}</button>
+      <button ng-click="close()">{{modal.primaryActionLabel || 'Cancel'}}</button>
+   </div>
+   <div ng-switch-when="alert">
+      <p class="modal__prompt">{{modal.prompt}}</p>
+      <button ng-click="close()">I understand</button>
    </div>
 </section>

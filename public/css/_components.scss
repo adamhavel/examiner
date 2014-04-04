@@ -24,7 +24,8 @@
          transition: opacity .1s;
       }
       &:hover,
-      &.j-active {
+      &:focus,
+      &.j-active, {
          transform: scale(1.5);
       }
       &.j-active {
@@ -189,8 +190,7 @@
          }
       }
       &__answer {
-         > p,
-         > pre {
+         p, pre, .bullet-list {
             @extend %inset;
          }
       }
@@ -337,9 +337,11 @@
    left: 50%;
    z-index: 1000;
    transform: translate3d(-50%, -50%, 0);
-   width: $main-content-width * 2/3;
+   min-width: $main-content-width * 2/3;
+   max-width: $main-content-width;
    box-sizing: border-box;
-   background: brand(blue);
+   background: brand(yellow);
+   box-shadow: .5em .5em 0 0 rgba(black, .15);
    pointer-events: auto;
    &__close {
       @include position($top: 0, $right: 0);
@@ -354,7 +356,7 @@
       transition: transform .2s, opacity .2s;
    }
    &.ng-enter {
-      transform: translate3d(-50%, -300%, 0);
+      transform: translate3d(-100%, -50%, 0);
       opacity: 0;
    }
    &.ng-enter-active,
@@ -363,7 +365,7 @@
       opacity: 1;
    }
    &.ng-leave-active {
-      transform: translate3d(-50%, 300%, 0);
+      transform: translate3d(100%, -50%, 0);
       opacity: 0;
    }
 }

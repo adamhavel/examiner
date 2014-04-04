@@ -2,13 +2,16 @@ angular.module('app.ui')
 
    .controller('UIController', ['$scope', 'Modal', function($scope, Modal) {
 
-      $scope.modalContent = null;
-      $scope.modalCallback = null;
+      $scope.modal = null;
 
-      $scope.openModal = function(type, prompt, callback) {
-         $scope.modalType = type;
-         $scope.modalPrompt = prompt;
-         $scope.modalCallback = callback;
+      $scope.openModal = function(type, prompt, callback, secondaryActionLabel, primaryActionLabel) {
+         $scope.modal = {
+            type: type,
+            prompt: prompt,
+            primaryActionLabel: primaryActionLabel || null,
+            secondaryActionLabel: secondaryActionLabel || null,
+            callback: callback
+         }
       };
 
    }]);

@@ -8,21 +8,16 @@ angular.module('app.blueprints.create')
 
       var Blueprint = (function() {
 
-         var api = {};
-
-         api.data = {
-            subject: null,
-            date: new Date(),
-            lang: 'en',
-            lede: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione, quidem, ullam dolorum expedita aliquam maiores distinctio esse repudiandae totam magnam saepe iusto ipsam nam a libero suscipit enim architecto nobis!',
-            sections: []
+         var api = {
+            data: {}
          };
 
-         api.clear = function() {
+         api.reset = function() {
             api.data = {
                subject: null,
                date: new Date(),
                lang: 'en',
+               lede: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione, quidem, ullam dolorum expedita aliquam maiores distinctio esse repudiandae totam magnam saepe iusto ipsam nam a libero suscipit enim architecto nobis!',
                sections: []
             };
          };
@@ -43,7 +38,7 @@ angular.module('app.blueprints.create')
                   });
                });
             });
-            var serializedData = angular.toJson(api.data);//.replace(/(<([^>]+)>)/g, '');
+            var serializedData = angular.toJson(api.data);
             webStorage.add('blueprint', serializedData);
             return serializedData;
          };
@@ -52,8 +47,10 @@ angular.module('app.blueprints.create')
             var storedSession = angular.fromJson(webStorage.get('blueprint'));
             if (storedSession) {
                api.data = storedSession;
-               //webStorage.remove('blueprint');
+               webStorage.remove('blueprint');
                api.data.date = new Date(api.data.date);
+            } else {
+               api.reset();
             }
          })();
 

@@ -2,17 +2,6 @@
 
 angular.module('app.exams')
 
-   .directive('question', function() {
-      return {
-         restrict: 'E',
-         scope: {
-            question: '=content',
-         },
-         templateUrl: 'partials/question.html',
-         replace: true
-      };
-   })
-
    .directive('contents', function() {
       return {
          restrict: 'E',
@@ -21,6 +10,65 @@ angular.module('app.exams')
          },
          templateUrl: 'partials/contents.html',
          replace: true
+      };
+   })
+
+   .directive('list', function() {
+
+      function getElements(selector, parent) {
+         parent = parent || document;
+         var elements = parent.querySelectorAll(selector),
+             arr = [];
+         for (var i = elements.length; i--; arr.unshift(elements[i]));
+         return arr;
+      }
+
+      function link($scope, $element) {
+
+         if ($scope.editable) {
+
+            $element.on('keydown', function(e) {
+               if (e.keyCode === 13 || e.keyCode === 8 || e.keyCode === 46) {
+                  var item = e.target;
+                  var items = getElements('li', $element[0]);
+                  var index = items.indexOf(item);
+                  if (e.keyCode === 13) {
+                     e.preventDefault();
+                     $scope.items.splice(index + 1, 0, { content: '' });
+                     $scope.$apply();
+                     getElements('li', $element[0])[index + 1].focus();
+                  } else if ($scope.items.length > 1 && !$scope.items[index].content) {
+                     e.preventDefault();
+                     $scope.items.splice(index, 1);
+                     $scope.$apply();
+                     var prevItem = items[index - 1];
+                     range = document.createRange();
+                     range.selectNodeContents(prevItem);
+                     range.collapse(false);
+                     selection = window.getSelection();
+                     selection.removeAllRanges();
+                     selection.addRange(range);
+                  }
+               }
+            });
+
+            $scope.$on('$destroy', function() {
+               $element.off('keydown');
+            });
+
+         }
+
+      }
+
+      return {
+         restrict: 'E',
+         scope: {
+            items: '=',
+            editable: '@'
+         },
+         templateUrl: 'partials/list.html',
+         replace: true,
+         link: link
       };
    })
 
@@ -76,15 +124,15 @@ angular.module('app.exams')
 
    .directive('icanvas', function() {
 
-      function link($scope, element) {
+      function getElements(selector, parent) {
+         parent = parent || document;
+         var elements = parent.querySelectorAll(selector),
+             arr = [];
+         for (var i = elements.length; i--; arr.unshift(elements[i]));
+         return arr;
+      }
 
-         function getElements(selector, parent) {
-            parent = parent || document;
-            var elements = parent.querySelectorAll(selector),
-                arr = [];
-            for (var i = elements.length; i--; arr.unshift(elements[i]));
-            return arr;
-         }
+      function link($scope, element) {
 
          var canvasWrapper = element[0],
              canvas = canvasWrapper.querySelector('canvas');

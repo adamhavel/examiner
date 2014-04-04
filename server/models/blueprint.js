@@ -28,8 +28,8 @@ var BlueprintSchema = new Schema(
                      {
                         datatype: String,
                         lang: String,
-                        solution: String,
-                        content: String
+                        content: String,
+                        hint: String
                      }
                   ]
                }

@@ -12,12 +12,6 @@ angular.module('app')
               return;
             }
 
-            $element.on('keydown', function(e) {
-               if (e.keyCode === 9 || e.keyCode === 13) {
-                  e.preventDefault();
-               }
-            });
-
             $element.on('input', function() {
                $scope.$apply(function() {
                   ngModel.$setViewValue($element.text());

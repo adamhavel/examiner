@@ -39,44 +39,29 @@ angular.module('app.ui')
       return {
          restrict: 'E',
          scope: {
-            type: '=',
-            callback: '=',
-            prompt: '='
+            modal: '=content'
          },
          templateUrl: 'partials/modal.html',
-         controller: ['$scope', '$q', function($scope, $q) {
+         controller: ['$scope', 'ImageHandler', function($scope, ImageHandler) {
 
             $scope.close = function() {
-               $scope.type = null;
-               $scope.callback = null;
-               $scope.prompt = null;
-               $scope.input = null;
+               $scope.modal = null;
             };
 
-            function isImage(src) {
-
-               var deferred = $q.defer();
-
-               var image = new Image();
-               image.addEventListener('error', function() {
-                    deferred.resolve(false);
-               });
-               image.addEventListener('load', function() {
-                    deferred.resolve(true);
-               });
-               image.src = src;
-               image = null;
-
-               return deferred.promise;
-            }
-
+            $scope.confirm = function() {
+               $scope.modal.callback(true);
+               $scope.close();
+            };
 
             $scope.submitImage = function() {
-               isImage($scope.input).then(function(passed) {
+               var url = $scope.modal.callback.value;
+               $scope.loading = true;
+               ImageHandler.isImage(url).then(function(passed) {
                   // TODO:
                   // provide loading visuals
+                  $scope.loading = false;
                   if (passed) {
-                     $scope.callback($scope.input);
+                     $scope.modal.callback(url);
                      $scope.close();
                   } else {
                      //document.querySelector('.modal').querySelector('input').setCustomValidity("Ray is wack!");

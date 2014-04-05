@@ -42,27 +42,30 @@ angular.module('app.ui')
             modal: '=content'
          },
          templateUrl: 'partials/modal.html',
-         controller: ['$scope', 'ImageHandler', function($scope, ImageHandler) {
+         controller: ['$scope', 'ImageHandler', 'Modal', function($scope, ImageHandler, Modal) {
 
             $scope.close = function() {
-               $scope.modal = null;
+               Modal.close();
             };
 
             $scope.confirm = function() {
-               $scope.modal.callback(true);
-               $scope.close();
+               var callback = $scope.modal.callback;
+               if (callback) {
+                  callback(true);
+               }
+               Modal.close();
             };
 
             $scope.submitImage = function() {
-               var url = $scope.modal.callback.value;
+               var callback = $scope.modal.callback;
                $scope.loading = true;
-               ImageHandler.isImage(url).then(function(passed) {
+               ImageHandler.isImage(callback.value).then(function(passed) {
                   // TODO:
                   // provide loading visuals
                   $scope.loading = false;
                   if (passed) {
-                     $scope.modal.callback(url);
-                     $scope.close();
+                     callback(callback.value);
+                     Modal.close();
                   } else {
                      //document.querySelector('.modal').querySelector('input').setCustomValidity("Ray is wack!");
                   }

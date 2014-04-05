@@ -47,17 +47,9 @@ angular.module('app.blueprints')
          date: $stateParams.date,
          lang: $stateParams.lang
       }, function(blueprint) {
-         blueprint.sections.forEach(function(section, i) {
-            section.name = section.name || 'Section ' + (i+1);
-            section.questions.forEach(function(question, j) {
-               question.name = question.name || 'Question ' + (i+1) + '.' + (j+1);
-            });
-         });
+
       }, function() {
          $state.go('blueprints');
       });
-
-      $scope.activeQuestion = 0;
-      $scope.activeSection = 0;
 
    }]);

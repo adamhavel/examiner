@@ -2,28 +2,54 @@
 
    <h1 class="alpha heading exam__heading">{{blueprint.subject | uppercase}} &mdash; {{blueprint.date | date:'d. M. yyyy'}}</h1>
 
-   <aside class="exam__contents">
-      <ol class="block-list">
-         <li ng-repeat="section in blueprint.sections">
-            <a ng-class="{'ng-active': $index == activeSection}" ng-smooth-scroll ng-href="{{url}}#{{section.name | idfy}}">{{section.name}}</a>
-            <ol class="block-list">
-               <li ng-repeat="question in section.questions"><a ng-class="{'ng-active': $index == activeQuestion}" ng-smooth-scroll ng-href="{{url}}#{{question.name | idfy}}">{{question.name}}</a></li>
-            </ol>
-         </li>
-      </ol>
-   </aside>
+   <contents document="blueprint"></contents>
 
    <p ng-if="blueprint.lede" class="lede">{{blueprint.lede}}</p>
 
-   <section class="exam__section" id="{{section.name | idfy}}" ng-repeat="section in blueprint.sections">
+   <section class="exam__section" id="{{section.name || 'Untitled section ' + ($index+1) | idfy}}" ng-repeat="section in blueprint.sections">
 
-      <h1 class="beta heading heading--section">
-         {{section.name}}
-      </h1>
+      <header>
+         <h1 class="beta heading" ng-model="section.name">{{section.name}}</h1>
+         <p class="exam__points">
+            {{section.points}} {{section.points != 1 ? 'points' : 'point'}}
+         </p>
+      </header>
 
-      <p ng-if="section.lede" class="lede">{{section.lede}}</p>
+      <p class="lede" ng-if="section.lede">{{section.lede}}</p>
 
-      <question content="question" ng-repeat="question in section.questions"></question>
+      <article class="question" id="{{question.name || 'Untitled question ' + ($index+1) | idfy}}" ng-repeat="question in section.questions">
+
+         <header>
+            <h1 class="delta heading question__heading">{{question.name}}</h1>
+            <p class="exam__points">
+               {{question.points}} {{question.points != 1 ? 'points' : 'point'}}
+            </p>
+         </header>
+
+         <div class="question__chunk" ng-repeat="chunk in question.body" ng-switch on="chunk.datatype">
+            <p ng-switch-when="text">{{chunk.content}}</p>
+            <img ng-switch-when="image" class="question__image" ng-src="{{chunk.content}}">
+            <icanvas ng-switch-when="canvas" content="chunk.content"></icanvas>
+            <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}"></snippet>
+            <list ng-switch-when="list" items="chunk.content"></list>
+         </div>
+
+         <div class="question__chunk question__answer" ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">
+            <h2 class="heading heading--caption epsilon">Answer</h2>
+            <p ng-switch-when="text">{{chunk.content}}</p>
+            <icanvas ng-switch-when="canvas" content="chunk.content"></icanvas>
+            <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}"></snippet>
+            <list ng-switch-when="list" items="chunk.content"></list>
+            <div ng-if="chunk.hint" class="question__chunk" ng-switch on="chunk.datatype">
+               <h2 class="heading heading--caption epsilon">Hint</h2>
+               <p ng-switch-when="text">{{chunk.hint}}</p>
+               <icanvas ng-switch-when="canvas" content="chunk.hint"></icanvas>
+               <snippet ng-switch-when="code" content="chunk.hint" lang="{{chunk.lang}}"></snippet>
+               <list ng-switch-when="list" items="chunk.hint"></list>
+            </div>
+         </div>
+
+      </article>
 
    </section>
 

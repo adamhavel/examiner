@@ -3,10 +3,10 @@
 angular.module('app.blueprints.create')
 
    .factory('NewBlueprint', [
-   '$resource', '$rootScope', 'webStorage',
-   function($resource, $rootScope, webStorage) {
+   '$resource', '$rootScope', '$state', 'webStorage', 'Blueprint', 'Modal', 'dateFilter',
+   function($resource, $rootScope, $state, webStorage, Blueprint, Modal, dateFilter) {
 
-      var Blueprint = (function() {
+      var NewBlueprint = (function() {
 
          var api = {
             data: {}
@@ -38,9 +38,28 @@ angular.module('app.blueprints.create')
                   });
                });
             });
-            var serializedData = angular.toJson(api.data);
-            webStorage.add('blueprint', serializedData);
-            return serializedData;
+            webStorage.add('blueprint', angular.toJson(api.data));
+         };
+
+         api.finish = function() {
+            api.save();
+            $rootScope.$emit('finishBlueprint');
+            setTimeout(function() {
+               var blueprint = new Blueprint(api.data);
+               blueprint.date = dateFilter(blueprint.date, 'yyyy-MM-dd');
+               blueprint.$save(function(response) {
+                  Modal.open('success', 'The blueprint has been successfully saved. You can edit it later, until the date of the exam.', function() {
+                     $state.go('home');
+                     api.reset();
+                     webStorage.remove('blueprint');
+                  });
+               }, function(err) {
+                  Modal.open('alert', 'There seems to be a problem with the server. Please try saving the blueprint later.');
+                  api.data = angular.fromJson(webStorage.get('blueprint'));
+                  webStorage.remove('blueprint');
+                  api.data.date = new Date(api.data.date);
+               });
+            }, 1000);
          };
 
          (function init() {
@@ -60,6 +79,6 @@ angular.module('app.blueprints.create')
 
       $rootScope.$on('save', Blueprint.save);
 
-      return Blueprint;
+      return NewBlueprint;
 
    }]);

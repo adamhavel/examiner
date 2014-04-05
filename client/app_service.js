@@ -24,7 +24,8 @@ angular.module('app')
 
          }
 
-      }
+      };
 
       return api;
+
    }]);

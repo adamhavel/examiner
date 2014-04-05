@@ -7,13 +7,22 @@
 
 .tools {
    font-size: 0;
+   backface-visibility: hidden;
+   &__group {
+      float: left;
+      max-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-width .1s, opacity .1s, margin .1s;
+   }
    &__item {
       @extend %icon;
       @include size($leading * 1);
       display: block;
       margin-left: .25rem;
       background: none;
-      font-size: 1rem;
+      font-size: 0;
       transition: transform .1s;
       &:before {
          @include size(100%);
@@ -24,11 +33,10 @@
          transition: opacity .1s;
       }
       &:hover,
-      &:focus,
-      &.j-active, {
-         transform: scale(1.5);
+      &.ng-active, {
+         transform: scale(1.4);
       }
-      &.j-active {
+      &.ng-active {
          position: relative;
          @include after {
             @include position($bottom: 0, $left: 20%);
@@ -46,6 +54,18 @@
          }
          &:before {
             opacity: .1;
+         }
+      }
+      &--group {
+         float: right;
+         &.ng-active {
+            & + .tools__group {
+               max-width: 500px;
+               overflow: visible;
+               margin: 0 .1rem 0 .5rem;
+               opacity: 1;
+               transition: max-width .5s, opacity .5s, margin .3s;
+            }
          }
       }
    }
@@ -164,6 +184,7 @@
          .heading {
             flex: 1;
             margin-bottom: 0;
+            white-space: nowrap;
          }
       }
       .tools {
@@ -344,7 +365,7 @@
    box-shadow: .5em .5em 0 0 rgba(black, .15);
    pointer-events: auto;
    &__close {
-      @include position($top: 0, $right: 0);
+      @include position($top: $leading * .25, $right: $leading * .25);
    }
    &__prompt {
       @extend %gamma;

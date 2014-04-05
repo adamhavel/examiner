@@ -6,9 +6,10 @@ module.exports = function(app) {
       .get(blueprints.query);
 
    app.route('/api/blueprint/:subject/:date/:lang')
-      .get(blueprints.get);
+      .get(blueprints.get)
+      .post(blueprints.create);
 
-   app.param('subject', blueprints.filterBySubject);
-   app.param('date', blueprints.filterByDate);
-   app.param('lang', blueprints.filterByLang);
+   app.param('subject', blueprints.validateSubject);
+   app.param('date', blueprints.validateDate);
+   app.param('lang', blueprints.validateLang);
 };

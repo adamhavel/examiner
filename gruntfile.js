@@ -80,6 +80,12 @@ uglify: {
    libs_highlight: {
       src: [
          'public/lib/prism/prism.js',
+         'public/lib/prism/components/*.min.js',
+         '!public/lib/prism/components/prism-core.min.js',
+         '!public/lib/prism/components/prism-javascript.min.js',
+         '!public/lib/prism/components/prism-markup.min.js',
+         '!public/lib/prism/components/prism-clike.min.js',
+         '!public/lib/prism/components/prism-css.min.js',
          'public/lib/bililiteRange/bililiteRange.js',
          'public/lib/bililiteRange/bililiteRange.fancytext.js',
          'public/lib/bililiteRange/bililiteRange.util.js',

@@ -1,18 +1,17 @@
 var mongoose = require('mongoose'),
-    Blueprint = mongoose.model('Blueprint');
+    Blueprint = mongoose.model('Blueprint'),
+    svgo = new (require('svgo'))();
 
-exports.filterBySubject = function(req, res, next, subject) {
+exports.validateSubject = function(req, res, next, subject) {
    var pattern = /^\w{2}-\w{3}$/i;
    if (!pattern.test(subject)) {
       return next(new Error ('not a valid subject code'));
    }
-   req.storeQuery = (req.storeQuery || Blueprint).find({
-      subject: subject
-   });
+   req.subject = subject;
    return next();
 };
 
-exports.filterByDate = function(req, res, next, date) {
+exports.validateDate = function(req, res, next, date) {
    var pattern = /^\d{4}-\d{1,2}-\d{1,2}$/i;
    if (!pattern.test(date)) {
       return next(new Error ('not a valid date'));
@@ -20,27 +19,24 @@ exports.filterByDate = function(req, res, next, date) {
    var dateArr = date.split('-').map(function (value) {
       return parseInt(value, 0);
    });
-   var startDate = new Date(dateArr[0], dateArr[1] - 1, dateArr[2]);
-   var endDate = new Date(dateArr[0], dateArr[1] - 1, dateArr[2] + 1);
-   req.storeQuery = (req.storeQuery || Blueprint).find({
-      date: {$gte: startDate, $lt: endDate}
-   });
+   req.startDate = new Date(dateArr[0], dateArr[1] - 1, dateArr[2]);
+   req.endDate = new Date(dateArr[0], dateArr[1] - 1, dateArr[2] + 1);
    return next();
 };
 
-exports.filterByLang = function(req, res, next, lang) {
+exports.validateLang = function(req, res, next, lang) {
    var pattern = /^[a-z]{2}$/i;
    if (!pattern.test(lang)) {
       return next(new Error ('not a valid language code'));
    }
-   req.storeQuery = (req.storeQuery || Blueprint).find({
-      lang: lang
-   });
+   req.lang = lang;
    return next();
 };
 
 exports.query = function(req, res) {
-   (req.storeQuery || Blueprint.find()).exec(function(err, blueprints) {
+   (req.storeQuery || Blueprint.find({
+
+   })).exec(function(err, blueprints) {
       if (err) {
          res.send(500);
       } else if (!blueprints.length) {
@@ -52,13 +48,53 @@ exports.query = function(req, res) {
 };
 
 exports.get = function(req, res) {
-   req.storeQuery.limit(1).exec(function(err, blueprint) {
+   Blueprint.findOne({
+      subject: req.subject,
+      lang: req.lang,
+      date: {$gte: req.startDate, $lt: req.endDate}
+   }).exec(function(err, blueprint) {
       if (err) {
          res.send(500);
-      } else if (!blueprint.length) {
+      } else if (!blueprint) {
          res.send(404);
       } else {
-         res.send(blueprint[0]);
+         res.send(blueprint);
+      }
+   });
+};
+
+exports.create = function(req, res) {
+   req.body.sections.forEach(function(section) {
+      section.questions.forEach(function(question) {
+         question.body.forEach(function(chunk) {
+            if (chunk.datatype === 'canvas') {
+               svgo.optimize(chunk.content, function(result) {
+                  chunk.content = result.data;
+               });
+            }
+         });
+         question.answer.forEach(function(chunk) {
+            if (chunk.datatype === 'canvas') {
+               svgo.optimize(chunk.content, function(result) {
+                  chunk.content = result.data;
+               });
+               if (chunk.hint) {
+                  svgo.optimize(chunk.hint, function(result) {
+                     chunk.hint = result.data;
+                  });
+               }
+            }
+         });
+      });
+   });
+
+   var blueprint = new Blueprint(req.body);
+
+   blueprint.save(function(err) {
+      if (err) {
+         res.send();
+      } else {
+         res.send(blueprint);
       }
    });
 };

@@ -2,10 +2,14 @@
 
 angular.module('app.blueprints')
 
-   .factory('Blueprints', ['$resource', function($resource) {
-      return $resource('api/blueprints/:subject/:date/:lang', null);
+   .factory('Blueprint', ['$resource', function($resource) {
+      return $resource('api/blueprint/:subject/:date/:lang', {
+         subject: '@subject',
+         date: '@date',
+         lang: '@lang'
+      });
    }])
 
-   .factory('Blueprint', ['$resource', function($resource) {
-      return $resource('api/blueprint/:subject/:date/:lang', null);
+   .factory('Blueprints', ['$resource', function($resource) {
+      return $resource('api/blueprints/:subject/:date/:lang', null);
    }]);

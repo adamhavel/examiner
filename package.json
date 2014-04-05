@@ -23,7 +23,8 @@
     "lodash": "~2.4.1",
     "express-session": "~1.0.2",
     "body-parser": "~1.0.1",
-    "passport": "~0.2.0"
+    "passport": "~0.2.0",
+    "svgo": "~0.4.4"
   },
   "devDependencies": {
     "karma": "~0.12.1",

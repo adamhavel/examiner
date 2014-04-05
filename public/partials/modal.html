@@ -7,12 +7,16 @@
       <button type="submit">Add image</button>
    </form>
    <div ng-switch-when="confirm">
-      <p class="modal__prompt">{{modal.prompt}}</p>
+      <p class="modal__prompt icon--caution">{{modal.prompt}}</p>
       <button ng-click="confirm()">{{modal.secondaryActionLabel || 'Yes, I\'m sure'}}</button>
       <button ng-click="close()">{{modal.primaryActionLabel || 'Cancel'}}</button>
    </div>
    <div ng-switch-when="alert">
       <p class="modal__prompt">{{modal.prompt}}</p>
-      <button ng-click="close()">I understand</button>
+      <button ng-click="confirm()">I understand</button>
+   </div>
+   <div ng-switch-when="success">
+      <p class="modal__prompt">{{modal.prompt}}</p>
+      <button ng-click="confirm()">Continue</button>
    </div>
 </section>

@@ -3,8 +3,8 @@
 angular.module('app.blueprints.create')
 
    .controller('BlueprintCreateController',
-   ['$scope', '$stateParams', '$state', 'NewBlueprint',
-   function($scope, $stateParams, $state, NewBlueprint) {
+   ['$scope', '$stateParams', '$state', 'NewBlueprint', 'Modal',
+   function($scope, $stateParams, $state, NewBlueprint, Modal) {
 
       $scope.blueprint = NewBlueprint.data;
       $scope.blueprint.subject = $stateParams.subject;
@@ -34,8 +34,57 @@ angular.module('app.blueprints.create')
          });
       }
 
+      function isEmpty(item) {
+         if (item.questions && !item.questions.length && !item.lede) {
+            return true;
+         } else if (item.body && !item.body.length && !item.answer.length) {
+            return true;
+         } else if (item.datatype) {
+            switch (item.datatype) {
+               case 'text':
+                  return item.content ? false : true;
+               case 'code':
+                  return item.content.replace(/\s+/g, '') === '';
+               case 'canvas':
+                  return item.content.states.length === 1;
+               case 'list':
+                  return false;
+               default:
+                  return false;
+            }
+         }
+         return false;
+      }
+
+      $scope.finish = function() {
+         var ready = true;
+         if (!$scope.blueprint.sections.length) {
+            Modal.open('alert', 'The exam must contain at least one section.');
+            ready = false;
+         }
+         $scope.blueprint.sections.forEach(function(section) {
+            if (!section.questions.length) {
+               Modal.open('alert', 'All sections must contain at least one question.');
+               ready = false;
+            }
+            section.questions.forEach(function(question) {
+               if (!question.body.length) {
+                  Modal.open('alert', 'All questions must have some content.');
+                  ready = false;
+               }
+               if (!question.answer.length) {
+                  Modal.open('alert', 'All questions must have an answer.');
+                  ready = false;
+               }
+            });
+         });
+         if (ready) {
+            NewBlueprint.finish();
+         }
+      };
+
       $scope.cancel = function() {
-         $scope.openModal('confirm', 'Are you sure you want to throw away this blueprint? All work in-progress will be lost.', function(confirmed) {
+         Modal.open('confirm', 'Are you sure you want to throw away this blueprint? All work in-progress will be lost.', function(confirmed) {
             if (confirmed) {
                NewBlueprint.reset();
                $state.go('home');
@@ -50,13 +99,13 @@ angular.module('app.blueprints.create')
             recalculatePoints();
             checkDefaultNames();
          };
-         if (item.content || item.body || item.questions) {
+         if (!isEmpty(item)) {
             var name = item.name || 'this item';
-            $scope.openModal('confirm', 'Are you sure you want to delete ' + name + ' and all of its contents?', function(confirmed) {
+            Modal.open('confirm', 'Are you sure you want to delete ' + name + ' and all of its contents?', function(confirmed) {
                if (confirmed) {
                   removeItem();
                }
-            }, 'Delete ' + name);
+            }, 'Delete');
          } else {
             removeItem();
          }
@@ -107,7 +156,7 @@ angular.module('app.blueprints.create')
       };
 
       $scope.lowerPoints = function(section, question) {
-         if (question.points > 0) {
+         if (question.points > 1) {
             section.points--;
             question.points--;
          }
@@ -151,7 +200,7 @@ angular.module('app.blueprints.create')
                };
                break;
             case 'image':
-               $scope.openModal('externalImage', 'Please provide an image URL.', function(url) {
+               Modal.open('externalImage', 'Please provide an image URL.', function(url) {
                   if (url) {
                      target.push({
                         datatype: 'image',
@@ -162,8 +211,7 @@ angular.module('app.blueprints.create')
                break;
             case 'canvas':
                content = {
-                  datatype: 'canvas',
-                  content: {}
+                  datatype: 'canvas'
                };
                break;
          }
@@ -173,19 +221,33 @@ angular.module('app.blueprints.create')
       };
 
       $scope.addHint = function(answer) {
-         $scope.openModal('confirm', 'Take caution. Contents of the hint will be visible to those taking this exam.', function(confirmed) {
+         Modal.open('confirm', 'Take caution. Contents of the hint will be visible to those taking the exam.', function(confirmed) {
             if (confirmed) {
                answer.hint = angular.fromJson(angular.toJson(answer.content));
             }
          }, 'Add hint');
-      }
+      };
+
+      $scope.updateHint = function(answer) {
+         if (answer.hint) {
+            Modal.open('confirm', 'This will replace the contents of the hint. Do you want to continue?', function(confirmed) {
+               if (confirmed) {
+                  answer.hint = angular.fromJson(angular.toJson(answer.content));
+               }
+            }, 'Update hint');
+         }
+      };
 
       $scope.removeHint = function(answer) {
-         $scope.openModal('confirm', 'Are you sure you want to remove the hint?', function(confirmed) {
+         Modal.open('confirm', 'Are you sure you want to remove the hint?', function(confirmed) {
             if (confirmed) {
                answer.hint = null;
             }
          }, 'Remove hint');
-      }
+      };
+
+      $scope.areEqual = function(o1, o2) {
+         return angular.toJson(o1) === angular.toJson(o2);
+      };
 
    }]);

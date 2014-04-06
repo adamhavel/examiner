@@ -56,7 +56,7 @@ a {
       font-family: "PT Sans Narrow", serif;
    }
    &--caption {
-      @include taper(.25);
+      @include taper(.6);
       margin-bottom: 0;
       font-style: italic;
    }

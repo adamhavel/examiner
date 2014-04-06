@@ -58,14 +58,12 @@
       }
       &--group {
          float: right;
-         &.ng-active {
-            & + .tools__group {
-               max-width: 500px;
-               overflow: visible;
-               margin: 0 .1rem 0 .5rem;
-               opacity: 1;
-               transition: max-width .5s, opacity .5s, margin .3s;
-            }
+         &.ng-active + .tools__group {
+            max-width: 500px;
+            overflow: visible;
+            margin: 0 .1rem 0 .5rem;
+            opacity: 1;
+            transition: max-width .5s, opacity .5s, margin .3s;
          }
       }
    }
@@ -128,7 +126,7 @@
       line-height: $leading;
       font-family: "Roboto", sans-serif;
       font-style: italic;
-      header > & {
+      .tools + & {
          width: 20%;
          text-align: right;
       }
@@ -214,6 +212,10 @@
          p, pre, .bullet-list {
             @extend %inset;
          }
+      }
+      &__answer &__image {
+         box-sizing: border-box;
+         border: 1px solid rgba(black, .25);
       }
    }
 
@@ -352,27 +354,71 @@
 
 .modal {
    @include blank-lines(1, both, padding);
-   @include taper(1);
+   @include taper(1, both);
+   display: flex;
+   align-items: stretch;
    position: fixed;
    top: 50%;
    left: 50%;
    z-index: 1000;
    transform: translate3d(-50%, -50%, 0);
-   min-width: $main-content-width * 2/3;
-   max-width: $main-content-width;
+   width: $main-content-width * 4/5;
    box-sizing: border-box;
-   background: brand(yellow);
-   box-shadow: .5em .5em 0 0 rgba(black, .15);
+   background: lighten(brand(yellow), 10%);
+   box-shadow: 1em 1em 0 0 rgba(black, .1);
    pointer-events: auto;
+
    &__close {
+      display: none;
       @include position($top: $leading * .25, $right: $leading * .25);
    }
+   &__content {
+      flex: 1;
+      text-align: right;
+   }
    &__prompt {
-      @extend %gamma;
+      @extend %delta;
       font-family: "Roboto", sans-serif;
       font-weight: 300;
-      color: rgba(black, .75);
+      color: rgba(black, .6);
+      text-align: left;
    }
+   @include icon {
+      display: block;
+      min-width: 8rem;
+      min-height: 6rem;
+      width: auto;
+      height: auto;
+   }
+   &--affirm {
+      background: lighten(brand(purple), 20%);
+   }
+   &--loadImage {
+      @extend %icon--photo;
+      background: lighten(brand(purple), 20%);
+   }
+   &--success {
+      @extend %icon--thumbs-up;
+      background: lighten(brand(green), 10%);
+   }
+   &--alert {
+      @extend %icon--caution;
+      background: lighten(brand(yellow), 10%);
+   }
+   &--confirm {
+      @extend %icon--question-mark;
+      background: lighten(brand(yellow), 5%);
+
+   }
+   &--error {
+      @extend %icon--caution;
+      background: lighten(brand(red), 20%);
+   }
+
+
+
+
+
    &.ng-animate {
       transition: transform .2s, opacity .2s;
    }

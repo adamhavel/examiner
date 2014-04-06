@@ -21,8 +21,7 @@ label {
 
 input,
 textarea,
-select,
-button[type="submit"] {
+select {
    @include linespan(1.5);
    @include blank-lines(.5, trailing);
    @extend %trim-trailing-lines;
@@ -81,17 +80,6 @@ textarea {
    height: auto;
    padding: calc(#{$leading * .25} - #{$forms-border-width}) .5em;
    line-height: $leading;
-}
-
-button[type="submit"] {
-   @extend %center;
-   padding: 0 1em;
-   transition: color .2s, background .2s;
-   &:hover, &:focus {
-      outline: none;
-      background: blue;
-      color: white;
-   }
 }
 
 

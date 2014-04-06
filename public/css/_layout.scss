@@ -109,22 +109,27 @@ $navigation-height: $leading * 1;
          font-weight: 300;
          text-decoration: none;
          font-size: 1.2em;
-         color: rgba(black, .75);
+         color: rgba(black, .65);
          transition: transform, opacity, color, box-shadow, background-color;
          transition-duration: .25s;
          opacity: .3;
-         &.ng-urgent {
-            color: rgba(brand(red), .9);
-         }
          &:hover,
          &:focus,
-         &.ng-active {
+         &.ng-active,
+         &.ng-ongoing {
             transform: translateX($leading / 1.75);
             background-color: brand(yellow);
             box-shadow: inset #{-($leading / 1.75 + .2rem)} 0 .2rem 0 rgba(black, .075),
                         .5rem .2rem 0 0 rgba(black, .05);
             opacity: 1;
             color: inherit;
+         }
+         &.ng-ongoing {
+            background-color: brand(green);
+         }
+         &.ng-urgent {
+            color: brand(red);
+            opacity: 1;
          }
          .site-nav:hover & {
             opacity: 1;

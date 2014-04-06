@@ -2,8 +2,8 @@
 
 angular.module('app.blueprints.create')
 
-   .factory('NewBlueprint', [
-   '$resource', '$rootScope', '$state', 'webStorage', 'Blueprint', 'Modal', 'dateFilter',
+   .factory('NewBlueprint',
+   ['$resource', '$rootScope', '$state', 'webStorage', 'Blueprint', 'Modal', 'dateFilter',
    function($resource, $rootScope, $state, webStorage, Blueprint, Modal, dateFilter) {
 
       var NewBlueprint = (function() {
@@ -14,6 +14,7 @@ angular.module('app.blueprints.create')
 
          api.reset = function() {
             api.data = {
+               ongoing: false,
                subject: null,
                date: new Date(),
                lang: 'en',
@@ -21,6 +22,10 @@ angular.module('app.blueprints.create')
                sections: []
             };
          };
+
+         api.isOngoing = function() {
+            return api.data.ongoing;
+         }
 
          api.save = function() {
             var regExpHTML = /(<([^>]+)>)/g;
@@ -41,25 +46,25 @@ angular.module('app.blueprints.create')
             webStorage.add('blueprint', angular.toJson(api.data));
          };
 
-         api.finish = function() {
+         api.store = function() {
             api.save();
             $rootScope.$emit('finishBlueprint');
             setTimeout(function() {
                var blueprint = new Blueprint(api.data);
                blueprint.date = dateFilter(blueprint.date, 'yyyy-MM-dd');
                blueprint.$save(function(response) {
-                  Modal.open('success', 'The blueprint has been successfully saved. You can edit it later, until the date of the exam.', function() {
-                     $state.go('home');
+                  Modal.open('success', 'The blueprint has been successfully saved.', function() {
+                     $state.go('blueprints');
                      api.reset();
                      webStorage.remove('blueprint');
                   });
                }, function(err) {
-                  Modal.open('alert', 'There seems to be a problem with the server. Please try saving the blueprint later.');
+                  Modal.open('error', 'There seems to be a problem with the server. Please try saving the blueprint later.');
                   api.data = angular.fromJson(webStorage.get('blueprint'));
                   webStorage.remove('blueprint');
                   api.data.date = new Date(api.data.date);
                });
-            }, 1000);
+            }, 500);
          };
 
          (function init() {
@@ -77,7 +82,7 @@ angular.module('app.blueprints.create')
 
       })();
 
-      $rootScope.$on('save', Blueprint.save);
+      $rootScope.$on('save', NewBlueprint.save);
 
       return NewBlueprint;
 

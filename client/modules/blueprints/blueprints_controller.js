@@ -39,8 +39,9 @@ angular.module('app.blueprints')
 
    }])
 
-   .controller('BlueprintViewController', ['$scope', '$stateParams', '$state', 'Blueprint',
-   function($scope, $stateParams, $state, Blueprint) {
+   .controller('BlueprintController',
+   ['$scope', '$stateParams', '$state', 'Blueprint', 'NewBlueprint',
+   function($scope, $stateParams, $state, Blueprint, NewBlueprint) {
 
       $scope.blueprint = Blueprint.get({
          subject: $stateParams.subject,
@@ -51,5 +52,10 @@ angular.module('app.blueprints')
       }, function() {
          $state.go('blueprints');
       });
+
+      $scope.copyQuestion = function(question) {
+         var sections = NewBlueprint.data.sections;
+         sections[sections.length - 1].questions.push(question);
+      }
 
    }]);

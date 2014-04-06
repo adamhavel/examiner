@@ -1,22 +1,34 @@
-<section class="modal" ng-if="modal" ng-switch on="modal.type">
+<section ng-attr-class="modal modal--{{modal.type}}" ng-if="modal">
    <button class="modal__close tools__item icon--remove" ng-click="close()">close</button>
-   <form ng-switch-when="externalImage" ng-submit="submitImage()">
-      <div ng-show="loading">loading</div>
-      <label for="" class="modal__prompt">{{modal.prompt}}</label>
-      <input type="url" ng-model="modal.callback.value" required autofocus>
-      <button type="submit">Add image</button>
-   </form>
-   <div ng-switch-when="confirm">
-      <p class="modal__prompt icon--caution">{{modal.prompt}}</p>
-      <button ng-click="confirm()">{{modal.secondaryActionLabel || 'Yes, I\'m sure'}}</button>
-      <button ng-click="close()">{{modal.primaryActionLabel || 'Cancel'}}</button>
-   </div>
-   <div ng-switch-when="alert">
-      <p class="modal__prompt">{{modal.prompt}}</p>
-      <button ng-click="confirm()">I understand</button>
-   </div>
-   <div ng-switch-when="success">
-      <p class="modal__prompt">{{modal.prompt}}</p>
-      <button ng-click="confirm()">Continue</button>
+   <div class="modal__content" ng-switch on="modal.type">
+      <form ng-switch-when="loadImage" ng-submit="submitImage()">
+         <div ng-show="loading">loading</div>
+         <p class="modal__prompt">{{modal.prompt}}</p>
+         <input type="url" ng-model="modal.callback.value" required autofocus>
+         <button ng-click="close()">Cancel</button>
+         <button type="submit">Add image</button>
+      </form>
+      <div ng-switch-when="affirm">
+         <p class="modal__prompt">{{modal.prompt}}</p>
+         <button ng-click="close()">{{modal.secondaryActionLabel || 'Cancel'}}</button>
+         <button ng-click="confirm()">{{modal.primaryActionLabel || 'Continue'}}</button>
+      </div>
+      <div ng-switch-when="confirm">
+         <p class="modal__prompt">{{modal.prompt}}</p>
+         <button ng-click="confirm()">{{modal.secondaryActionLabel || 'Yes, I\'m sure'}}</button>
+         <button ng-click="close()">{{modal.primaryActionLabel || 'Cancel'}}</button>
+      </div>
+      <div ng-switch-when="alert">
+         <p class="modal__prompt">{{modal.prompt}}</p>
+         <button ng-click="confirm()">I understand</button>
+      </div>
+      <div ng-switch-when="error">
+         <p class="modal__prompt">{{modal.prompt}}</p>
+         <button ng-click="confirm()">I understand</button>
+      </div>
+      <div ng-switch-when="success">
+         <p class="modal__prompt">{{modal.prompt}}</p>
+         <button ng-click="confirm()">Continue</button>
+      </div>
    </div>
 </section>

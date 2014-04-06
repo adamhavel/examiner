@@ -1,6 +1,6 @@
 <article class="exam">
 
-   <h1 class="alpha heading exam__heading">{{blueprint.subject | uppercase}} &mdash; {{blueprint.date | date:'d. M. yyyy'}}</h1>
+   <h1 class="alpha heading exam__heading">{{blueprint.subject | uppercase}} &mdash; {{blueprint.date | date: 'd. M. yyyy, H:mm'}}</h1>
 
    <contents document="blueprint"></contents>
 
@@ -20,7 +20,12 @@
       <article class="question" id="{{question.name || 'Untitled question ' + ($index+1) | idfy}}" ng-repeat="question in section.questions">
 
          <header>
-            <h1 class="delta heading question__heading">{{question.name}}</h1>
+            <ul class="inline-list tools" ng-if="newBlueprint.isOngoing()">
+               <li><button title="Copy to the new blueprint" class="tools__item icon--pin" ng-click="copyQuestion(question)">Copy to the new blueprint</button></li>
+            </ul>
+            <h1 class="delta heading question__heading">
+               {{question.name}}
+            </h1>
             <p class="exam__points">
                {{question.points}} {{question.points != 1 ? 'points' : 'point'}}
             </p>
@@ -29,23 +34,23 @@
          <div class="question__chunk" ng-repeat="chunk in question.body" ng-switch on="chunk.datatype">
             <p ng-switch-when="text">{{chunk.content}}</p>
             <img ng-switch-when="image" class="question__image" ng-src="{{chunk.content}}">
-            <icanvas ng-switch-when="canvas" content="chunk.content"></icanvas>
-            <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}"></snippet>
-            <list ng-switch-when="list" items="chunk.content"></list>
+            <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;charset=UTF-8,{{chunk.content}}">
+            <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="false"></snippet>
+            <list ng-switch-when="list" content="chunk.content" editable="false"></list>
          </div>
 
          <div class="question__chunk question__answer" ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">
             <h2 class="heading heading--caption epsilon">Answer</h2>
             <p ng-switch-when="text">{{chunk.content}}</p>
-            <icanvas ng-switch-when="canvas" content="chunk.content"></icanvas>
-            <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}"></snippet>
-            <list ng-switch-when="list" items="chunk.content"></list>
+            <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;charset=UTF-8,{{chunk.content}}">
+            <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="false"></snippet>
+            <list ng-switch-when="list" content="chunk.content" editable="false"></list>
             <div ng-if="chunk.hint" class="question__chunk" ng-switch on="chunk.datatype">
                <h2 class="heading heading--caption epsilon">Hint</h2>
                <p ng-switch-when="text">{{chunk.hint}}</p>
-               <icanvas ng-switch-when="canvas" content="chunk.hint"></icanvas>
-               <snippet ng-switch-when="code" content="chunk.hint" lang="{{chunk.lang}}"></snippet>
-               <list ng-switch-when="list" items="chunk.hint"></list>
+               <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;charset=UTF-8,{{chunk.hint}}">
+               <snippet ng-switch-when="code" content="chunk.hint" lang="{{chunk.lang}}" editable="false"></snippet>
+               <list ng-switch-when="list" content="chunk.hint" editable="false"></list>
             </div>
          </div>
 

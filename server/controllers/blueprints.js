@@ -34,9 +34,23 @@ exports.validateLang = function(req, res, next, lang) {
 };
 
 exports.query = function(req, res) {
-   (req.storeQuery || Blueprint.find({
-
-   })).exec(function(err, blueprints) {
+   var query = Blueprint.find().sort({ date: -1 });
+   if (req.subject) {
+      query = query.find({
+         subject: req.subject
+      });
+   }
+   if (req.lang) {
+      query = query.find({
+         lang: req.lang
+      });
+   }
+   if (req.startDate && req.endDate) {
+      query = query.find({
+         date: {$gte: req.startDate, $lt: req.endDate}
+      });
+   }
+   query.exec(function(err, blueprints) {
       if (err) {
          res.send(500);
       } else if (!blueprints.length) {

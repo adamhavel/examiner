@@ -59,6 +59,12 @@
    }
 }
 
+@mixin icon {
+   &:before {
+      @content;
+   }
+}
+
 @mixin position($top: null, $right: null, $bottom: null, $left: null) {
    position: absolute;
    @each $data in top $top, right $right, bottom $bottom, left $left {

@@ -26,23 +26,25 @@ button:not(.tools__item) {
    }
    &__item {
       @extend %icon;
-      @include size($leading * 1);
+      @include size($leading);
       display: block;
       margin-left: .25rem;
       background: none;
       font-size: 0;
-      transition: transform .1s;
-      &:before {
+      xtransition: transform .1s;
+      @include icon {
          @include size(100%);
          display: block;
          margin: 0;
          background-size: 100%;
          opacity: .6;
-         transition: opacity .1s;
+         transition: transform .1s, opacity .1s;
       }
       &:hover,
       &.ng-active, {
-         transform: scale(1.4);
+         @include icon {
+            transform: scale(1.4);
+         }
       }
       &.ng-active {
          position: relative;
@@ -54,6 +56,7 @@ button:not(.tools__item) {
             background: brand(yellow);
             border-radius: 50%;
             backface-visibility: hidden;
+            transform: scale(1.4);
          }
       }
       &[disabled] {
@@ -62,6 +65,14 @@ button:not(.tools__item) {
          }
          &:before {
             opacity: .1;
+         }
+      }
+      &--labeled {
+         font-size: 1rem;
+         width: auto;
+         @include icon {
+            @include size($leading);
+            display: inline-block;;
          }
       }
       &--group {
@@ -98,6 +109,22 @@ button:not(.tools__item) {
    ========================================================================== */
 
 .exam {
+   &__header {
+      @extend %aloof;
+      display: flex;
+      align-items: center;
+   }
+   &__heading {
+      flex: 1;
+   }
+   &__header > &__heading {
+      margin-bottom: 0;
+   }
+   &__controls {
+      @extend %inline-list;
+      @include buttons(lighten(silver, 20%));
+      @include primary-button(lighten(brand(yellow), 20%));
+   }
    &__section {
       @include blank-lines(3, trailing);
       @extend %trim-trailing-lines;
@@ -138,7 +165,6 @@ button:not(.tools__item) {
          width: 20%;
          text-align: right;
       }
-
    }
    &__contents {
       position: fixed;
@@ -167,13 +193,6 @@ button:not(.tools__item) {
       li {
          @extend %vertical-slide;
       }
-   }
-   &__date {
-      @extend %strip;
-      display: inline-block;
-      height: $leading * 2;
-      font-weight: 700;
-      cursor: pointer;
    }
 }
 
@@ -361,6 +380,7 @@ button:not(.tools__item) {
    ========================================================================== */
 
 .modal {
+   @extend %horizontal-slide;
    @include blank-lines(1, both, padding);
    @include taper(1, both);
    display: flex;
@@ -373,7 +393,7 @@ button:not(.tools__item) {
    width: $main-content-width * 4/5;
    box-sizing: border-box;
    background: lighten(brand(yellow), 10%);
-   box-shadow: 1em 1em 0 0 rgba(black, .075);
+   box-shadow: 2rem 2rem 0 0 rgba(black, .075);
    pointer-events: auto;
    &__close {
       display: none;
@@ -424,26 +444,5 @@ button:not(.tools__item) {
    &--error {
       @extend %icon--caution;
       background: lighten(brand(red), 15%);
-   }
-
-
-
-
-
-   &.ng-animate {
-      transition: transform .2s, opacity .2s;
-   }
-   &.ng-enter {
-      transform: translate3d(-100%, -50%, 0);
-      opacity: 0;
-   }
-   &.ng-enter-active,
-   &.ng-leave {
-      transform: translate3d(-50%, -50%, 0);
-      opacity: 1;
-   }
-   &.ng-leave-active {
-      transform: translate3d(100%, -50%, 0);
-      opacity: 0;
    }
 }

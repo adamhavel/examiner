@@ -113,6 +113,9 @@ $navigation-height: $leading * 1;
          transition: transform, opacity, color, box-shadow, background-color;
          transition-duration: .25s;
          opacity: .3;
+         @include icon {
+            margin-left: $gutter / 2;
+         };
          &:hover,
          &:focus,
          &.ng-active,

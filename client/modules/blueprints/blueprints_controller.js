@@ -48,7 +48,10 @@ angular.module('app.blueprints')
          date: $stateParams.date,
          lang: $stateParams.lang
       }, function(blueprint) {
-
+         blueprint.date = new Date(blueprint.date);
+         // FIXME:
+         // revert for production
+         $scope.editable = blueprint.date < new Date();
       }, function() {
          $state.go('blueprints');
       });

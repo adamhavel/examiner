@@ -42,7 +42,7 @@ angular.module('app.blueprints.create')
                case 'text':
                case 'code':
                case 'list':
-                  isEmpty = item.content.replace(/\s+/g, '') === '';
+                  isEmpty = item.content.replace(/(\s|<([^>]+)>)+/g, '') === '';
                   break;
                case 'canvas':
                   isEmpty = item.content.states.length === 1;
@@ -52,29 +52,36 @@ angular.module('app.blueprints.create')
          return isEmpty;
       }
 
-      $scope.store = function() {
-         var ready = true;
-         if (!$scope.blueprint.sections.length) {
-            Modal.open('alert', 'The blueprint must contain at least one section.');
-            ready = false;
-         }
-         $scope.blueprint.sections.forEach(function(section) {
+      function isAcceptable() {
+         return !$scope.blueprint.sections.some(function(section) {
             if (!section.questions.length) {
                Modal.open('alert', 'All sections must contain at least one question.');
-               ready = false;
+               return true;
+            } else {
+               return section.questions.some(function(question) {
+                  if (!question.body.length) {
+                     Modal.open('alert', 'All questions must have some content.');
+                     return true;
+                  } else {
+                     var areChunksEmpty = question.body.every(function(chunk) {
+                        return isEmpty(chunk);
+                     });
+                     if (areChunksEmpty) {
+                        Modal.open('alert', 'All questions must have some content.');
+                        return true;
+                     }
+                  }
+                  if (!question.answer.length) {
+                     Modal.open('alert', 'All questions must have a defined answer.');
+                     return true;
+                  }
+               });
             }
-            section.questions.forEach(function(question) {
-               if (!question.body.length) {
-                  Modal.open('alert', 'All questions must have some content.');
-                  ready = false;
-               }
-               if (!question.answer.length) {
-                  Modal.open('alert', 'All questions must have a defined answer.');
-                  ready = false;
-               }
-            });
          });
-         if (ready) {
+      }
+
+      $scope.store = function() {
+         if (isAcceptable()) {
             Modal.open('affirm', 'You are about to save and store the blueprint. You can edit it anytime later. Do you want to continue?', function(confirmed) {
                if (confirmed) {
                   watcher();
@@ -149,17 +156,14 @@ angular.module('app.blueprints.create')
             ],
             answer: []
          });
-         //section.points++;
       };
 
       $scope.raisePoints = function(section, question) {
-         //section.points++;
          question.points++;
       };
 
       $scope.lowerPoints = function(section, question) {
          if (question.points > 1) {
-            //section.points--;
             question.points--;
          }
       };

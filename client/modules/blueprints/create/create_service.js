@@ -3,8 +3,8 @@
 angular.module('app.blueprints.create')
 
    .factory('NewBlueprint',
-   ['$resource', '$rootScope', '$state', 'webStorage', 'Blueprint', 'Modal', 'dateFilter',
-   function($resource, $rootScope, $state, webStorage, Blueprint, Modal, dateFilter) {
+   ['$resource', '$rootScope', '$state', '$timeout', 'webStorage', 'Blueprint', 'Modal', 'dateFilter',
+   function($resource, $rootScope, $state, $timeout, webStorage, Blueprint, Modal, dateFilter) {
 
       var NewBlueprint = (function() {
 
@@ -49,14 +49,16 @@ angular.module('app.blueprints.create')
          api.store = function() {
             api.save();
             $rootScope.$emit('finishBlueprint');
-            setTimeout(function() {
+            $timeout(function() {
                var blueprint = new Blueprint(api.data);
                blueprint.date = dateFilter(blueprint.date, 'yyyy-MM-dd');
                blueprint.$save(function(response) {
                   Modal.open('success', 'The blueprint has been successfully saved.', function() {
-                     $state.go('blueprints');
-                     api.reset();
-                     webStorage.remove('blueprint');
+                     $timeout(function() {
+                        $state.go('blueprints', { filter: '/mi-mdw' });
+                        api.reset();
+                        webStorage.remove('blueprint');
+                     }, 500);
                   });
                }, function(err) {
                   Modal.open('error', 'There seems to be a problem with the server. Please try saving the blueprint later.');
@@ -64,7 +66,7 @@ angular.module('app.blueprints.create')
                   webStorage.remove('blueprint');
                   api.data.date = new Date(api.data.date);
                });
-            }, 500);
+            }, 1000);
          };
 
          (function init() {

@@ -25,6 +25,25 @@
    }
 }
 
+%horizontal-slide {
+   &.ng-animate {
+      transition: transform .2s, opacity .2s;
+   }
+   &.ng-enter {
+      transform: translate3d(-100%, -50%, 0);
+      opacity: 0;
+   }
+   &.ng-enter-active,
+   &.ng-leave {
+      transform: translate3d(-50%, -50%, 0);
+      opacity: 1;
+   }
+   &.ng-leave-active {
+      transform: translate3d(100%, -50%, 0);
+      opacity: 0;
+   }
+}
+
 %fade {
    &.ng-animate {
       transition: opacity .25s;

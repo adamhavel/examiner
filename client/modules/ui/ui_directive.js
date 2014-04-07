@@ -42,7 +42,7 @@ angular.module('app.ui')
             modal: '=content'
          },
          templateUrl: 'partials/modal.html',
-         controller: ['$scope', 'ImageHandler', 'Modal', function($scope, ImageHandler, Modal) {
+         controller: ['$scope', '$timeout', 'ImageHandler', 'Modal', function($scope, $timeout, ImageHandler, Modal) {
 
             $scope.close = function() {
                Modal.close();
@@ -51,7 +51,9 @@ angular.module('app.ui')
             $scope.confirm = function() {
                var callback = $scope.modal.callback;
                if (callback) {
-                  callback(true);
+                  $timeout(function() {
+                     callback(true);
+                  }, 200)
                }
                Modal.close();
             };

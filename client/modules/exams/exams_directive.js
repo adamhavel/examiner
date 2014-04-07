@@ -92,6 +92,72 @@ angular.module('app.exams')
       };
    })
 
+   .directive('options', function() {
+
+      function getElements(selector, parent) {
+         parent = parent || document;
+         var elements = parent.querySelectorAll(selector),
+             arr = [];
+         for (var i = elements.length; i--; arr.unshift(elements[i]));
+         return arr;
+      }
+
+      function link($scope, $element) {
+
+         $scope.getId = function() {
+
+         }
+
+         if ($scope.editable === 'true') {
+
+            $element.on('keydown', function(e) {
+               if (e.keyCode === 13 || e.keyCode === 8 || e.keyCode === 46) {
+                  var item = e.target;
+                  var items = getElements('label', $element[0]);
+                  var index = items.indexOf(item);
+                  if (e.keyCode === 13) {
+                     e.preventDefault();
+                     $scope.items.splice(index + 1, 0, {
+                        value: 0,
+                        content: ''
+                     });
+                     $scope.$apply();
+                     getElements('label', $element[0])[index + 1].focus();
+                  } else if ($scope.items.length > 1 && !$scope.items[index].content) {
+                     e.preventDefault();
+                     $scope.items.splice(index, 1);
+                     $scope.$apply();
+                     var prevItem = items[index - 1];
+                     range = document.createRange();
+                     range.selectNodeContents(prevItem);
+                     range.collapse(false);
+                     selection = window.getSelection();
+                     selection.removeAllRanges();
+                     selection.addRange(range);
+                  }
+               }
+            });
+
+            $scope.$on('$destroy', function() {
+               $element.off('keydown');
+            });
+
+         }
+
+      }
+
+      return {
+         restrict: 'E',
+         scope: {
+            items: '=content',
+            editable: '@'
+         },
+         templateUrl: 'partials/options.html',
+         replace: true,
+         link: link
+      };
+   })
+
    .directive('snippet', function() {
 
       function link($scope, $element) {

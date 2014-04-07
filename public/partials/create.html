@@ -18,7 +18,7 @@
          <h1 class="beta heading" ng-model="section.name" contenteditable spellcheck="false" placeholder="Type the section name..."></h1>
          <ul class="inline-list tools">
             <li><button title="Add question" class="tools__item icon--question" ng-click="addQuestion($index)">Add question</button></li>
-            <li><button title="Add another section" class="tools__item icon--exams" ng-click="addSection()">Add another section</button></li>
+            <li><button title="Add another section" class="tools__item icon--section" ng-click="addSection()">Add another section</button></li>
             <li><button title="Move up" class="tools__item icon--up" ng-disabled="$first" ng-click="move(blueprint.sections, $index, -1)">Move section up</button></li>
             <li><button title="Move down" class="tools__item icon--down" ng-disabled="$last" ng-click="move(blueprint.sections, $index, 1)">Move section down</button></li>
             <li><button title="Remove section" class="tools__item icon--remove" ng-click="remove(blueprint.sections, $index)" ng-disabled="blueprint.sections.length === 1">Remove section</button></li>
@@ -36,16 +36,6 @@
             <h1 ng-model="question.name" class="delta heading question__heading" contenteditable spellcheck="false" placeholder="Type the question name..."></h1>
             <ul class="inline-list tools">
                <li>
-                  <button title="Add answer" class="tools__item tools__item--group icon--bubble ng-switchable">Add answer</button>
-                  <ul class="inline-list tools__group">
-                     <li><button title="Add paragraph" class="tools__item icon--type" ng-click="addContent(question, 'text', true)">Add paragraph</button></li>
-                     <li><button title="Add code" class="tools__item icon--code" ng-click="addContent(question, 'code', true)">Add code</button></li>
-                     <li><button title="Add options" class="tools__item icon--check" ng-click="addContent(question, 'options', true)">Add options</button></li>
-                     <li><button title="Add list" class="tools__item icon--list" ng-click="addContent(question, 'list', true)">Add list</button></li>
-                     <li><button title="Add canvas" class="tools__item icon--canvas" ng-click="addContent(question, 'canvas', true)">Add canvas</button></li>
-                  </ul>
-               </li>
-               <li>
                   <button title="Add content" class="tools__item tools__item--group icon--contents ng-switchable">Add content</button>
                   <ul class="inline-list tools__group">
                      <li><button title="Add canvas" class="tools__item icon--canvas" ng-click="addContent(question, 'canvas')">Add canvas</button></li>
@@ -55,6 +45,17 @@
                      <li><button title="Add paragraph" class="tools__item icon--type" ng-click="addContent(question, 'text')">Add paragraph</button></li>
                   </ul>
                </li>
+               <li>
+                  <button title="Add answer" class="tools__item tools__item--group icon--bubble ng-switchable">Add answer</button>
+                  <ul class="inline-list tools__group">
+                     <li><button title="Add canvas" class="tools__item icon--canvas" ng-click="addContent(question, 'canvas', true)">Add canvas</button></li>
+                     <li><button title="Add list" class="tools__item icon--list" ng-click="addContent(question, 'list', true)">Add list</button></li>
+                     <li><button title="Add options" class="tools__item icon--check" ng-click="addContent(question, 'options', true)">Add options</button></li>
+                     <li><button title="Add code" class="tools__item icon--code" ng-click="addContent(question, 'code', true)">Add code</button></li>
+                     <li><button title="Add paragraph" class="tools__item icon--type" ng-click="addContent(question, 'text', true)">Add paragraph</button></li>
+                  </ul>
+               </li>
+               <li><button title="Add another question" class="tools__item icon--question" ng-click="addQuestion($parent.$index)">Add another question</button></li>
                <li><button title="Move up" class="tools__item icon--up" ng-disabled="$first" ng-click="move(section.questions, $index, -1)">Move question up</button></li>
                <li><button title="Move down" class="tools__item icon--down" ng-disabled="$last" ng-click="move(section.questions, $index, 1)">Move question down</button></li>
                <li><button title="Remove question" class="tools__item icon--remove" ng-click="remove(section.questions, $index)">Remove question</button></li>
@@ -97,6 +98,7 @@
             <icanvas ng-switch-when="canvas" content="chunk.content"></icanvas>
             <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="true"></snippet>
             <list ng-switch-when="list" content="chunk.content" editable="true"></list>
+            <options ng-switch-when="options" content="chunk.content" editable="true"></list>
             <div ng-if="chunk.hint" class="question__chunk" ng-switch on="chunk.datatype">
                <ul class="inline-list tools tools--small tools--flush">
                   <li><button title="Remove hint" class="tools__item icon--remove" ng-click="removeHint(chunk)">Remove hint</button></li>

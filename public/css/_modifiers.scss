@@ -92,7 +92,8 @@
    ========================================================================== */
 
 %editable {
-   &[contenteditable] {
+   &[contenteditable="true"] {
+      cursor: text;
       outline: 0;
       &:empty:not(:focus):after {
          content: attr(placeholder);

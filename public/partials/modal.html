@@ -8,10 +8,10 @@
          <button ng-click="close()">Cancel</button>
          <button type="submit">Add image</button>
       </form>
-      <div ng-switch-when="affirm">
+      <div ng-switch-when="save">
          <p class="modal__prompt">{{modal.prompt}}</p>
-         <button ng-click="close()">{{modal.secondaryActionLabel || 'Cancel'}}</button>
-         <button ng-click="confirm()">{{modal.primaryActionLabel || 'Continue'}}</button>
+         <button ng-click="close()">Cancel</button>
+         <button ng-click="confirm()">Store</button>
       </div>
       <div ng-switch-when="confirm">
          <p class="modal__prompt">{{modal.prompt}}</p>

@@ -1,0 +1,10 @@
+<fieldset>
+   <ul>
+      <li ng-repeat="item in items">
+         <div class="checkbox-wrapper">
+            <label ng-attr-contenteditable="{{editable}}" ng-model="item.content" placeholder="Type here..."></label>
+            <input ng-attr-id="{{item.id}}" type="checkbox" ng-model="item.value">
+         </div>
+      </li>
+   </ul>
+</fieldset>

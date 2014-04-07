@@ -21,15 +21,15 @@ var BlueprintSchema = new Schema(
                      {
                         datatype: String,
                         lang: String,
-                        content: String
+                        content: Schema.Types.Mixed
                      }
                   ],
                   answer: [
                      {
                         datatype: String,
                         lang: String,
-                        content: String,
-                        hint: String
+                        content: Schema.Types.Mixed,
+                        hint: Schema.Types.Mixed
                      }
                   ]
                }

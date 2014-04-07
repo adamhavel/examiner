@@ -82,12 +82,12 @@ angular.module('app.blueprints.create')
 
       $scope.store = function() {
          if (isAcceptable()) {
-            Modal.open('affirm', 'You are about to save and store the blueprint. You can edit it anytime later. Do you want to continue?', function(confirmed) {
+            Modal.open('save', 'You are about to save and store the blueprint. You can edit it anytime later. Do you want to continue?', function(confirmed) {
                if (confirmed) {
                   watcher();
                   NewBlueprint.store();
                }
-            }, 'Cancel', 'Store');
+            });
          }
       };
 
@@ -105,8 +105,6 @@ angular.module('app.blueprints.create')
          var item = parent[index];
          var removeItem = function() {
             parent.splice(index, 1);
-            //recalculatePoints();
-            //checkDefaultNames();
          };
          if (!isEmpty(item)) {
             var name = item.name || 'this item';
@@ -126,7 +124,6 @@ angular.module('app.blueprints.create')
             var tmp = parent[target];
             parent[target] = parent[index];
             parent[index] = tmp;
-            //checkDefaultNames();
          }
       };
 
@@ -201,6 +198,15 @@ angular.module('app.blueprints.create')
                            '   // Read file source.\n' +
                            '   return grunt.file.read(filepath);\n' +
                            '});'
+               };
+               break;
+            case 'options':
+               content = {
+                  datatype: 'options',
+                  content: [{
+                     value: false,
+                     content: 'Lorem ipsum dolor sit amet'
+                  }]
                };
                break;
             case 'image':

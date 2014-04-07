@@ -54,11 +54,9 @@ angular.module('app.blueprints.create')
                blueprint.date = dateFilter(blueprint.date, 'yyyy-MM-dd');
                blueprint.$save(function(response) {
                   Modal.open('success', 'The blueprint has been successfully saved.', function() {
-                     $timeout(function() {
-                        $state.go('blueprints', { filter: '/mi-mdw' });
-                        api.reset();
-                        webStorage.remove('blueprint');
-                     }, 500);
+                     $state.go('blueprints', { filter: '/mi-mdw' });
+                     api.reset();
+                     webStorage.remove('blueprint');
                   });
                }, function(err) {
                   Modal.open('error', 'There seems to be a problem with the server. Please try saving the blueprint later.');

@@ -135,12 +135,13 @@ span {
 .bullet-list, %bullet-list {
    @extend %block-list;
    li {
-      padding-left: #{$line-height}em;
+      padding-left: #{$line-height * 3/4}em;
       @include before('●') {
          float: left;
-         width: #{$line-height}em;
-         margin-left: -#{$line-height}em;
+         width: #{$line-height * 3/4}em;
+         margin-left: -#{$line-height * 3/4}em;
          text-align: left;
+         color: rgba(black, .5);
       }
    }
 }

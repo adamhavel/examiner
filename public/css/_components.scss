@@ -31,20 +31,17 @@ button:not(.tools__item) {
       margin-left: .25rem;
       background: none;
       font-size: 0;
-      xtransition: transform .1s;
+      transition: transform .1s, opacity .1s;
       @include icon {
          @include size(100%);
          display: block;
          margin: 0;
          background-size: 100%;
          opacity: .6;
-         transition: transform .1s, opacity .1s;
       }
       &:hover,
       &.ng-active, {
-         @include icon {
-            transform: scale(1.4);
-         }
+         transform: scale(1.4);
       }
       &.ng-active {
          position: relative;
@@ -56,7 +53,6 @@ button:not(.tools__item) {
             background: brand(yellow);
             border-radius: 50%;
             backface-visibility: hidden;
-            transform: scale(1.4);
          }
       }
       &[disabled] {
@@ -65,14 +61,6 @@ button:not(.tools__item) {
          }
          &:before {
             opacity: .1;
-         }
-      }
-      &--labeled {
-         font-size: 1rem;
-         width: auto;
-         @include icon {
-            @include size($leading);
-            display: inline-block;;
          }
       }
       &--group {
@@ -123,7 +111,7 @@ button:not(.tools__item) {
    &__controls {
       @extend %inline-list;
       @include buttons(lighten(silver, 20%));
-      @include primary-button(lighten(brand(yellow), 20%));
+      @include primary-button(lighten(brand(red), 40%));
    }
    &__section {
       @include blank-lines(3, trailing);
@@ -412,12 +400,13 @@ button:not(.tools__item) {
    }
    @include icon {
       display: block;
-      min-width: 8rem;
+      min-width: 10rem;
       min-height: 5rem;
       width: auto;
       height: auto;
    }
-   &--affirm {
+   &--save {
+      @extend %icon--save;
       @include primary-button(lighten(brand(red), 40%));
       background: lighten(brand(purple), 20%);
    }
@@ -432,13 +421,12 @@ button:not(.tools__item) {
    }
    &--alert {
       @extend %icon--caution;
-      //@include buttons(brand(green));
       background: lighten(brand(yellow), 10%);
    }
    &--confirm {
       @extend %icon--question-mark;
       @include buttons(brand(yellow));
-      @include primary-button(brand(green));
+      @include primary-button(lighten(brand(green), 10%));
       background: lighten(brand(yellow), 10%);
    }
    &--error {

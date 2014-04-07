@@ -2,7 +2,7 @@
 
    <header class="exam__header">
       <h1 class="alpha heading exam__heading">{{blueprint.subject | uppercase}} &mdash; {{blueprint.date | date: 'd. M. yyyy, H:mm'}}</h1>
-      <div ng-if="editable" class="exam__controls">
+      <div ng-if="editable && !newBlueprint.isOngoing()" class="exam__controls">
          <button ng-click="edit()">Modify blueprint</button>
       </div>
    </header>

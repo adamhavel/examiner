@@ -55,7 +55,7 @@ angular.module('app.blueprints.create')
       $scope.store = function() {
          var ready = true;
          if (!$scope.blueprint.sections.length) {
-            Modal.open('alert', 'The exam must contain at least one section.');
+            Modal.open('alert', 'The blueprint must contain at least one section.');
             ready = false;
          }
          $scope.blueprint.sections.forEach(function(section) {
@@ -69,7 +69,7 @@ angular.module('app.blueprints.create')
                   ready = false;
                }
                if (!question.answer.length) {
-                  Modal.open('alert', 'All questions must have an answer.');
+                  Modal.open('alert', 'All questions must have a defined answer.');
                   ready = false;
                }
             });
@@ -85,7 +85,7 @@ angular.module('app.blueprints.create')
       };
 
       $scope.discard = function() {
-         Modal.open('confirm', 'Are you sure you want to discard this blueprint? All work in-progress will be lost.', function(confirmed) {
+         Modal.open('confirm', 'Are you sure you want to discard the blueprint? All work in-progress will be lost.', function(confirmed) {
             if (confirmed) {
                watcher();
                NewBlueprint.reset();

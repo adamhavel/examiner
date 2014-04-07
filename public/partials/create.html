@@ -8,6 +8,7 @@
 
    <button ng-click="addSection()">Add section</button>
    <button ng-click="discard()">Discard</button>
+
    <button ng-click="store()">Store &amp; finish</button>
 
    <section class="exam__section" id="{{section.name || 'Untitled section ' + ($index+1) | idfy}}" ng-repeat="section in blueprint.sections">

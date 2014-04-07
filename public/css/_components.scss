@@ -2,6 +2,14 @@
    Components
    ========================================================================== */
 
+/* Buttons
+   ========================================================================== */
+
+button:not(.tools__item) {
+   @extend %t-button;
+}
+
+
 /* Tools
    ========================================================================== */
 
@@ -365,9 +373,8 @@
    width: $main-content-width * 4/5;
    box-sizing: border-box;
    background: lighten(brand(yellow), 10%);
-   box-shadow: 1em 1em 0 0 rgba(black, .1);
+   box-shadow: 1em 1em 0 0 rgba(black, .075);
    pointer-events: auto;
-
    &__close {
       display: none;
       @include position($top: $leading * .25, $right: $leading * .25);
@@ -386,15 +393,17 @@
    @include icon {
       display: block;
       min-width: 8rem;
-      min-height: 6rem;
+      min-height: 5rem;
       width: auto;
       height: auto;
    }
    &--affirm {
+      @include primary-button(lighten(brand(red), 40%));
       background: lighten(brand(purple), 20%);
    }
    &--loadImage {
       @extend %icon--photo;
+      @include primary-button(lighten(brand(red), 40%));
       background: lighten(brand(purple), 20%);
    }
    &--success {
@@ -403,16 +412,18 @@
    }
    &--alert {
       @extend %icon--caution;
+      //@include buttons(brand(green));
       background: lighten(brand(yellow), 10%);
    }
    &--confirm {
       @extend %icon--question-mark;
-      background: lighten(brand(yellow), 5%);
-
+      @include buttons(brand(yellow));
+      @include primary-button(brand(green));
+      background: lighten(brand(yellow), 10%);
    }
    &--error {
       @extend %icon--caution;
-      background: lighten(brand(red), 20%);
+      background: lighten(brand(red), 15%);
    }
 
 

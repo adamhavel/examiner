@@ -65,6 +65,26 @@
    }
 }
 
+@mixin buttons($color) {
+   button:not(.tools__item) {
+      background: $color;
+      &:hover,
+      &:focus {
+         background: lighten($color, 7.5%);
+      }
+   }
+}
+
+@mixin primary-button($color) {
+   button:not(.tools__item):last-of-type {
+      background: $color;
+      &:hover,
+      &:focus {
+         background: lighten($color, 7.5%);
+      }
+   }
+}
+
 @mixin position($top: null, $right: null, $bottom: null, $left: null) {
    position: absolute;
    @each $data in top $top, right $right, bottom $bottom, left $left {

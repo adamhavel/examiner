@@ -7,11 +7,12 @@ module.exports = function(app, passport) {
 
    app.route('/api/test')
       .get(function(req, res) {
-         if (!req.isAuthenticated()) {
-            return res.send(401, 'User is not authorized');
-         } else {
-            return res.send(404, 'User not found');
-         }
+         res.send(req.user);
+         // if (!req.isAuthenticated()) {
+         //    return res.send(401, 'User is not authorized');
+         // } else {
+         //    return res.send(404, 'User not found');
+         // }
       });
 
 

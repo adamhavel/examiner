@@ -10,7 +10,7 @@ module.exports = function(passport) {
       tokenURL: 'https://auth.fit.cvut.cz/oauth/oauth/token',
       clientID: '4df4fcde-9ec3-4288-9415-3efa07e8ed11',
       clientSecret: 'rgrpWfZ6pDnnUGeHf3NeMCnY2hGgArnI',
-      callbackURL: 'http://fit.cvut.cz'
+      callbackURL: 'http://dev.vitvar.com:5000/'
    }, function(accessToken, refreshToken, profile, done) {
          console.log(profile);
       })

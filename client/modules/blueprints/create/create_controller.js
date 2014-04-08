@@ -32,24 +32,27 @@ angular.module('app.blueprints.create')
       }
 
       function isEmpty(item) {
-         var isEmpty = false;
          if (item.questions && !item.questions.length && !item.lede) {
-            isEmpty = true;
+            return true;
          } else if (item.body && !item.body.length && !item.answer.length) {
-            isEmpty = true;
+            return true;
          } else if (item.datatype) {
             switch (item.datatype) {
                case 'text':
                case 'code':
+                  return item.content.replace(/(\s|<([^>]+)>)+/g, '') === '';
                case 'list':
-                  isEmpty = item.content.replace(/(\s|<([^>]+)>)+/g, '') === '';
-                  break;
+                  return item.content.every(function(item) {
+                     return !item.content;
+                  });
+               case 'options':
+                  return item.content.every(function(item) {
+                     return !(item.content || item.value);
+                  });
                case 'canvas':
-                  isEmpty = item.content.states.length === 1;
-                  break;
+                  return item.content.states.length === 1;
             }
          }
-         return isEmpty;
       }
 
       function isAcceptable() {
@@ -127,10 +130,11 @@ angular.module('app.blueprints.create')
          }
       };
 
-      $scope.addSection = function() {
+      $scope.addSection = function(index) {
          var sections = $scope.blueprint.sections;
-         var defaultName = 'Section ' + (sections.length + 1);
-         sections.push({
+         index = index || sections.length;
+         var defaultName = 'Section ' + (index + 1);
+         sections.splice(index, 0, {
             name: defaultName,
             questions: [],
             lede: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum, similique, voluptate, libero repellendus doloribus expedita et nihil error fugit tempora facere nulla ab ea dolore nam molestiae excepturi illum at.',
@@ -138,11 +142,12 @@ angular.module('app.blueprints.create')
          });
       };
 
-      $scope.addQuestion = function(sectionIndex) {
+      $scope.addQuestion = function(sectionIndex, index) {
          var section = $scope.blueprint.sections[sectionIndex];
          var questions = section.questions;
-         var defaultName = 'Question ' + (sectionIndex + 1) + '.' + (questions.length + 1);
-         questions.push({
+         index = index || questions.length;
+         var defaultName = 'Question ' + (sectionIndex + 1) + '.' + (index + 1);
+         questions.splice(index, 0, {
             name: defaultName,
             points: 1,
             body: [
@@ -179,7 +184,9 @@ angular.module('app.blueprints.create')
             case 'list':
                content = {
                   datatype: 'list',
-                  content: 'Lorem ipsum dolor sit amet'
+                  content: [{
+                     content: 'Lorem ipsum dolor sit amet'
+                  }]
                };
                break;
             case 'code':
@@ -263,8 +270,16 @@ angular.module('app.blueprints.create')
       $scope.blueprint = NewBlueprint.data;
       if (!NewBlueprint.isOngoing()) {
          $scope.blueprint.subject = $stateParams.subject;
+         $scope.blueprint.date = $stateParams.date;
          $scope.addSection();
          $scope.blueprint.ongoing = true;
+      } else if ($scope.blueprint.subject !== $stateParams.subject || $scope.blueprint.date !== $stateParams.date) {
+         Modal.open('alert', 'You can only create one blueprint at a time.', function() {
+            $state.go('create', {
+               subject: $scope.blueprint.subject,
+               date: $scope.blueprint.date
+            });
+         });
       }
 
       var watcher = $scope.$watch('blueprint.sections', function() {

@@ -16,7 +16,7 @@ angular.module('app.blueprints.create')
             api.data = {
                ongoing: false,
                subject: null,
-               date: new Date(),
+               date: null,
                lang: 'en',
                lede: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione, quidem, ullam dolorum expedita aliquam maiores distinctio esse repudiandae totam magnam saepe iusto ipsam nam a libero suscipit enim architecto nobis!',
                sections: []
@@ -51,7 +51,7 @@ angular.module('app.blueprints.create')
             $rootScope.$emit('finishBlueprint');
             $timeout(function() {
                var blueprint = new Blueprint(api.data);
-               blueprint.date = dateFilter(blueprint.date, 'yyyy-MM-dd');
+               //blueprint.date = dateFilter(blueprint.date, 'yyyy-MM-dd');
                blueprint.$save(function(response) {
                   Modal.open('success', 'The blueprint has been successfully saved.', function() {
                      $state.go('blueprints', { filter: '/mi-mdw' });
@@ -62,7 +62,7 @@ angular.module('app.blueprints.create')
                   Modal.open('error', 'There seems to be a problem with the server. Please try saving the blueprint later.');
                   api.data = angular.fromJson(webStorage.get('blueprint'));
                   webStorage.remove('blueprint');
-                  api.data.date = new Date(api.data.date);
+                  //api.data.date = new Date(api.data.date);
                });
             }, 1000);
          };
@@ -72,7 +72,7 @@ angular.module('app.blueprints.create')
             if (storedSession) {
                api.data = storedSession;
                webStorage.remove('blueprint');
-               api.data.date = new Date(api.data.date);
+               //api.data.date = new Date(api.data.date);
             } else {
                api.reset();
             }

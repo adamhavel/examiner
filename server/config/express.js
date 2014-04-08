@@ -7,7 +7,7 @@ var express = require('express'),
     fs = require('fs'),
     config = require('./global');
 
-module.exports = function(app, db) {
+module.exports = function(app, passport, db) {
 
    app.use(compression());
    app.use(express.static(config.root + '/../public'));
@@ -24,6 +24,9 @@ module.exports = function(app, db) {
       })
    }));
 
+   app.use(passport.initialize());
+   app.use(passport.session());
+
    app.all(/^(?!\/api\/).*/, function(req, res, next) {
       res.sendfile('index.html', { root: config.root + '/../public' });
    });
@@ -31,7 +34,7 @@ module.exports = function(app, db) {
    // load routes
    var routesDir = config.root + '/routes';
    fs.readdirSync(routesDir).forEach(function(route) {
-      require(routesDir + '/' + route)(app);
+      require(routesDir + '/' + route)(app, passport);
    });
 
 };

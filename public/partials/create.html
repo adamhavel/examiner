@@ -10,15 +10,15 @@
 
    <contents document="blueprint"></contents>
 
-   <p class="lede" ng-model="blueprint.lede" contenteditable spellcheck="false" placeholder="Type the exam intro..."></p>
+   <p class="lede" ng-model="blueprint.lede" contenteditable="true" spellcheck="false" placeholder="Type the exam intro..."></p>
 
    <section class="exam__section" id="{{section.name || 'Untitled section ' + ($index+1) | idfy}}" ng-repeat="section in blueprint.sections">
 
       <header>
-         <h1 class="beta heading" ng-model="section.name" contenteditable spellcheck="false" placeholder="Type the section name..."></h1>
+         <h1 class="beta heading" ng-model="section.name" contenteditable="true" spellcheck="false" placeholder="Type the section name..."></h1>
          <ul class="inline-list tools">
             <li><button title="Add question" class="tools__item icon--question" ng-click="addQuestion($index)">Add question</button></li>
-            <li><button title="Add another section" class="tools__item icon--section" ng-click="addSection()">Add another section</button></li>
+            <li><button title="Add another section" class="tools__item icon--section" ng-click="addSection($index + 1)">Add another section</button></li>
             <li><button title="Move up" class="tools__item icon--up" ng-disabled="$first" ng-click="move(blueprint.sections, $index, -1)">Move section up</button></li>
             <li><button title="Move down" class="tools__item icon--down" ng-disabled="$last" ng-click="move(blueprint.sections, $index, 1)">Move section down</button></li>
             <li><button title="Remove section" class="tools__item icon--remove" ng-click="remove(blueprint.sections, $index)" ng-disabled="blueprint.sections.length === 1">Remove section</button></li>
@@ -28,12 +28,12 @@
          </p>
       </header>
 
-      <p class="lede" ng-model="section.lede" contenteditable spellcheck="false" placeholder="Type the section intro..."></p>
+      <p class="lede" ng-model="section.lede" contenteditable="true" spellcheck="false" placeholder="Type the section intro..."></p>
 
       <article class="question" id="{{question.name || 'Untitled question ' + ($index+1) | idfy}}" ng-repeat="question in section.questions">
 
          <header>
-            <h1 ng-model="question.name" class="delta heading question__heading" contenteditable spellcheck="false" placeholder="Type the question name..."></h1>
+            <h1 ng-model="question.name" class="delta heading question__heading" contenteditable="true" spellcheck="false" placeholder="Type the question name..."></h1>
             <ul class="inline-list tools">
                <li>
                   <button title="Add content" class="tools__item tools__item--group icon--contents ng-switchable">Add content</button>
@@ -55,7 +55,7 @@
                      <li><button title="Add paragraph" class="tools__item icon--type" ng-click="addContent(question, 'text', true)">Add paragraph</button></li>
                   </ul>
                </li>
-               <li><button title="Add another question" class="tools__item icon--question" ng-click="addQuestion($parent.$index)">Add another question</button></li>
+               <li><button title="Add another question" class="tools__item icon--question" ng-click="addQuestion($parent.$index, $index + 1)">Add another question</button></li>
                <li><button title="Move up" class="tools__item icon--up" ng-disabled="$first" ng-click="move(section.questions, $index, -1)">Move question up</button></li>
                <li><button title="Move down" class="tools__item icon--down" ng-disabled="$last" ng-click="move(section.questions, $index, 1)">Move question down</button></li>
                <li><button title="Remove question" class="tools__item icon--remove" ng-click="remove(section.questions, $index)">Remove question</button></li>
@@ -76,7 +76,7 @@
                <li><button title="Move down" class="tools__item icon--down" ng-disabled="$last" ng-click="move(question.body, $index, 1)">Move down</button></li>
                <li><button title="Remove" class="tools__item icon--remove" ng-click="remove(question.body, $index)">Remove</button></li>
             </ul>
-            <p ng-switch-when="text" ng-model="chunk.content" contenteditable spellcheck="false" placeholder="Type here..."></p>
+            <p ng-switch-when="text" ng-model="chunk.content" contenteditable="true" spellcheck="false" placeholder="Type here..."></p>
             <img ng-switch-when="image" class="question__image" ng-src="{{chunk.content}}">
             <icanvas ng-switch-when="canvas" content="chunk.content"></icanvas>
             <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="true"></snippet>
@@ -94,11 +94,11 @@
                <li><button title="Remove" class="tools__item icon--remove" ng-click="remove(question.answer, $index)">Remove</button></li>
             </ul>
             <h2 class="heading heading--caption epsilon">Answer</h2>
-            <p ng-switch-when="text" ng-model="chunk.content" contenteditable spellcheck="false" placeholder="Type here..."></p>
+            <p ng-switch-when="text" ng-model="chunk.content" contenteditable="true" spellcheck="false" placeholder="Type here..."></p>
             <icanvas ng-switch-when="canvas" content="chunk.content"></icanvas>
             <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="true"></snippet>
             <list ng-switch-when="list" content="chunk.content" editable="true"></list>
-            <options ng-switch-when="options" content="chunk.content" editable="true"></list>
+            <options ng-switch-when="options" content="chunk.content" editable="true"></options>
             <div ng-if="chunk.hint" class="question__chunk" ng-switch on="chunk.datatype">
                <ul class="inline-list tools tools--small tools--flush">
                   <li><button title="Remove hint" class="tools__item icon--remove" ng-click="removeHint(chunk)">Remove hint</button></li>
@@ -108,6 +108,7 @@
                <icanvas ng-switch-when="canvas" content="chunk.hint"></icanvas>
                <snippet ng-switch-when="code" content="chunk.hint" lang="{{chunk.lang}}" editable="true"></snippet>
                <list ng-switch-when="list" content="chunk.hint" editable="true"></list>
+               <options ng-switch-when="options" content="chunk.hint" editable="true"></options>
             </div>
          </div>
 

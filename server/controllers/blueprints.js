@@ -12,15 +12,16 @@ exports.validateSubject = function(req, res, next, subject) {
 };
 
 exports.validateDate = function(req, res, next, date) {
-   var pattern = /^\d{4}-\d{1,2}-\d{1,2}$/i;
+   var pattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/i;
    if (!pattern.test(date)) {
       return next(new Error ('not a valid date'));
    }
-   var dateArr = date.split('-').map(function (value) {
-      return parseInt(value, 0);
-   });
-   req.startDate = new Date(dateArr[0], dateArr[1] - 1, dateArr[2]);
-   req.endDate = new Date(dateArr[0], dateArr[1] - 1, dateArr[2] + 1);
+   // var dateArr = date.split('-').map(function (value) {
+   //    return parseInt(value, 0);
+   // });
+   // req.startDate = new Date(dateArr[0], dateArr[1] - 1, dateArr[2]);
+   // req.endDate = new Date(dateArr[0], dateArr[1] - 1, dateArr[2] + 1);
+   req.date = date;
    return next();
 };
 
@@ -45,9 +46,9 @@ exports.query = function(req, res) {
          lang: req.lang
       });
    }
-   if (req.startDate && req.endDate) {
+   if (req.date) {
       query = query.find({
-         date: {$gte: req.startDate, $lt: req.endDate}
+         date: req.date
       });
    }
    query.exec(function(err, blueprints) {
@@ -65,9 +66,10 @@ exports.get = function(req, res) {
    Blueprint.findOne({
       subject: req.subject,
       lang: req.lang,
-      date: {$gte: req.startDate, $lt: req.endDate}
+      date: req.date
    }).exec(function(err, blueprint) {
       if (err) {
+         console.log(err);
          res.send(500);
       } else if (!blueprint) {
          res.send(404);

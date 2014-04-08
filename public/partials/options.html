@@ -2,8 +2,8 @@
    <ul>
       <li ng-repeat="item in items">
          <div class="checkbox-wrapper">
-            <label ng-attr-contenteditable="{{editable}}" ng-model="item.content" placeholder="Type here..."></label>
-            <input ng-attr-id="{{item.id}}" type="checkbox" ng-model="item.value">
+            <label ng-attr-contenteditable="{{editable}}" ng-model="item.content" placeholder="Type here..." spellcheck="false"></label>
+            <input ng-attr-id="{{item.id}}" type="checkbox" ng-model="item.value" ng-disabled="{{editable == 'false'}}">
          </div>
       </li>
    </ul>

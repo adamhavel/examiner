@@ -43,7 +43,7 @@
             <li><a class="site-nav__item icon--write" ui-sref="home" ui-sref-active="ng-active">Current</a></li>
             <li><a class="site-nav__item icon--tick" href="">Evaluate</a></li>
             <li><a class="site-nav__item icon--exams" ng-class="{'ng-active': state.is('blueprints') || state.is('blueprint')}" ui-sref="blueprints">Blueprints</a></li>
-            <li><a class="site-nav__item icon--create" ng-class="{'ng-ongoing': newBlueprint.isOngoing(), 'ng-active': state.is('create')}" ui-sref="create({subject: 'mi-mdw'})">Create</a></li>
+            <li><a class="site-nav__item icon--create" ng-class="{'ng-ongoing': newBlueprint.isOngoing(), 'ng-active': state.is('create')}" ui-sref="create({subject: 'mi-mdw', date: '2014-04-10T09:00'})">Create</a></li>
             <li><a class="site-nav__item icon--results" href="">Results</a></li>
          </ul>
       </nav>

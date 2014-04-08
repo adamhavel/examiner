@@ -227,6 +227,11 @@ button:not(.tools__item) {
          p, pre, .bullet-list {
             @extend %inset;
          }
+         fieldset {
+            padding: calc(#{$leading * 3/4} - 1px) ($gutter * .75);
+            padding-bottom: 0;
+            border-top: 1px solid rgba(black, .25);
+         }
       }
       &__answer &__image {
          box-sizing: border-box;

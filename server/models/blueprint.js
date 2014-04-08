@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 var BlueprintSchema = new Schema(
    {
       subject: String,
-      date: Date,
+      date: String,
       lang: String,
       lede: String,
       duration: Number,

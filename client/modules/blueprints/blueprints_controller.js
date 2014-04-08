@@ -43,15 +43,17 @@ angular.module('app.blueprints')
    ['$scope', '$stateParams', '$state', 'Blueprint', 'NewBlueprint',
    function($scope, $stateParams, $state, Blueprint, NewBlueprint) {
 
+      function adjustForTimezone(date) {
+         var offset = date.getTimezoneOffset();
+         return new Date(date.getTime() + offset*60000);
+      }
+
       $scope.blueprint = Blueprint.get({
          subject: $stateParams.subject,
          date: $stateParams.date,
          lang: $stateParams.lang
       }, function(blueprint) {
-         blueprint.date = new Date(blueprint.date);
-         // FIXME:
-         // revert for production
-         $scope.editable = blueprint.date < new Date();
+         $scope.editable = adjustForTimezone(new Date(blueprint.date)) > new Date();
       }, function() {
          $state.go('blueprints');
       });

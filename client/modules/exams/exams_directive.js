@@ -63,32 +63,12 @@ angular.module('app.exams')
       return {
          restrict: 'E',
          scope: {
-            content: '=',
+            items: '=content',
             editable: '@'
          },
          templateUrl: 'partials/list.html',
          replace: true,
-         link: link,
-         controller: ['$scope', function($scope) {
-
-            var lines = $scope.content.split('\n');
-
-            $scope.items = [];
-            lines.forEach(function(line) {
-               $scope.items.push({
-                  content: line
-               });
-            });
-
-            $scope.$watch('items', function() {
-               var lines = [];
-               $scope.items.forEach(function(item) {
-                  lines.push(item.content);
-               });
-               $scope.content = lines.join('\n');
-            }, true);
-
-         }]
+         link: link
       };
    })
 

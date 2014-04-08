@@ -24,7 +24,7 @@
     "lodash": "~2.4.1",
     "mongoose": "~3.8.8",
     "passport": "~0.2.0",
-    "passport-oauth2": "~1.1.2",
+    "passport-oauth": "^1.0.0",
     "svgo": "~0.4.4"
   },
   "devDependencies": {

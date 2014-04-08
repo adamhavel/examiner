@@ -1,7 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    OAuth2Strategy = require('passport-oauth2').OAuth2Strategy;
+    OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 
 module.exports = function(passport) {
 

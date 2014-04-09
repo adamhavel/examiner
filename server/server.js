@@ -22,5 +22,22 @@ var app = express();
 require('./config/express')(app, passport, db);
 
 var port = process.env.PORT || config.port;
-app.listen(port);
+var server = app.listen(port);
 console.log('Listening on port ' + port);
+
+var io = require('socket.io').listen(server);
+
+io.sockets.on('connection', function(socket) {
+
+   socket.emit('init', {
+      name: 'hello world'
+   });
+
+   socket.on('test', function(data) {
+      console.log('client cheating');
+      socket.emit('send:message', {
+         text: 'warning'
+      });
+   });
+
+});

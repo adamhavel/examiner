@@ -11,7 +11,13 @@ angular.module('app').config([
       $stateProvider
          .state('home', {
             url: '/',
-            templateUrl: 'partials/home.html'
+            templateUrl: 'partials/pending.html',
+            controller: 'ExamsController',
+         })
+         .state('takeExam', {
+            url: '/take/:subject/:date/:lang',
+            templateUrl: 'partials/takeExam.html',
+            controller: 'ExamTakeController',
          })
          .state('blueprints', {
             url: '/blueprints{filter:.*}',
@@ -23,10 +29,10 @@ angular.module('app').config([
             templateUrl: 'partials/blueprint.html',
             controller: 'BlueprintController'
          })
-         .state('examDates', {
+         .state('examTerms', {
             url: '/new',
-            templateUrl: 'partials/examDates.html',
-            controller: 'ExamDatesController',
+            templateUrl: 'partials/examTerms.html',
+            controller: 'ExamTermsController',
          })
          .state('newBlueprint', {
             url: '/new/:subject/:date/:lang',

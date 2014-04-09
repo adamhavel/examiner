@@ -1,0 +1,54 @@
+<article class="exam">
+
+   <header class="exam__header">
+      <h1 class="alpha heading exam__heading">{{exam.subject | uppercase}} &mdash; {{exam.date | date: 'd. M. yyyy, H:mm'}}</h1>
+   </header>
+
+   <contents document="exam"></contents>
+
+   <p ng-if="exam.lede" class="lede">{{exam.lede}}</p>
+
+   <section class="exam__section" id="{{section.name || 'Untitled section ' + ($index+1) | idfy}}" ng-repeat="section in exam.sections">
+
+      <header>
+         <h1 class="beta heading" ng-model="section.name">{{section.name}}</h1>
+         <p class="exam__points">
+            {{section.points}} {{section.points != 1 ? 'points' : 'point'}}
+         </p>
+      </header>
+
+      <p class="lede" ng-if="section.lede">{{section.lede}}</p>
+
+      <article class="question" id="{{question.name || 'Untitled question ' + ($index+1) | idfy}}" ng-repeat="question in section.questions">
+
+         <header>
+            <h1 class="delta heading question__heading">
+               {{question.name}}
+            </h1>
+            <p class="exam__points">
+               {{question.points}} {{question.points != 1 ? 'points' : 'point'}}
+            </p>
+         </header>
+
+         <div class="question__chunk" ng-repeat="chunk in question.body" ng-switch on="chunk.datatype">
+            <p ng-switch-when="text">{{chunk.content}}</p>
+            <img ng-switch-when="image" class="question__image" ng-src="{{chunk.content}}">
+            <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;charset=UTF-8,{{chunk.content}}">
+            <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="false"></snippet>
+            <list ng-switch-when="list" content="chunk.content" editable="false"></list>
+         </div>
+
+         <div class="question__chunk question__answer" ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">
+            <h2 class="heading heading--caption epsilon">Your answer</h2>
+            <p ng-switch-when="text" contenteditable="true" spellcheck="false" placeholder="Type here...">{{chunk.content}}</p>
+            <icanvas ng-switch-when="canvas" content="chunk.content" editable="true"></icanvas>
+            <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="true"></snippet>
+            <list ng-switch-when="list" content="chunk.content" editable="true"></list>
+            <options ng-switch-when="options" content="chunk.content" editable="true"></options>
+         </div>
+
+      </article>
+
+   </section>
+
+</article>

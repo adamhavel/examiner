@@ -1,0 +1,22 @@
+<h1 class="alpha heading">Exam terms</h1>
+
+<section class="list">
+
+   <div class="grid">
+
+      <div class="grid__item one-quarter" ng-repeat="term in examTerms">
+
+         <section class="exam-preview">
+            <div class="content">
+               <h1 class="gamma heading exam-preview__student">{{term.subject | uppercase}}</h1>
+               <h2 class="epsilon heading exam-preview__subject">{{term.date | date: 'd. M. yyyy'}}</h2>
+               <h3 class="heading exam-preview__date">{{term.date | date: 'h:mm'}}</h3>
+            </div>
+            <a ng-click="createBlueprint(term)" href="" class="more"></a>
+         </section>
+
+      </div>
+
+   </div>
+
+</section>

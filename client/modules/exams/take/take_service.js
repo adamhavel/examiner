@@ -1,25 +1,20 @@
 'use strict';
 
-angular.module('app.blueprints.create')
+angular.module('app.exams.take')
 
-   .factory('NewBlueprint',
-   ['$resource', '$rootScope', '$state', '$timeout', 'webStorage', 'Blueprint', 'Modal', 'dateFilter',
-   function($resource, $rootScope, $state, $timeout, webStorage, Blueprint, Modal, dateFilter) {
+   .factory('ExamTake',
+   ['$resource', '$rootScope', '$state', '$timeout', 'webStorage', 'Modal',
+   function($resource, $rootScope, $state, $timeout, webStorage, Modal) {
 
-      var NewBlueprint = (function() {
+      var ExamTake = (function() {
 
          var api = {
-            data: {}
+             data: {}
          };
 
          api.reset = function() {
             api.data = {
-               ongoing: false,
-               subject: null,
-               date: null,
-               lang: null,
-               lede: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione, quidem, ullam dolorum expedita aliquam maiores distinctio esse repudiandae totam magnam saepe iusto ipsam nam a libero suscipit enim architecto nobis!',
-               sections: []
+               ongoing: false
             };
          };
 
@@ -43,16 +38,14 @@ angular.module('app.blueprints.create')
                   });
                });
             });
-            webStorage.add('blueprint', angular.toJson(api.data));
+            webStorage.add('exam', angular.toJson(api.data));
          };
 
-         api.store = function() {
+         /*api.store = function() {
             api.save();
             $rootScope.$emit('finishBlueprint');
             $timeout(function() {
                var blueprint = new Blueprint(api.data);
-               console.log(blueprint);
-               //blueprint.date = dateFilter(blueprint.date, 'yyyy-MM-dd');
                blueprint.$save(function() {
                   Modal.open('success', 'The blueprint has been successfully saved.', function() {
                      $state.go('blueprints', { filter: '/mi-mdw' });
@@ -66,14 +59,13 @@ angular.module('app.blueprints.create')
                   //api.data.date = new Date(api.data.date);
                });
             }, 1000);
-         };
+         };*/
 
          (function init() {
-            var storedSession = angular.fromJson(webStorage.get('blueprint'));
+            var storedSession = angular.fromJson(webStorage.get('exam'));
             if (storedSession) {
                api.data = storedSession;
-               webStorage.remove('blueprint');
-               //api.data.date = new Date(api.data.date);
+               webStorage.remove('exam');
             } else {
                api.reset();
             }
@@ -83,8 +75,8 @@ angular.module('app.blueprints.create')
 
       })();
 
-      $rootScope.$on('save', NewBlueprint.save);
+      $rootScope.$on('save', ExamTake.save);
 
-      return NewBlueprint;
+      return ExamTake;
 
    }]);

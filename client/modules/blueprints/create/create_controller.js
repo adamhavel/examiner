@@ -240,16 +240,16 @@ angular.module('app.blueprints.create')
       $scope.addHint = function(answer) {
          Modal.open('alert', 'Take caution. Contents of the hint will be visible to those taking the exam.', function(confirmed) {
             if (confirmed) {
-               answer.hint = angular.fromJson(angular.toJson(answer.content));
+               answer.content = angular.fromJson(angular.toJson(answer.solution));
             }
          }, 'I understand');
       };
 
       $scope.updateHint = function(answer) {
-         if (answer.hint) {
+         if (answer.content) {
             Modal.open('confirm', 'This will replace the contents of the hint. Do you want to continue?', function(confirmed) {
                if (confirmed) {
-                  answer.hint = angular.fromJson(angular.toJson(answer.content));
+                  answer.content = angular.fromJson(angular.toJson(answer.solution));
                }
             }, 'Update hint');
          }
@@ -258,7 +258,7 @@ angular.module('app.blueprints.create')
       $scope.removeHint = function(answer) {
          Modal.open('confirm', 'Are you sure you want to remove the hint?', function(confirmed) {
             if (confirmed) {
-               answer.hint = null;
+               answer.content = null;
             }
          }, 'Remove hint');
       };

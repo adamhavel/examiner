@@ -1,0 +1,1 @@
+angular.module('app.exams.take', []);

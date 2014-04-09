@@ -8,5 +8,6 @@ angular.module('app', [
    'app.ui',
    'app.blueprints',
    'app.exams',
-   'app.examdates'
+   'app.examterms',
+   'app.user'
 ]);

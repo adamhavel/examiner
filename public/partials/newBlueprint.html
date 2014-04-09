@@ -94,21 +94,21 @@
                <li><button title="Remove" class="tools__item icon--remove" ng-click="remove(question.answer, $index)">Remove</button></li>
             </ul>
             <h2 class="heading heading--caption epsilon">Answer</h2>
-            <p ng-switch-when="text" ng-model="chunk.content" contenteditable="true" spellcheck="false" placeholder="Type here..."></p>
-            <icanvas ng-switch-when="canvas" content="chunk.content"></icanvas>
-            <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="true"></snippet>
-            <list ng-switch-when="list" content="chunk.content" editable="true"></list>
-            <options ng-switch-when="options" content="chunk.content" editable="true"></options>
-            <div ng-if="chunk.hint" class="question__chunk" ng-switch on="chunk.datatype">
+            <p ng-switch-when="text" ng-model="chunk.solution" contenteditable="true" spellcheck="false" placeholder="Type here..."></p>
+            <icanvas ng-switch-when="canvas" content="chunk.solution"></icanvas>
+            <snippet ng-switch-when="code" content="chunk.solution" lang="{{chunk.lang}}" editable="true"></snippet>
+            <list ng-switch-when="list" content="chunk.solution" editable="true"></list>
+            <options ng-switch-when="options" content="chunk.solution" editable="true"></options>
+            <div ng-if="chunk.content" class="question__chunk" ng-switch on="chunk.datatype">
                <ul class="inline-list tools tools--small tools--flush">
                   <li><button title="Remove hint" class="tools__item icon--remove" ng-click="removeHint(chunk)">Remove hint</button></li>
                </ul>
                <h2 class="heading heading--caption epsilon">Hint</h2>
-               <p ng-switch-when="text" ng-model="chunk.hint" contenteditable spellcheck="false" placeholder="Type here..."></p>
-               <icanvas ng-switch-when="canvas" content="chunk.hint"></icanvas>
-               <snippet ng-switch-when="code" content="chunk.hint" lang="{{chunk.lang}}" editable="true"></snippet>
-               <list ng-switch-when="list" content="chunk.hint" editable="true"></list>
-               <options ng-switch-when="options" content="chunk.hint" editable="true"></options>
+               <p ng-switch-when="text" ng-model="chunk.content" contenteditable spellcheck="false" placeholder="Type here..."></p>
+               <icanvas ng-switch-when="canvas" content="chunk.content"></icanvas>
+               <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="true"></snippet>
+               <list ng-switch-when="list" content="chunk.content" editable="true"></list>
+               <options ng-switch-when="options" content="chunk.content" editable="true"></options>
             </div>
          </div>
 

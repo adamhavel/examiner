@@ -26,7 +26,7 @@
 
       <nav class="top-nav">
          <ul class="inline-list">
-            <li>Logged in as: Adam Havel (havelad1)</li>
+            <li>Logged in as: Adam Havel (<a ng-click="user.switchRole()" href="">{{user.role}}</a>)</li>
             <li><a href="">Preferences</a></li>
             <li><a href="">Log Out</a></li>
          </ul>
@@ -40,10 +40,10 @@
 
       <nav class="site-nav">
          <ul class="block-list">
-            <li><a class="site-nav__item icon--write" ui-sref="home" ui-sref-active="ng-active">Impending</a></li>
-            <li><a class="site-nav__item icon--tick" href="">Evaluate</a></li>
-            <li><a class="site-nav__item icon--exams" ng-class="{'ng-active': state.is('blueprints') || state.is('blueprint')}" ui-sref="blueprints">Blueprints</a></li>
-            <li><a class="site-nav__item icon--create" ng-class="{'ng-ongoing': newBlueprint.isOngoing(), 'ng-active': state.is('examDates')}" ui-sref="examDates">Create</a></li>
+            <li><a class="site-nav__item icon--write" ui-sref="home" ui-sref-active="ng-active">Pending</a></li>
+            <li ng-if="user.role === 'teacher'"><a class="site-nav__item icon--tick" href="">Evaluate</a></li>
+            <li ng-if="user.role === 'teacher'"><a class="site-nav__item icon--exams" ng-class="{'ng-active': state.is('blueprints') || state.is('blueprint')}" ui-sref="blueprints">Blueprints</a></li>
+            <li ng-if="user.role === 'teacher'"><a class="site-nav__item icon--create" ng-class="{'ng-ongoing': newBlueprint.isOngoing(), 'ng-active': state.is('examTerms')}" ui-sref="examTerms">Create</a></li>
             <li><a class="site-nav__item icon--results" href="">Results</a></li>
          </ul>
       </nav>

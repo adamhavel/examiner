@@ -1,1 +1,1 @@
-angular.module('app.exams', []);
+angular.module('app.exams', ['app.exams.take']);

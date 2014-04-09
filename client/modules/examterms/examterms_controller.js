@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('app.examdates')
+angular.module('app.examterms')
 
-   .controller('ExamDatesController',
-   ['$scope', '$stateParams', '$state', 'ExamDates', 'NewBlueprint', 'Modal',
-   function($scope, $stateParams, $state, ExamDates, NewBlueprint, Modal) {
+   .controller('ExamTermsController',
+   ['$scope', '$stateParams', '$state', 'ExamTerms', 'NewBlueprint', 'Modal',
+   function($scope, $stateParams, $state, ExamTerms, NewBlueprint, Modal) {
 
       $scope.blueprint = NewBlueprint.data;
       if (NewBlueprint.isOngoing()) {
@@ -15,7 +15,7 @@ angular.module('app.examdates')
          });
       }
 
-      $scope.examDates = ExamDates;
+      $scope.examTerms = ExamTerms;
 
       $scope.createBlueprint = function(examTerm) {
          Modal.open('chooseLanguage', 'Please choose the language of the exam.', function(lang) {
@@ -25,6 +25,6 @@ angular.module('app.examdates')
                lang: lang
             });
          });
-      }
+      };
 
    }]);

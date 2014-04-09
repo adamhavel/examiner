@@ -7,7 +7,7 @@ module.exports = function(app, passport) {
 
    app.route('/api/test')
       .get(function(req, res) {
-         res.send(req.user);
+         console.log(req);
          // if (!req.isAuthenticated()) {
          //    return res.send(401, 'User is not authorized');
          // } else {

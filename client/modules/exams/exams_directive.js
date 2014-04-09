@@ -86,7 +86,7 @@ angular.module('app.exams')
 
          $scope.getId = function() {
 
-         }
+         };
 
          if ($scope.editable === 'true') {
 
@@ -225,8 +225,7 @@ angular.module('app.exams')
 
                   var api = {};
 
-                  var data = $scope.content,
-                      limit = 25;
+                  var limit = 25;
 
                   api.canUndo = function() {
                      return ($scope.content.currentState > 0);

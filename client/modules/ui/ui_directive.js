@@ -53,7 +53,7 @@ angular.module('app.ui')
                if (callback) {
                   $timeout(function() {
                      callback(callback.value || true);
-                  }, 200)
+                  }, 200);
                }
                Modal.close();
             };

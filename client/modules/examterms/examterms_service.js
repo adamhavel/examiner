@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('app.examdates')
+angular.module('app.examterms')
 
-   .factory('ExamDates', ['$resource', function($resource) {
+   .factory('ExamTerms', ['$resource', function($resource) {
 
       var mockData = [
          {

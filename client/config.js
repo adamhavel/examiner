@@ -23,9 +23,14 @@ angular.module('app').config([
             templateUrl: 'partials/blueprint.html',
             controller: 'BlueprintController'
          })
-         .state('create', {
-            url: '/create/:subject/:date',
-            templateUrl: 'partials/create.html',
+         .state('examDates', {
+            url: '/new',
+            templateUrl: 'partials/examDates.html',
+            controller: 'ExamDatesController',
+         })
+         .state('newBlueprint', {
+            url: '/new/:subject/:date/:lang',
+            templateUrl: 'partials/newBlueprint.html',
             controller: 'BlueprintCreateController',
          });
 

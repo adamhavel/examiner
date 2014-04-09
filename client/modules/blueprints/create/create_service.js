@@ -17,7 +17,7 @@ angular.module('app.blueprints.create')
                ongoing: false,
                subject: null,
                date: null,
-               lang: 'en',
+               lang: null,
                lede: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione, quidem, ullam dolorum expedita aliquam maiores distinctio esse repudiandae totam magnam saepe iusto ipsam nam a libero suscipit enim architecto nobis!',
                sections: []
             };
@@ -51,6 +51,7 @@ angular.module('app.blueprints.create')
             $rootScope.$emit('finishBlueprint');
             $timeout(function() {
                var blueprint = new Blueprint(api.data);
+               console.log(blueprint);
                //blueprint.date = dateFilter(blueprint.date, 'yyyy-MM-dd');
                blueprint.$save(function(response) {
                   Modal.open('success', 'The blueprint has been successfully saved.', function() {

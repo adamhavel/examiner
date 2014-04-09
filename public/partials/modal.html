@@ -8,6 +8,15 @@
          <button ng-click="close()">Cancel</button>
          <button type="submit">Add image</button>
       </form>
+      <form ng-switch-when="chooseLanguage">
+         <p class="modal__prompt">{{modal.prompt}}</p>
+         <select ng-init="modal.callback.value = 'en'" ng-model="modal.callback.value" required>
+            <option value="en">English</option>
+            <option value="cs">Čeština</option>
+         </select>
+         <button ng-click="close()">Cancel</button>
+         <button ng-click="confirm()">Select</button>
+      </form>
       <div ng-switch-when="save">
          <p class="modal__prompt">{{modal.prompt}}</p>
          <button ng-click="close()">Cancel</button>

@@ -216,15 +216,6 @@ angular.module('app.exams')
                });
                canvas.calcOffset();
 
-               if ($scope.content && typeof $scope.content === 'string') {
-                  fabric.loadSVGFromString($scope.content, function(objects, options) {
-                     var canvasBackdrop = fabric.util.groupSVGElements(objects, options);
-                     canvasBackdrop.set('selectable', false);
-                     canvas.add(canvasBackdrop).sendToBack(canvasBackdrop).renderAll();
-                     $scope.content = null;
-                  });
-               }
-
                var canvasTools = getElements('.j-canvas-tool', canvasWrapper),
                    isMouseDown = false,
                    pointer,
@@ -285,11 +276,36 @@ angular.module('app.exams')
 
                   (function init() {
 
-                     if (!$scope.content) {
+                     if ($scope.content && typeof $scope.content === 'string') {
+                        fabric.loadSVGFromString($scope.content, function(objects, options) {
+                           var canvasBackdrop = fabric.util.groupSVGElements(objects, options);
+                           canvasBackdrop.set('selectable', false);
+                           canvas.add(canvasBackdrop).sendToBack(canvasBackdrop).renderAll();
+                           canvas.calcOffset();
+                           $scope.content = {
+                              states: [angular.toJson(canvas)],
+                              currentState: 0
+                           };
+                           $scope.watcher = $scope.$watch('content', function() {
+                              canvas.loadFromJSON($scope.content.states[$scope.content.currentState]);
+                              canvas.renderAll();
+                           });
+                           $scope.$apply();
+                        });
+                     } else if (!$scope.content) {
                         $scope.content = {
                            states: [angular.toJson(canvas)],
                            currentState: 0
                         };
+                        $scope.watcher = $scope.$watch('content', function() {
+                           canvas.loadFromJSON($scope.content.states[$scope.content.currentState]);
+                           canvas.renderAll();
+                        });
+                     } else {
+                        $scope.watcher = $scope.$watch('content', function() {
+                           canvas.loadFromJSON($scope.content.states[$scope.content.currentState]);
+                           canvas.renderAll();
+                        });
                      }
 
                      canvas.on('object:modified', function() {
@@ -304,11 +320,6 @@ angular.module('app.exams')
                         }
                         $scope.content.states.push(angular.toJson(canvas));
                         $scope.$apply();
-                     });
-
-                     $scope.watcher = $scope.$watch('content', function() {
-                        canvas.loadFromJSON($scope.content.states[$scope.content.currentState]);
-                        canvas.renderAll();
                      });
 
                      $scope.$apply();

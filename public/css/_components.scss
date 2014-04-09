@@ -54,6 +54,8 @@ button:not(.tools__item) {
             border-radius: 50%;
             backface-visibility: hidden;
          }
+         // backface-visibility: hidden;
+         // filter: drop-shadow(-3px 3px 0px brand(yellow)) drop-shadow(3px -3px 0px brand(red));
       }
       &[disabled] {
          &:hover {
@@ -257,7 +259,7 @@ button:not(.tools__item) {
 }
 
 
-/* Exam preview
+/* Preview
    ========================================================================== */
 
 .exam-preview {
@@ -417,6 +419,11 @@ button:not(.tools__item) {
    }
    &--loadImage {
       @extend %icon--photo;
+      @include primary-button(lighten(brand(red), 40%));
+      background: lighten(brand(purple), 20%);
+   }
+   &--chooseLanguage {
+      @extend %icon--bubble;
       @include primary-button(lighten(brand(red), 40%));
       background: lighten(brand(purple), 20%);
    }

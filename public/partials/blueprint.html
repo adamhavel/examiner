@@ -2,8 +2,9 @@
 
    <header class="exam__header">
       <h1 class="alpha heading exam__heading">{{blueprint.subject | uppercase}} &mdash; {{blueprint.date | date: 'd. M. yyyy, H:mm'}}</h1>
-      <div ng-if="editable && !newBlueprint.isOngoing()" class="exam__controls">
-         <button ng-click="edit()">Modify blueprint</button>
+      <div class="exam__controls">
+         <button ng-if="newBlueprint.isOngoing()" ng-click="clone()">Clone blueprint</button>
+         <button ng-if="editable && !newBlueprint.isOngoing()" ng-click="edit()">Modify blueprint</button>
       </div>
    </header>
 

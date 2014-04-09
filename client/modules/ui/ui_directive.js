@@ -52,7 +52,7 @@ angular.module('app.ui')
                var callback = $scope.modal.callback;
                if (callback) {
                   $timeout(function() {
-                     callback(true);
+                     callback(callback.value || true);
                   }, 200)
                }
                Modal.close();

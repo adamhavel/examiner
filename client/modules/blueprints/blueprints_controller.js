@@ -63,4 +63,18 @@ angular.module('app.blueprints')
          sections[sections.length - 1].questions.push(question);
       }
 
+      $scope.clone = function() {
+         var directions = {
+            subject: NewBlueprint.data.subject,
+            date: NewBlueprint.data.date,
+            lang: NewBlueprint.data.lang
+         }
+         NewBlueprint.data = angular.fromJson(angular.toJson($scope.blueprint));
+         NewBlueprint.data.subject = directions.subject;
+         NewBlueprint.data.date = directions.date;
+         NewBlueprint.data.lang = directions.lang;
+         NewBlueprint.data.ongoing = true;
+         $state.go('newBlueprint', directions);
+      }
+
    }]);

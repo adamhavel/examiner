@@ -7,5 +7,6 @@ angular.module('app', [
    'webStorageModule',
    'app.ui',
    'app.blueprints',
-   'app.exams'
+   'app.exams',
+   'app.examdates'
 ]);

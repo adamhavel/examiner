@@ -29,7 +29,7 @@ var BlueprintSchema = new Schema(
                         datatype: String,
                         lang: String,
                         content: Schema.Types.Mixed,
-                        hint: Schema.Types.Mixed
+                        solution: Schema.Types.Mixed
                      }
                   ]
                }

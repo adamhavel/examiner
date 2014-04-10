@@ -38,7 +38,7 @@
          </header>
 
          <div class="question__chunk" ng-repeat="chunk in question.body" ng-switch on="chunk.datatype">
-            <p ng-switch-when="text">{{chunk.content}}</p>
+            <paragraph ng-switch-when="text" content="chunk.content" editable="false"></paragraph>
             <img ng-switch-when="image" class="question__image" ng-src="{{chunk.content}}">
             <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;charset=UTF-8,{{chunk.content}}">
             <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="false"></snippet>
@@ -47,18 +47,18 @@
 
          <div class="question__chunk question__answer" ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">
             <h2 class="heading heading--caption epsilon">Answer</h2>
-            <p ng-switch-when="text">{{chunk.content}}</p>
-            <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;charset=UTF-8,{{chunk.content}}">
-            <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="false"></snippet>
-            <list ng-switch-when="list" content="chunk.content" editable="false"></list>
-            <options ng-switch-when="options" content="chunk.content" editable="false"></options>
-            <div ng-if="chunk.hint" class="question__chunk" ng-switch on="chunk.datatype">
+            <paragraph ng-switch-when="text" content="chunk.solution" editable="false"></paragraph>
+            <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;charset=UTF-8,{{chunk.solution}}">
+            <snippet ng-switch-when="code" content="chunk.solution" lang="{{chunk.lang}}" editable="false"></snippet>
+            <list ng-switch-when="list" content="chunk.solution" editable="false"></list>
+            <options ng-switch-when="options" content="chunk.solution" editable="false"></options>
+            <div ng-if="chunk.content" class="question__chunk" ng-switch on="chunk.datatype">
                <h2 class="heading heading--caption epsilon">Hint</h2>
-               <p ng-switch-when="text">{{chunk.hint}}</p>
-               <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;charset=UTF-8,{{chunk.hint}}">
-               <snippet ng-switch-when="code" content="chunk.hint" lang="{{chunk.lang}}" editable="false"></snippet>
-               <list ng-switch-when="list" content="chunk.hint" editable="false"></list>
-               <options ng-switch-when="options" content="chunk.hint" editable="false"></options>
+               <paragraph ng-switch-when="text" content="chunk.content" editable="false"></paragraph>
+               <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;charset=UTF-8,{{chunk.content}}">
+               <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="false"></snippet>
+               <list ng-switch-when="list" content="chunk.content" editable="false"></list>
+               <options ng-switch-when="options" content="chunk.content" editable="false"></options>
             </div>
          </div>
 

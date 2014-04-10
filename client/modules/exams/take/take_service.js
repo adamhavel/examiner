@@ -14,7 +14,11 @@ angular.module('app.exams.take')
 
          api.reset = function() {
             api.data = {
-               ongoing: false
+               ongoing: false,
+               subject: null,
+               date: null,
+               lang: null,
+               sections: []
             };
          };
 

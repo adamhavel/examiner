@@ -5,7 +5,9 @@ angular.module('app.user')
    .factory('User', function() {
 
       var api = {
-         role: 'student',
+         name: 'Adam Havel',
+         id: 'havelad1',
+         role: 'teacher',
          switchRole: function() {
             if (api.role === 'student') {
                api.role = 'teacher';

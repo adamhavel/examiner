@@ -11,7 +11,7 @@ angular.module('app.exams')
       $scope.takeExam = function(examTerm) {
          Modal.open('confirm', 'Are you sure?', function(confirm) {
             if (confirm) {
-               $state.go('takeExam', {
+               $state.go('exam', {
                   subject: examTerm.subject,
                   date: examTerm.date,
                   lang: 'en'

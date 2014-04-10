@@ -6,7 +6,6 @@ angular.module('app.examterms')
 
       var mockData = [
          {
-
             subject: 'mi-mdw',
             date: '2014-04-11T09:00',
             lang: 'en'

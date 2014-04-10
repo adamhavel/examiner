@@ -3,10 +3,11 @@
 angular.module('app')
 
    .factory('Socket', ['$rootScope', function($rootScope) {
-      var socket = io.connect();
+      var socket = io.connect('http://localhost');
       return {
 
-         on: function (eventName, callback) {
+         on: function(eventName, callback) {
+            socket.removeAllListeners(eventName);
             socket.on(eventName, function() {
                var args = arguments;
                $rootScope.$apply(function() {

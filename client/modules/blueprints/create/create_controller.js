@@ -32,27 +32,33 @@ angular.module('app.blueprints.create')
       }
 
       function isEmpty(item) {
+         function isContentEmpty(content, datatype) {
+            switch (datatype) {
+               case 'text':
+               case 'code':
+                  return content.replace(/(\s|<([^>]+)>|&nbsp;)+/g, '') === '';
+               case 'list':
+                  return content.every(function(item) {
+                     return !item.content;
+                  });
+               case 'options':
+                  return content.every(function(item) {
+                     return !(item.content || item.value);
+                  });
+               case 'canvas':
+                  return content.states.length === 1;
+            }
+         }
          if (item.questions && !item.questions.length && !item.lede) {
             return true;
          } else if (item.body && !item.body.length && !item.answer.length) {
             return true;
-         } else if (item.datatype) {
-            switch (item.datatype) {
-               case 'text':
-               case 'code':
-                  return item.content.replace(/(\s|<([^>]+)>)+/g, '') === '';
-               case 'list':
-                  return item.content.every(function(item) {
-                     return !item.content;
-                  });
-               case 'options':
-                  return item.content.every(function(item) {
-                     return !(item.content || item.value);
-                  });
-               case 'canvas':
-                  return item.content.states.length === 1;
-            }
+         } else if (item.content) {
+            return isContentEmpty(item.content, item.datatype);
+         } else if (item.solution) {
+            return isContentEmpty(item.solution, item.datatype);
          }
+         return true;
       }
 
       function isAcceptable() {
@@ -177,43 +183,23 @@ angular.module('app.blueprints.create')
          switch (type) {
             case 'text':
                content = {
-                  datatype: 'text',
-                  content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, magnam, quis, excepturi odit placeat error accusamus maiores at a facere itaque corporis aliquam architecto magni aliquid obcaecati dolores dignissimos pariatur.'
+                  datatype: 'text'
                };
                break;
             case 'list':
                content = {
-                  datatype: 'list',
-                  content: [{
-                     content: 'Lorem ipsum dolor sit amet'
-                  }]
+                  datatype: 'list'
                };
                break;
             case 'code':
                content = {
                   datatype: 'code',
-                  lang: 'javascript',
-                  content: 'var src = f.src.filter(function(filepath) {\n' +
-                           '   // Warn on and remove invalid source files (if nonull was set).\n' +
-                           '   if (!grunt.file.exists(filepath)) {\n' +
-                           '      grunt.log.warn(\'Source file "\' + filepath + \'" not found.\');\n' +
-                           '       return false;\n' +
-                           '   } else {\n' +
-                           '      return true;\n' +
-                           '   }\n' +
-                           '}).map(function(filepath) {\n' +
-                           '   // Read file source.\n' +
-                           '   return grunt.file.read(filepath);\n' +
-                           '});'
+                  lang: 'javascript'
                };
                break;
             case 'options':
                content = {
-                  datatype: 'options',
-                  content: [{
-                     value: false,
-                     content: 'Lorem ipsum dolor sit amet'
-                  }]
+                  datatype: 'options'
                };
                break;
             case 'image':
@@ -221,7 +207,7 @@ angular.module('app.blueprints.create')
                   if (url) {
                      target.push({
                         datatype: 'image',
-                        content: url //http://31.media.tumblr.com/e05faf08d9254af029d384ccb2b9e81d/tumblr_msbc2eCq0e1rsuch2o1_1280.jpg
+                        content: url
                      });
                   }
                });
@@ -268,6 +254,7 @@ angular.module('app.blueprints.create')
       };
 
       $scope.blueprint = NewBlueprint.data;
+      console.log(NewBlueprint.isOngoing());
       if (!NewBlueprint.isOngoing()) {
          $scope.blueprint.subject = $stateParams.subject;
          $scope.blueprint.date = $stateParams.date;

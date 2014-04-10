@@ -1,7 +1,12 @@
 <article class="exam">
 
+   {{users}}
+
    <header class="exam__header">
       <h1 class="alpha heading exam__heading">{{exam.subject | uppercase}} &mdash; {{exam.date | date: 'd. M. yyyy, H:mm'}}</h1>
+      <div class="exam__controls">
+         <button ng-click="store()">Hand in</button>
+      </div>
    </header>
 
    <contents document="exam"></contents>
@@ -31,7 +36,7 @@
          </header>
 
          <div class="question__chunk" ng-repeat="chunk in question.body" ng-switch on="chunk.datatype">
-            <p ng-switch-when="text">{{chunk.content}}</p>
+            <paragraph ng-switch-when="text" content="chunk.content" editable="false"></paragraph>
             <img ng-switch-when="image" class="question__image" ng-src="{{chunk.content}}">
             <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;charset=UTF-8,{{chunk.content}}">
             <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="false"></snippet>
@@ -40,7 +45,7 @@
 
          <div class="question__chunk question__answer" ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">
             <h2 class="heading heading--caption epsilon">Your answer</h2>
-            <p ng-switch-when="text" contenteditable="true" spellcheck="false" placeholder="Type here...">{{chunk.content}}</p>
+            <paragraph ng-switch-when="text" content="chunk.content" editable="true"></paragraph>
             <icanvas ng-switch-when="canvas" content="chunk.content" editable="true"></icanvas>
             <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="true"></snippet>
             <list ng-switch-when="list" content="chunk.content" editable="true"></list>

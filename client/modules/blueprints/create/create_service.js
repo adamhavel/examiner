@@ -38,7 +38,10 @@ angular.module('app.blueprints.create')
                   });
                   question.answer.forEach(function(chunk) {
                      if (chunk.datatype === 'code') {
-                        chunk.content = chunk.content.replace(regExpHTML, '');
+                        chunk.solution = chunk.solution.replace(regExpHTML, '');
+                        if (chunk.content) {
+                           chunk.content = chunk.content.replace(regExpHTML, '');
+                        }
                      }
                   });
                });
@@ -48,7 +51,7 @@ angular.module('app.blueprints.create')
 
          api.store = function() {
             api.save();
-            $rootScope.$emit('finishBlueprint');
+            $rootScope.$emit('seal');
             $timeout(function() {
                var blueprint = new Blueprint(api.data);
                console.log(blueprint);

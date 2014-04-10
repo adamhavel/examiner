@@ -14,10 +14,10 @@ angular.module('app').config([
             templateUrl: 'partials/pending.html',
             controller: 'ExamsController',
          })
-         .state('takeExam', {
-            url: '/take/:subject/:date/:lang',
-            templateUrl: 'partials/takeExam.html',
-            controller: 'ExamTakeController',
+         .state('exam', {
+            url: '/exam/:subject/:date/:lang',
+            templateUrl: 'partials/exam.html',
+            controller: true ? 'ExamTakeController' : 'ExamOverviewController',
          })
          .state('blueprints', {
             url: '/blueprints{filter:.*}',
@@ -32,12 +32,12 @@ angular.module('app').config([
          .state('examTerms', {
             url: '/new',
             templateUrl: 'partials/examTerms.html',
-            controller: 'ExamTermsController',
+            controller: 'ExamTermsController'
          })
          .state('newBlueprint', {
             url: '/new/:subject/:date/:lang',
             templateUrl: 'partials/newBlueprint.html',
-            controller: 'BlueprintCreateController',
+            controller: 'BlueprintCreateController'
          });
 
    }

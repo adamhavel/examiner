@@ -13,6 +13,29 @@ angular.module('app.exams')
       };
    })
 
+   .directive('paragraph', function() {
+
+
+      function link($scope, $element) {
+
+         if ($scope.content == null) {
+            $scope.content = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, asperiores quas libero dolore deleniti natus illo inventore assumenda voluptates modi. Inventore, in perferendis nemo odit. Aspernatur, error fugiat eveniet asperiores.';
+         }
+
+      }
+
+      return {
+         restrict: 'E',
+         scope: {
+            content: '=content',
+            editable: '@'
+         },
+         templateUrl: 'partials/paragraph.html',
+         replace: true,
+         link: link
+      };
+   })
+
    .directive('list', function() {
 
       function getElements(selector, parent) {
@@ -24,6 +47,12 @@ angular.module('app.exams')
       }
 
       function link($scope, $element) {
+
+         if (!$scope.items) {
+            $scope.items = [{
+               content: 'Lorem ipsum dolor sit amet'
+            }];
+         }
 
          if ($scope.editable === 'true') {
 
@@ -88,6 +117,13 @@ angular.module('app.exams')
 
          };
 
+         if (!$scope.items) {
+            $scope.items = [{
+               value: false,
+               content: 'Lorem ipsum dolor sit amet'
+            }];
+         }
+
          if ($scope.editable === 'true') {
 
             $element.on('keydown', function(e) {
@@ -147,6 +183,22 @@ angular.module('app.exams')
          Modernizr.load({
             load: 'js/ondemand/app.highlight.min.js',
             callback: function () {
+
+               if ($scope.content == null) {
+                  $scope.content = 'var src = f.src.filter(function(filepath) {\n' +
+                  '   // Warn on and remove invalid source files (if nonull was set).\n' +
+                  '   if (!grunt.file.exists(filepath)) {\n' +
+                  '      grunt.log.warn(\'Source file "\' + filepath + \'" not found.\');\n' +
+                  '       return false;\n' +
+                  '   } else {\n' +
+                  '      return true;\n' +
+                  '   }\n' +
+                  '}).map(function(filepath) {\n' +
+                  '   // Read file source.\n' +
+                  '   return grunt.file.read(filepath);\n' +
+                  '});';
+                  $scope.$apply();
+               }
 
                if ($scope.editable === 'true') {
 
@@ -697,7 +749,7 @@ angular.module('app.exams')
                $scope.content = $scope.canvas.toSVG();
             }
 
-            $rootScope.$on('finishBlueprint', sealCanvas);
+            $rootScope.$on('seal', sealCanvas);
          }]
       };
    });

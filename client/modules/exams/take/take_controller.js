@@ -3,41 +3,60 @@
 angular.module('app.exams.take')
 
    .controller('ExamTakeController',
-   ['$scope', '$stateParams', '$state', 'Blueprint', 'ExamTake', 'Modal', 'Socket',
-   function($scope, $stateParams, $state, Blueprint, ExamTake, Modal, Socket) {
+   ['$scope', '$stateParams', '$state', 'Blueprint', 'ExamTake', 'Modal', 'Socket', 'User',
+   function($scope, $stateParams, $state, Blueprint, ExamTake, Modal, Socket, User) {
 
-      Socket.on('init', function(data) {
-         console.log(data);
+      var fingerprint = {
+         role: User.role,
+         name: User.name,
+         id: User.id,
+         examId: $stateParams.subject
+      }
+
+      $scope.users = [];
+
+      Socket.on('init', function(users) {
+         $scope.users = users;
+         Socket.emit('identify', fingerprint);
       });
 
-      Socket.on('send:message', function(message) {
-         console.log(message);
+      Socket.on('user:registered', function(user) {
+         $scope.users.push(user);
       });
 
       window.addEventListener('blur', function() {
       });
 
-      $scope.exam = Blueprint.get({
-         subject: $stateParams.subject,
-         date: $stateParams.date,
-         lang: $stateParams.lang
-      }, function(blueprint) {
+      $scope.$on('$destroy', function() {
 
-      }, function() {
-         //$state.go('blueprints');
       });
+
+      $scope.store = function() {
+         Modal.open('confirm', 'Do you want to hand in the exam early? There is no going back.', function(confirmed) {
+            if (confirmed) {
+               Socket.emit('finished', fingerprint);
+               ExamTake.reset();
+               $state.go('home');
+            }
+         }, 'Hand in');
+      };
 
       $scope.exam = ExamTake.data;
       if (!ExamTake.isOngoing()) {
+         Socket.emit('register', fingerprint);
          ExamTake.data = Blueprint.get({
             subject: $stateParams.subject,
             date: $stateParams.date,
             lang: $stateParams.lang
-         }, function(blueprint) {
-            $scope.exam.ongoing = true;
-            $scope.exam.student = 'Adam Havel';
          }, function() {
-            //$state.go('blueprints');
+            $scope.exam = ExamTake.data;
+            $scope.exam.ongoing = true;
+            $scope.exam.student = {
+               name: User.name,
+               id: User.id
+            };
+         }, function(err) {
+
          });
       }
 

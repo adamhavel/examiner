@@ -52,13 +52,12 @@
             <snippet ng-switch-when="code" content="chunk.solution" lang="{{chunk.lang}}" editable="false"></snippet>
             <list ng-switch-when="list" content="chunk.solution" editable="false"></list>
             <options ng-switch-when="options" content="chunk.solution" editable="false"></options>
-            <div ng-if="chunk.content" class="question__chunk" ng-switch on="chunk.datatype">
+            <div ng-if="chunk.content && chunk.datatype !== 'options'" class="question__chunk" ng-switch on="chunk.datatype">
                <h2 class="heading heading--caption epsilon">Hint</h2>
                <paragraph ng-switch-when="text" content="chunk.content" editable="false"></paragraph>
                <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;charset=UTF-8,{{chunk.content}}">
                <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="false"></snippet>
                <list ng-switch-when="list" content="chunk.content" editable="false"></list>
-               <options ng-switch-when="options" content="chunk.content" editable="false"></options>
             </div>
          </div>
 

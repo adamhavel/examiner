@@ -9,40 +9,39 @@ angular.module('app.exams.take')
       var ExamTake = (function() {
 
          var api = {
-             data: {}
+            data: null,
+            isOngoing: false
          };
 
          api.reset = function() {
             api.data = {
-               ongoing: false,
                subject: null,
                date: null,
                lang: null,
                sections: []
             };
-         };
-
-         api.isOngoing = function() {
-            return api.data.ongoing;
+            api.isOngoing = false;
          };
 
          api.save = function() {
-            var regExpHTML = /(<([^>]+)>)/g;
-            api.data.sections.forEach(function(section) {
-               section.questions.forEach(function(question) {
-                  question.body.forEach(function(chunk) {
-                     if (chunk.datatype === 'code') {
-                        chunk.content = chunk.content.replace(regExpHTML, '');
-                     }
-                  });
-                  question.answer.forEach(function(chunk) {
-                     if (chunk.datatype === 'code') {
-                        chunk.content = chunk.content.replace(regExpHTML, '');
-                     }
+            if (api.isOngoing) {
+               var regExpHTML = /(<([^>]+)>)/g;
+               api.data.sections.forEach(function(section) {
+                  section.questions.forEach(function(question) {
+                     question.body.forEach(function(chunk) {
+                        if (chunk.datatype === 'code') {
+                           chunk.content = chunk.content.replace(regExpHTML, '');
+                        }
+                     });
+                     question.answer.forEach(function(chunk) {
+                        if (chunk.datatype === 'code') {
+                           chunk.content = chunk.content.replace(regExpHTML, '');
+                        }
+                     });
                   });
                });
-            });
-            webStorage.add('exam', angular.toJson(api.data));
+               webStorage.add('exam', angular.toJson(api.data));
+            }
          };
 
          /*api.store = function() {
@@ -69,6 +68,7 @@ angular.module('app.exams.take')
             var storedSession = angular.fromJson(webStorage.get('exam'));
             if (storedSession) {
                api.data = storedSession;
+               api.isOngoing = true;
                webStorage.remove('exam');
             } else {
                api.reset();

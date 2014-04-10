@@ -42,7 +42,7 @@ angular.module('app.exams.take')
       };
 
       $scope.exam = ExamTake.data;
-      if (!ExamTake.isOngoing()) {
+      if (!ExamTake.isOngoing) {
          Socket.emit('register', fingerprint);
          ExamTake.data = Blueprint.get({
             subject: $stateParams.subject,
@@ -50,11 +50,11 @@ angular.module('app.exams.take')
             lang: $stateParams.lang
          }, function() {
             $scope.exam = ExamTake.data;
-            $scope.exam.ongoing = true;
             $scope.exam.student = {
                name: User.name,
                id: User.id
             };
+            ExamTake.isOngoing = true;
          }, function(err) {
 
          });

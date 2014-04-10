@@ -18,9 +18,9 @@ angular.module('app.exams')
 
       function link($scope, $element) {
 
-         if ($scope.content == null) {
-            $scope.content = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, asperiores quas libero dolore deleniti natus illo inventore assumenda voluptates modi. Inventore, in perferendis nemo odit. Aspernatur, error fugiat eveniet asperiores.';
-         }
+         // if ($scope.content == null) {
+         //    $scope.content = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, asperiores quas libero dolore deleniti natus illo inventore assumenda voluptates modi. Inventore, in perferendis nemo odit. Aspernatur, error fugiat eveniet asperiores.';
+         // }
 
       }
 
@@ -114,7 +114,7 @@ angular.module('app.exams')
       function link($scope, $element) {
 
          $scope.getId = function() {
-
+            return 'id' + Math.round(Math.random()*1000);
          };
 
          if (!$scope.items) {

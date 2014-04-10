@@ -9,44 +9,50 @@ angular.module('app.blueprints.create')
       var NewBlueprint = (function() {
 
          var api = {
-            data: {}
+            data: null,
+            isOngoing: false
          };
 
          api.reset = function() {
             api.data = {
-               ongoing: false,
                subject: null,
                date: null,
                lang: null,
                lede: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione, quidem, ullam dolorum expedita aliquam maiores distinctio esse repudiandae totam magnam saepe iusto ipsam nam a libero suscipit enim architecto nobis!',
                sections: []
             };
-         };
-
-         api.isOngoing = function() {
-            return api.data.ongoing;
+            api.isOngoing = false;
          };
 
          api.save = function() {
-            var regExpHTML = /(<([^>]+)>)/g;
-            api.data.sections.forEach(function(section) {
-               section.questions.forEach(function(question) {
-                  question.body.forEach(function(chunk) {
-                     if (chunk.datatype === 'code') {
-                        chunk.content = chunk.content.replace(regExpHTML, '');
-                     }
-                  });
-                  question.answer.forEach(function(chunk) {
-                     if (chunk.datatype === 'code') {
-                        chunk.solution = chunk.solution.replace(regExpHTML, '');
-                        if (chunk.content) {
+            if (api.isOngoing) {
+               var regExpHTML = /(<([^>]+)>)/g;
+               api.data.sections.forEach(function(section) {
+                  section.questions.forEach(function(question) {
+                     question.body.forEach(function(chunk) {
+                        if (chunk.datatype === 'code') {
                            chunk.content = chunk.content.replace(regExpHTML, '');
                         }
-                     }
+                     });
+                     question.answer.forEach(function(chunk) {
+                        if (chunk.datatype === 'code') {
+                           chunk.solution = chunk.solution.replace(regExpHTML, '');
+                           if (chunk.content) {
+                              chunk.content = chunk.content.replace(regExpHTML, '');
+                           }
+                        } else if (chunk.datatype === 'options') {
+                           chunk.content = chunk.solution.map(function(option) {
+                              return {
+                                 content: option.content,
+                                 value: false
+                              };
+                           });
+                        }
+                     });
                   });
                });
-            });
-            webStorage.add('blueprint', angular.toJson(api.data));
+               webStorage.add('blueprint', angular.toJson(api.data));
+            }
          };
 
          api.store = function() {
@@ -54,7 +60,6 @@ angular.module('app.blueprints.create')
             $rootScope.$emit('seal');
             $timeout(function() {
                var blueprint = new Blueprint(api.data);
-               console.log(blueprint);
                //blueprint.date = dateFilter(blueprint.date, 'yyyy-MM-dd');
                blueprint.$save(function() {
                   Modal.open('success', 'The blueprint has been successfully saved.', function() {
@@ -75,6 +80,7 @@ angular.module('app.blueprints.create')
             var storedSession = angular.fromJson(webStorage.get('blueprint'));
             if (storedSession) {
                api.data = storedSession;
+               api.isOngoing = true;
                webStorage.remove('blueprint');
                //api.data.date = new Date(api.data.date);
             } else {

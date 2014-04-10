@@ -1,9 +1,9 @@
 <fieldset>
    <ul>
-      <li ng-repeat="item in items">
+      <li ng-repeat="item in items" ng-init="id = getId()">
          <div class="checkbox-wrapper">
-            <label ng-attr-contenteditable="{{editable}}" ng-model="item.content" placeholder="Type here..." spellcheck="false"></label>
-            <input ng-attr-id="{{item.id}}" type="checkbox" ng-model="item.value" ng-disabled="{{editable == 'false'}}">
+            <label for="{{id}}" contenteditable="{{editable}}" ng-model="item.content" placeholder="Type here..." spellcheck="false"></label>
+            <input id="{{id}}" type="checkbox" ng-model="item.value">
          </div>
       </li>
    </ul>

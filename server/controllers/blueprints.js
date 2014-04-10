@@ -91,12 +91,14 @@ exports.create = function(req, res) {
          });
          question.answer.forEach(function(chunk) {
             if (chunk.datatype === 'canvas') {
-               svgo.optimize(chunk.content, function(result) {
-                  chunk.content = result.data;
-               });
-               if (chunk.hint) {
-                  svgo.optimize(chunk.hint, function(result) {
-                     chunk.hint = result.data;
+               if (chunk.content) {
+                  svgo.optimize(chunk.content, function(result) {
+                     chunk.content = result.data;
+                  });
+               }
+               if (chunk.solution) {
+                  svgo.optimize(chunk.solution, function(result) {
+                     chunk.solution = result.data;
                   });
                }
             }

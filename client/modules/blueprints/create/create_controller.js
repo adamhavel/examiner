@@ -192,10 +192,15 @@ angular.module('app.blueprints.create')
                };
                break;
             case 'code':
-               content = {
-                  datatype: 'code',
-                  lang: 'javascript'
-               };
+               Modal.open('chooseCodeLanguage', 'Please choose a language.', function(lang) {
+                  if (lang) {
+                     console.log(lang);
+                     target.push({
+                        datatype: 'code',
+                        lang: lang
+                     });
+                  }
+               });
                break;
             case 'options':
                content = {
@@ -254,13 +259,12 @@ angular.module('app.blueprints.create')
       };
 
       $scope.blueprint = NewBlueprint.data;
-      console.log(NewBlueprint.isOngoing());
-      if (!NewBlueprint.isOngoing()) {
+      if (!NewBlueprint.isOngoing) {
          $scope.blueprint.subject = $stateParams.subject;
          $scope.blueprint.date = $stateParams.date;
          $scope.blueprint.lang = $stateParams.lang;
          $scope.addSection();
-         $scope.blueprint.ongoing = true;
+         NewBlueprint.isOngoing = true;
       } else if ($scope.blueprint.subject !== $stateParams.subject || $scope.blueprint.date !== $stateParams.date || $scope.blueprint.lang !== $stateParams.lang) {
          Modal.open('alert', 'You can only create one blueprint at a time.', function() {
             $state.go('newBlueprint', {

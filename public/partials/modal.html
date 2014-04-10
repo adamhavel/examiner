@@ -18,6 +18,12 @@
          <button ng-click="close()">Cancel</button>
          <button ng-click="confirm()">Select</button>
       </form>
+      <form ng-switch-when="chooseCodeLanguage">
+         <p class="modal__prompt">{{modal.prompt}}</p>
+         <input type="text" ng-model="modal.callback.value" required autofocus>
+         <button ng-click="close()">Cancel</button>
+         <button ng-click="confirm()">Select</button>
+      </form>
       <div ng-switch-when="save">
          <p class="modal__prompt">{{modal.prompt}}</p>
          <button ng-click="close()">Cancel</button>

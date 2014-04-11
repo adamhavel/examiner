@@ -53,12 +53,16 @@ angular.module('app.blueprints.create')
             return true;
          } else if (item.body && !item.body.length && !item.answer.length) {
             return true;
-         } else if (item.content) {
-            return isContentEmpty(item.content, item.datatype);
-         } else if (item.solution) {
-            return isContentEmpty(item.solution, item.datatype);
+         } else if (item.datatype) {
+            if (!(item.content || item.solution)) {
+               return true;
+            } else if (item.content) {
+               return isContentEmpty(item.content, item.datatype);
+            } else if (item.solution) {
+               return isContentEmpty(item.solution, item.datatype);
+            }
          }
-         return true;
+         return false;
       }
 
       function isAcceptable() {

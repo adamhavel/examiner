@@ -18,6 +18,15 @@ angular.module('app')
                });
             });
 
+            $element.on('paste', function(e) {
+               e.preventDefault();
+               document.execCommand('InsertHTML', false, e.clipboardData.getData('text/plain'));
+            });
+
+            $scope.$on('$destroy', function() {
+               $element.off('input');
+            });
+
             ngModel.$render = function() {
                $element.html(ngModel.$viewValue || '');
             };

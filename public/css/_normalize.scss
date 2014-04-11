@@ -310,6 +310,12 @@ input[type="search"]::-webkit-search-decoration {
    -webkit-appearance: none;
 }
 
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 /**
  * Remove inner padding and border in Firefox 4+.
 */

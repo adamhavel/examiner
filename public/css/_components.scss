@@ -289,7 +289,7 @@ button:not(.tools__item) {
       }
    }
    &:hover {
-      z-index: 1000;
+      z-index: 100;
       transform: scale(1.5);
       .content {
          @extend %t-sheet;
@@ -390,6 +390,12 @@ button:not(.tools__item) {
    background: lighten(brand(yellow), 10%);
    box-shadow: 2rem 2rem 0 0 rgba(black, .075);
    pointer-events: auto;
+   input {
+      @extend %delta;
+      font-family: "Roboto", sans-serif;
+      font-weight: 300;
+      color: rgba(black, .6);
+   }
    &__close {
       display: none;
       @include position($top: $leading * .25, $right: $leading * .25);
@@ -414,6 +420,11 @@ button:not(.tools__item) {
    }
    &--save {
       @extend %icon--save;
+      @include primary-button(lighten(brand(red), 40%));
+      background: lighten(brand(purple), 20%);
+   }
+   &--setDuration {
+      @extend %icon--watch;
       @include primary-button(lighten(brand(red), 40%));
       background: lighten(brand(purple), 20%);
    }

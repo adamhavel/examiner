@@ -26,7 +26,7 @@
 
       <nav class="top-nav">
          <ul class="inline-list">
-            <li>Logged in as: <span ng-model="user.name" contenteditable></span> (<span ng-model="user.id" contenteditable></span>) [<a ng-click="user.switchRole()" href="">{{user.role}}</a>]</li>
+            <li>Logged in as: <span ng-model="user.data.name" contenteditable></span> (<span ng-model="user.data.id" contenteditable></span>) [<a ng-click="user.switchRole()" href="">{{user.data.role}}</a>]</li>
             <li><a href="">Log Out</a></li>
          </ul>
       </nav>
@@ -37,12 +37,12 @@
 
    <aside class="sidebar">
 
-      <nav class="site-nav" ng-if="!examTake.isOngoing">
+      <nav class="site-nav" ng-if="!(examTake.isOngoing && user.data.role === 'student')">
          <ul class="block-list">
-            <li><a class="site-nav__item icon--write" ui-sref="home" ui-sref-active="ng-active">Pending</a></li>
-            <li ng-if="user.role === 'teacher'"><a class="site-nav__item icon--tick" href="">Evaluate</a></li>
-            <li ng-if="user.role === 'teacher'"><a class="site-nav__item icon--exams" ng-class="{'ng-active': state.is('blueprints') || state.is('blueprint')}" ui-sref="blueprints">Blueprints</a></li>
-            <li ng-if="user.role === 'teacher'"><a class="site-nav__item icon--create" ng-class="{'ng-ongoing': blueprint.isOngoing, 'ng-active': state.is('examTerms')}" ui-sref="examTerms">Create</a></li>
+            <li><a class="site-nav__item icon--write" ng-class="{'ng-ongoing': examTake.isOngoing, 'ng-active': state.is('home')}" ui-sref="home">Pending</a></li>
+            <li ng-if="user.data.role === 'teacher'"><a class="site-nav__item icon--tick" href="">Evaluate</a></li>
+            <li ng-if="user.data.role === 'teacher'"><a class="site-nav__item icon--exams" ng-class="{'ng-active': state.is('blueprints') || state.is('blueprint')}" ui-sref="blueprints">Blueprints</a></li>
+            <li ng-if="user.data.role === 'teacher'"><a class="site-nav__item icon--create" ng-class="{'ng-ongoing': blueprint.isOngoing, 'ng-active': state.is('examTerms')}" ui-sref="examTerms">Create</a></li>
             <li><a class="site-nav__item icon--results" href="">Results</a></li>
          </ul>
       </nav>

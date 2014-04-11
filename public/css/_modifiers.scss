@@ -41,7 +41,7 @@
 %dimmable {
    @include before {
       position: fixed;
-      z-index: 100;
+      z-index: 1000;
       top: 0;
       left: 0;
       width: 0;
@@ -95,6 +95,9 @@
       &:empty:not(:focus):after {
          content: attr(placeholder);
          color: rgba(black, .25);
+      }
+      p > & {
+         border-bottom: 2px solid rgba(black, .6);
       }
    }
 }

@@ -1,6 +1,7 @@
 <section ng-attr-class="modal modal--{{modal.type}}" ng-if="modal">
    <button class="modal__close tools__item icon--remove" ng-click="close()">close</button>
    <div class="modal__content" ng-switch on="modal.type">
+
       <form ng-switch-when="loadImage" ng-submit="submitImage()">
          <div ng-show="loading">loading</div>
          <p class="modal__prompt">{{modal.prompt}}</p>
@@ -9,6 +10,7 @@
          <button ng-click="close()">Cancel</button>
          <button type="submit">Add image</button>
       </form>
+
       <form ng-switch-when="chooseLanguage">
          <p class="modal__prompt">{{modal.prompt}}</p>
          <select ng-init="modal.callback.value = 'en'" ng-model="modal.callback.value" required>
@@ -18,33 +20,48 @@
          <button ng-click="close()">Cancel</button>
          <button ng-click="confirm()">Select</button>
       </form>
+
       <form ng-switch-when="chooseCodeLanguage">
          <p class="modal__prompt">{{modal.prompt}}</p>
          <input type="text" ng-model="modal.callback.value" required autofocus>
          <button ng-click="close()">Cancel</button>
          <button ng-click="confirm()">Select</button>
       </form>
+
+      <form ng-switch-when="setDuration">
+         <p class="modal__prompt">
+            The exam will automatically end in exactly <number content="modal.callback.value" ng-init="modal.callback.value = '60'" editable="true" autofocus></number> {{modal.callback.value != 1 ? 'minutes' : 'minute'}}.
+         </p>
+         <button ng-click="close()">{{modal.secondaryActionLabel || 'Cancel'}}</button>
+         <button ng-click="confirm()">{{modal.primaryActionLabel || 'Begin'}}</button>
+      </form>
+
       <div ng-switch-when="save">
          <p class="modal__prompt">{{modal.prompt}}</p>
          <button ng-click="close()">Cancel</button>
          <button ng-click="confirm()">Store</button>
       </div>
+
       <div ng-switch-when="confirm">
          <p class="modal__prompt">{{modal.prompt}}</p>
          <button ng-click="confirm()">{{modal.secondaryActionLabel || 'Yes, I\'m sure'}}</button>
          <button ng-click="close()">{{modal.primaryActionLabel || 'Cancel'}}</button>
       </div>
+
       <div ng-switch-when="alert">
          <p class="modal__prompt">{{modal.prompt}}</p>
          <button ng-click="confirm()">I understand</button>
       </div>
+
       <div ng-switch-when="error">
          <p class="modal__prompt">{{modal.prompt}}</p>
          <button ng-click="confirm()">I understand</button>
       </div>
+
       <div ng-switch-when="success">
          <p class="modal__prompt">{{modal.prompt}}</p>
          <button ng-click="confirm()">Continue</button>
       </div>
+
    </div>
 </section>

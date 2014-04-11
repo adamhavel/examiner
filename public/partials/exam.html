@@ -1,11 +1,15 @@
-<article class="exam">
+<article class="exam" ng-if="exam.started || !isStudent">
 
-   {{users}}
+   {{students}}
 
    <header class="exam__header">
       <h1 class="alpha heading exam__heading">{{exam.subject | uppercase}} &mdash; {{exam.date | date: 'd. M. yyyy, H:mm'}}</h1>
       <div class="exam__controls">
-         <button ng-click="store()">Hand in</button>
+         <button ng-if="isStudent" ng-click="store()">Hand in</button>
+         <button ng-if="exam.started && !isStudent" ng-click="finish()">Collect</button>
+         <button ng-if="exam.started && !isStudent" ng-click="adjustTimer()">Adjust timer</button>
+         <button ng-if="!exam.started && !isStudent" ng-click="leave()">Leave</button>
+         <button ng-if="!exam.started && !isStudent && students.length" ng-click="start()">Hand out</button>
       </div>
    </header>
 
@@ -44,12 +48,15 @@
          </div>
 
          <div class="question__chunk question__answer" ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">
+            <ul ng-if="!isStudent" class="inline-list tools tools--small tools--flush">
+               <li><button title="Change language" class="tools__item icon--code-alt" ng-click="toggleSolution(chunk)">Change language</button></li>
+            </ul>
             <h2 class="heading heading--caption epsilon">Your answer</h2>
-            <paragraph ng-switch-when="text" content="chunk.content" editable="true"></paragraph>
-            <icanvas ng-switch-when="canvas" content="chunk.content" editable="true"></icanvas>
-            <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="true"></snippet>
-            <list ng-switch-when="list" content="chunk.content" editable="true"></list>
-            <options ng-switch-when="options" content="chunk.content" editable="false"></options>
+            <paragraph ng-switch-when="text" content="chunk.content" editable="{{isStudent ? 'true' : 'false'}}"></paragraph>
+            <icanvas ng-switch-when="canvas" content="chunk.content" editable="{{isStudent ? 'true' : 'false'}}"></icanvas>
+            <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="{{isStudent ? 'true' : 'false'}}"></snippet>
+            <list ng-switch-when="list" content="chunk.content" editable="{{isStudent ? 'true' : 'false'}}"></list>
+            <options ng-switch-when="options" content="chunk.content" editable="{{isStudent ? 'true' : 'false'}}"></options>
          </div>
 
       </article>

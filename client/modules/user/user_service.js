@@ -2,21 +2,54 @@
 
 angular.module('app.user')
 
-   .factory('User', function() {
+   .factory('User', ['$rootScope', 'webStorage', function($rootScope, webStorage) {
 
-      var api = {
-         name: 'Adam Havel',
-         id: 'havelad1',
-         role: 'teacher',
-         switchRole: function() {
-            if (api.role === 'student') {
-               api.role = 'teacher';
-            } else {
-               api.role = 'student';
+      var User = (function() {
+
+         var api = {
+            data: {
+               name: 'Adam Havel',
+               id: 'havelad1',
+               role: 'teacher'
             }
-         }
-      };
+         };
 
-      return api;
+         api.switchRole = function() {
+            if (api.data.role === 'student') {
+               api.data.role = 'teacher';
+            } else {
+               api.data.role = 'student';
+            }
+         };
 
-   });
+         api.reset = function() {
+            api.data = {
+               name: 'Adam Havel',
+               id: 'havelad1',
+               role: 'teacher'
+            };
+         };
+
+         api.save = function() {
+            webStorage.add('user', angular.toJson(api.data));
+         };
+
+         (function init() {
+            var storedSession = angular.fromJson(webStorage.get('user'));
+            if (storedSession) {
+               api.data = storedSession;
+               webStorage.remove('user');
+            } else {
+               api.reset();
+            }
+         })();
+
+         return api;
+
+      })();
+
+      $rootScope.$on('save', User.save);
+
+      return User;
+
+   }]);

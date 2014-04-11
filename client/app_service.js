@@ -24,7 +24,7 @@ angular.module('app')
                      callback.apply(socket, args);
                   }
                });
-            })
+            });
          }
 
       };

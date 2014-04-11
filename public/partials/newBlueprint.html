@@ -99,7 +99,7 @@
             <snippet ng-switch-when="code" content="chunk.solution" lang="{{chunk.lang}}" editable="true"></snippet>
             <list ng-switch-when="list" content="chunk.solution" editable="true"></list>
             <options ng-switch-when="options" content="chunk.solution" editable="true"></options>
-            <div ng-if="chunk.content" class="question__chunk" ng-switch on="chunk.datatype">
+            <div ng-if="chunk.content && chunk.datatype !== 'options'" class="question__chunk" ng-switch on="chunk.datatype">
                <ul class="inline-list tools tools--small tools--flush">
                   <li><button title="Remove hint" class="tools__item icon--remove" ng-click="removeHint(chunk)">Remove hint</button></li>
                </ul>

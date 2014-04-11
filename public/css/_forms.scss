@@ -32,10 +32,10 @@ select {
    display: block;
    box-sizing: border-box;
    color: rgba(black, .75);
-   transition: box-shadow .25s;
+   xtransition: box-shadow .25s;
    &:hover,
    &:focus {
-      box-shadow: 0 0 .5em 0 brand(purple);
+      xbox-shadow: 0 0 .5em 0 brand(purple);
    }
 }
 

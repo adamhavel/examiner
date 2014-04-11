@@ -36,6 +36,46 @@ angular.module('app.exams')
       };
    })
 
+   .directive('number', function() {
+
+      function link($scope, $element) {
+
+         if ($scope.editable === 'true') {
+
+            $element.on('keydown', function(e) {
+               var k = e.keyCode;
+               if (!((k >= 48 && k <= 57) || (k >= 96 && k <= 105) || e.ctrlKey || k === 8 || k === 46 || k === 37 || k === 39)) {
+                  e.preventDefault();
+               }
+            });
+
+            $scope.$watch('content', function(newValue) {
+               if (!newValue) {
+                  $scope.content = '1';
+               }
+               $scope.content = $scope.content.replace(/^0+/, '');
+            });
+
+            $scope.$on('$destroy', function() {
+               $element.off('keydown');
+            });
+
+         }
+
+      }
+
+      return {
+         restrict: 'E',
+         scope: {
+            content: '=',
+            editable: '@'
+         },
+         template: '<span ng-model="content" contenteditable="{{editable}}" placeholder="0"></span>',
+         replace: true,
+         link: link
+      };
+   })
+
    .directive('list', function() {
 
       function getElements(selector, parent) {

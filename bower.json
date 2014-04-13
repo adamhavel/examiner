@@ -16,6 +16,7 @@
     "lodash": "~2.4.1",
     "angular-webstorage": "~0.10.3",
     "bililiteRange": "~2.5.0",
-    "socket.io-client": "~0.9.16"
+    "socket.io-client": "~0.9.16",
+    "momentjs": "~2.5.1"
   }
 }

@@ -9,6 +9,7 @@
    @include blank-lines(.175, both, padding);
    @include taper(.5);
    display: inline-block;
+   line-height: $leading;
    box-sizing: border-box;
    border: 1px solid rgba(black, .25);
    border-top-color: rgba(black, .075);
@@ -29,6 +30,13 @@
    }
    & + & {
       @include taper(.5, left, margin);
+   }
+   em {
+      font-weight: 400;
+   }
+   @include icon {
+      height: $leading;
+      vertical-align: top;
    }
 }
 

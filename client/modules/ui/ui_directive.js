@@ -27,7 +27,7 @@ angular.module('app.ui')
             $element.on('click', function(e) {
                e.preventDefault();
                var target = $scope.href.substr($scope.href.indexOf('#'));
-               elemOffset = document.querySelector(target).offsetTop - 10;
+               elemOffset = document.querySelector(target).offsetTop;
                previousOffset = null;
                requestAnimationFrame(smoothScroll);
             });
@@ -46,6 +46,11 @@ angular.module('app.ui')
 
             $scope.close = function() {
                Modal.close();
+               if (Modal.queue.length) {
+                  $timeout(function() {
+                     Modal.content = Modal.queue.shift();
+                  }, 400);
+               }
             };
 
             $scope.confirm = function() {
@@ -55,7 +60,7 @@ angular.module('app.ui')
                      callback(callback.value || true);
                   }, 200);
                }
-               Modal.close();
+               $scope.close();
             };
 
             $scope.submitImage = function() {
@@ -67,7 +72,7 @@ angular.module('app.ui')
                   $scope.loading = false;
                   if (passed) {
                      callback(callback.value);
-                     Modal.close();
+                     $scope.close();
                   } else {
                      //document.querySelector('.modal').querySelector('input').setCustomValidity("Ray is wack!");
                   }

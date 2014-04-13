@@ -74,7 +74,8 @@ uglify: {
          'public/lib/angular-ui-router/release/angular-ui-router.min.js',
          'public/lib/angular-resource/angular-resource.min.js',
          'public/lib/angular-webstorage/angular-webstorage.js',
-         'public/lib/socket.io-client/dist/socket.io.min.js'
+         'public/lib/socket.io-client/dist/socket.io.min.js',
+         'public/lib/momentjs/moment.js'
       ],
       dest: 'public/lib/libs.min.js'
    },

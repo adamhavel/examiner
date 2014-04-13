@@ -1,15 +1,22 @@
 <article class="exam" ng-if="exam.started || !isStudent">
 
-   {{students}}
-
    <header class="exam__header">
       <h1 class="alpha heading exam__heading">{{exam.subject | uppercase}} &mdash; {{exam.date | date: 'd. M. yyyy, H:mm'}}</h1>
       <div class="exam__controls">
-         <button ng-if="isStudent" ng-click="store()">Hand in</button>
-         <button ng-if="exam.started && !isStudent" ng-click="finish()">Collect</button>
-         <button ng-if="exam.started && !isStudent" ng-click="adjustTimer()">Adjust timer</button>
-         <button ng-if="!exam.started && !isStudent" ng-click="leave()">Leave</button>
-         <button ng-if="!exam.started && !isStudent && students.length" ng-click="start()">Hand out</button>
+         <div ng-if="isStudent">
+            <button ng-click="handIn()">Hand in</button>
+         </div>
+         <div ng-if="!isStudent">
+            <span ng-show="exam.started">
+               <button class="icon--person" ng-click="showStudents()"><em>{{students.length}}</em></button>
+               <button ng-click="finish()">Collect</button>
+            </span>
+            <span ng-show="!exam.started">
+               <button class="icon--person" ng-click="showStudents()"><em>{{students.length}}</em></button>
+               <button ng-show="!students.length" ng-click="leave()">Leave</button>
+               <button ng-if="students.length" ng-click="start()">Hand out</button>
+            </span>
+         </div>
       </div>
    </header>
 
@@ -49,14 +56,17 @@
 
          <div class="question__chunk question__answer" ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">
             <ul ng-if="!isStudent" class="inline-list tools tools--small tools--flush">
-               <li><button title="Change language" class="tools__item icon--code-alt" ng-click="toggleSolution(chunk)">Change language</button></li>
+               <li><button title="Change language" class="tools__item icon--view" ng-mousedown="toggleSolution(chunk)" ng-mouseup="toggleSolution(chunk)">Change language</button></li>
             </ul>
             <h2 class="heading heading--caption epsilon">Your answer</h2>
             <paragraph ng-switch-when="text" content="chunk.content" editable="{{isStudent ? 'true' : 'false'}}"></paragraph>
-            <icanvas ng-switch-when="canvas" content="chunk.content" editable="{{isStudent ? 'true' : 'false'}}"></icanvas>
+            <div ng-switch-when="canvas">
+               <icanvas ng-if="isStudent" content="chunk.content"></icanvas>
+               <img ng-if="!isStudent" class="question__image" ng-src="data:image/svg+xml;charset=UTF-8,{{chunk.content}}">
+            </div>
             <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="{{isStudent ? 'true' : 'false'}}"></snippet>
             <list ng-switch-when="list" content="chunk.content" editable="{{isStudent ? 'true' : 'false'}}"></list>
-            <options ng-switch-when="options" content="chunk.content" editable="{{isStudent ? 'true' : 'false'}}"></options>
+            <options ng-switch-when="options" content="chunk.content" switchable="{{isStudent ? 'true' : 'false'}}" editable="false"></options>
          </div>
 
       </article>

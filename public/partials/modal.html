@@ -30,7 +30,7 @@
 
       <form ng-switch-when="setDuration">
          <p class="modal__prompt">
-            The exam will automatically end in exactly <number content="modal.callback.value" ng-init="modal.callback.value = '60'" editable="true" autofocus></number> {{modal.callback.value != 1 ? 'minutes' : 'minute'}}.
+            {{modal.prompt}} <number content="modal.callback.value" ng-init="modal.callback.value = '60'" editable="true" autofocus></number> {{modal.callback.value != 1 ? 'minutes' : 'minute'}}.
          </p>
          <button ng-click="close()">{{modal.secondaryActionLabel || 'Cancel'}}</button>
          <button ng-click="confirm()">{{modal.primaryActionLabel || 'Begin'}}</button>
@@ -48,9 +48,24 @@
          <button ng-click="close()">{{modal.primaryActionLabel || 'Cancel'}}</button>
       </div>
 
+      <div ng-switch-when="studentDistracted">
+         <p class="modal__prompt">{{modal.prompt}}</p>
+         <button ng-click="confirm()">I understand</button>
+      </div>
+
       <div ng-switch-when="alert">
          <p class="modal__prompt">{{modal.prompt}}</p>
          <button ng-click="confirm()">I understand</button>
+      </div>
+
+      <div ng-switch-when="examFinished">
+         <p class="modal__prompt">{{modal.prompt}}</p>
+         <button ng-click="confirm()">Hand in</button>
+      </div>
+
+      <div ng-switch-when="examStarted">
+         <p class="modal__prompt">{{modal.prompt}}</p>
+         <button ng-click="confirm()">Continue</button>
       </div>
 
       <div ng-switch-when="error">
@@ -60,6 +75,15 @@
 
       <div ng-switch-when="success">
          <p class="modal__prompt">{{modal.prompt}}</p>
+         <button ng-click="confirm()">Continue</button>
+      </div>
+
+      <div ng-switch-when="studentsList">
+         <ul class="bullet-list modal__prompt">
+            <li ng-repeat="student in modal.prompt">
+               {{student.name}} ({{student.id}})
+            </li>
+         </ul>
          <button ng-click="confirm()">Continue</button>
       </div>
 

@@ -206,7 +206,8 @@ angular.module('app.exams')
          restrict: 'E',
          scope: {
             items: '=content',
-            editable: '@'
+            editable: '@',
+            switchable: '@'
          },
          templateUrl: 'partials/options.html',
          replace: true,
@@ -261,7 +262,11 @@ angular.module('app.exams')
                   });
 
                } else {
-                  Prism.highlightElement(code);
+
+                  $scope.$watch('content', function() {
+                     Prism.highlightElement(code);
+                  });
+
                }
             }
          });
@@ -367,6 +372,11 @@ angular.module('app.exams')
 
                   (function init() {
 
+                     var watchHandler = function() {
+                        canvas.loadFromJSON($scope.content.states[$scope.content.currentState]);
+                        canvas.renderAll();
+                     };
+
                      if ($scope.content && typeof $scope.content === 'string') {
                         fabric.loadSVGFromString($scope.content, function(objects, options) {
                            var canvasBackdrop = fabric.util.groupSVGElements(objects, options);
@@ -377,10 +387,7 @@ angular.module('app.exams')
                               states: [angular.toJson(canvas)],
                               currentState: 0
                            };
-                           $scope.watcher = $scope.$watch('content', function() {
-                              canvas.loadFromJSON($scope.content.states[$scope.content.currentState]);
-                              canvas.renderAll();
-                           });
+                           $scope.$watch('content', watchHandler);
                            $scope.$apply();
                         });
                      } else if (!$scope.content) {
@@ -388,16 +395,15 @@ angular.module('app.exams')
                            states: [angular.toJson(canvas)],
                            currentState: 0
                         };
-                        $scope.watcher = $scope.$watch('content', function() {
-                           canvas.loadFromJSON($scope.content.states[$scope.content.currentState]);
-                           canvas.renderAll();
-                        });
+                        $scope.$watch('content', watchHandler);
                      } else {
-                        $scope.watcher = $scope.$watch('content', function() {
-                           canvas.loadFromJSON($scope.content.states[$scope.content.currentState]);
-                           canvas.renderAll();
-                        });
+                        $scope.$watch('content', watchHandler);
                      }
+
+                     // $scope.$watch('content', function() {
+                     //    canvas.loadFromJSON($scope.content.states[$scope.content.currentState]);
+                     //    canvas.renderAll();
+                     // });
 
                      canvas.on('object:modified', function() {
                         if ($scope.content.currentState < $scope.content.states.length - 1) {
@@ -763,7 +769,6 @@ angular.module('app.exams')
                (activateTool.bind(canvasWrapper.querySelector('.j-canvas-paint')))(paintHandler);
 
                $scope.$on('$destroy', function() {
-                  $scope.watcher();
                   canvasTools.forEach(function(tool) {
                      tool.removeEventListener('click');
                   });
@@ -785,7 +790,6 @@ angular.module('app.exams')
          controller: ['$scope', '$rootScope', function($scope, $rootScope) {
 
             function sealCanvas() {
-               $scope.watcher();
                $scope.content = $scope.canvas.toSVG();
             }
 

@@ -3,8 +3,8 @@
    <header class="exam__header">
       <h1 class="alpha heading exam__heading">{{blueprint.subject | uppercase}} &mdash; {{blueprint.date | date: 'd. M. yyyy, H:mm'}}</h1>
       <div class="exam__controls">
-         <button ng-if="newBlueprint.isOngoing()" ng-click="clone()">Clone blueprint</button>
-         <button ng-if="editable && !newBlueprint.isOngoing()" ng-click="edit()">Modify blueprint</button>
+         <button ng-if="newBlueprint.isOngoing" ng-click="clone()">Clone blueprint</button>
+         <button ng-if="editable && !newBlueprint.isOngoing" ng-click="edit()">Modify blueprint</button>
       </div>
    </header>
 
@@ -26,7 +26,7 @@
       <article class="question" id="{{question.name || 'Untitled question ' + ($index+1) | idfy}}" ng-repeat="question in section.questions">
 
          <header>
-            <ul class="inline-list tools" ng-if="newBlueprint.isOngoing()">
+            <ul class="inline-list tools" ng-if="newBlueprint.isOngoing">
                <li><button title="Copy to the new blueprint" class="tools__item icon--pin" ng-click="copyQuestion(question)">Copy to the new blueprint</button></li>
             </ul>
             <h1 class="delta heading question__heading">
@@ -51,13 +51,13 @@
             <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;charset=UTF-8,{{chunk.solution}}">
             <snippet ng-switch-when="code" content="chunk.solution" lang="{{chunk.lang}}" editable="false"></snippet>
             <list ng-switch-when="list" content="chunk.solution" editable="false"></list>
-            <options ng-switch-when="options" content="chunk.solution" editable="false"></options>
+            <options ng-switch-when="options" content="chunk.solution" editable="false" switchable="false"></options>
             <div ng-if="chunk.content && chunk.datatype !== 'options'" class="question__chunk" ng-switch on="chunk.datatype">
                <h2 class="heading heading--caption epsilon">Hint</h2>
                <paragraph ng-switch-when="text" content="chunk.content" editable="false"></paragraph>
                <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;charset=UTF-8,{{chunk.content}}">
                <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="false"></snippet>
-               <list ng-switch-when="list" content="chunk.content" editable="false"></list>
+               <list ng-switch-when="list" content="chunk.content" editable="false" switchable="false"></list>
             </div>
          </div>
 

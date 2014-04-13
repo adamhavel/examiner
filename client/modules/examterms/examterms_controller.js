@@ -6,12 +6,11 @@ angular.module('app.examterms')
    ['$scope', '$stateParams', '$state', 'ExamTerms', 'NewBlueprint', 'Modal',
    function($scope, $stateParams, $state, ExamTerms, NewBlueprint, Modal) {
 
-      $scope.blueprint = NewBlueprint.data;
       if (NewBlueprint.isOngoing) {
          $state.go('newBlueprint', {
-            subject: $scope.blueprint.subject,
-            date: $scope.blueprint.date,
-            lang: $scope.blueprint.lang
+            subject: NewBlueprint.data.subject,
+            date: NewBlueprint.data.date,
+            lang: NewBlueprint.data.lang
          });
       }
 

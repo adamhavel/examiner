@@ -7,11 +7,7 @@ angular.module('app.user')
       var User = (function() {
 
          var api = {
-            data: {
-               name: 'Adam Havel',
-               id: 'havelad1',
-               role: 'teacher'
-            }
+            data: {}
          };
 
          api.switchRole = function() {

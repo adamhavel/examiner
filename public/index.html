@@ -31,27 +31,31 @@
          </ul>
       </nav>
 
-      <span class="time">1:56</span>
-
    </header>
 
-   <aside class="sidebar">
+   <div class="layout-grid">
 
-      <nav class="site-nav" ng-if="!(examTake.isOngoing && user.data.role === 'student')">
-         <ul class="block-list">
-            <li><a class="site-nav__item icon--write" ng-class="{'ng-ongoing': examTake.isOngoing, 'ng-active': state.is('home')}" ui-sref="home">Pending</a></li>
-            <li ng-if="user.data.role === 'teacher'"><a class="site-nav__item icon--tick" href="">Evaluate</a></li>
-            <li ng-if="user.data.role === 'teacher'"><a class="site-nav__item icon--exams" ng-class="{'ng-active': state.is('blueprints') || state.is('blueprint')}" ui-sref="blueprints">Blueprints</a></li>
-            <li ng-if="user.data.role === 'teacher'"><a class="site-nav__item icon--create" ng-class="{'ng-ongoing': blueprint.isOngoing, 'ng-active': state.is('examTerms')}" ui-sref="examTerms">Create</a></li>
-            <li><a class="site-nav__item icon--results" href="">Results</a></li>
-         </ul>
-      </nav>
+      <aside class="sidebar">
 
-   </aside>
+         <nav class="site-nav" ng-if="!(examTake.isOngoing && user.data.role === 'student')">
+            <ul class="block-list">
+               <li><a class="site-nav__item icon--write" ng-class="{'ng-ongoing': examTake.isOngoing, 'ng-active': state.is('home')}" ui-sref="home">Pending</a></li>
+               <li ng-if="user.data.role === 'teacher'"><a class="site-nav__item icon--tick" href="">Evaluate</a></li>
+               <li ng-if="user.data.role === 'teacher'"><a class="site-nav__item icon--exams" ng-class="{'ng-active': state.is('blueprints') || state.is('blueprint')}" ui-sref="blueprints">Blueprints</a></li>
+               <li ng-if="user.data.role === 'teacher'"><a class="site-nav__item icon--create" ng-class="{'ng-ongoing': newBlueprint.isOngoing, 'ng-active': state.is('examTerms')}" ui-sref="examTerms">Create</a></li>
+               <li><a class="site-nav__item icon--results" href="">Results</a></li>
+            </ul>
+         </nav>
 
-   <section class="main-content" role="main">
-      <div class="content" ui-view></div>
-   </section>
+         <div ng-class="{'ng-urgent': timer.urgent}" ng-show="examTake.isOngoing && timer.display" class="timer">{{timer.display}}</div>
+
+      </aside>
+
+      <section class="main-content" role="main">
+         <div class="content" ui-view></div>
+      </section>
+
+   </div>
 
    <footer class="page-footer"></footer>
 

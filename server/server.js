@@ -43,7 +43,7 @@ io.sockets.on('connection', function(socket) {
       }
       if (data.role === 'teacher') {
          var students = _.filter(users, function(user) {
-            return user.role === 'student';
+            return user.role === 'student' && user.examId === data.examId;
          });
          socket.emit('send:students', _.map(students, function(student) {
             return {
@@ -57,9 +57,9 @@ io.sockets.on('connection', function(socket) {
    socket.on('user:leave', function(data) {
       var user = _.remove(users, function(user) {
          return user.id === data.id;
-      });
-      if (user.length) {
-         socket.leave(user[0].examId);
+      })[0];
+      if (user) {
+         socket.leave(data.examId);
       }
       if (data.role === 'student') {
          socket.broadcast.to(data.examId).emit('student:left', data.id);
@@ -70,34 +70,66 @@ io.sockets.on('connection', function(socket) {
       user.socket = socket;
       users.push(user);
       socket.join(user.examId);
-      console.log(users);
       if (user.role === 'student') {
          socket.broadcast.to(user.examId).emit('student:registered', {
             name: user.name,
             id: user.id
          });
-         var exam = _.find(exams, function(exam) {
-            return exam.id === user.examId;
+      }
+      var exam = _.find(exams, function(exam) {
+         return exam.id === user.examId;
+      });
+      if (exam) {
+         socket.emit('exam:started', {
+            start: exam.start,
+            duration: exam.duration
          });
-         if (exam) {
-            socket.emit('exam:started', exam);
-         }
       }
    });
 
    socket.on('exam:start', function(data) {
       var exam = {
          id: data.examId,
-         start: new Date().getTime(),
-         duration: data.duration
-      }
+         start: Date.now(),
+         duration: data.duration,
+         clock: setInterval(function() {
+            exam.timeLeft = exam.duration - (Date.now() - exam.start);
+            if (exam.timeLeft <= 0) {
+               if (io.sockets.clients(exam.id).length) {
+                  io.sockets.in(exam.id).emit('exam:finished');
+               } else {
+                  clearInterval(exam.clock);
+                  _.remove(exams, function(item) {
+                     return item.id === exam.id;
+                  });
+               }
+            }
+         }, 1000)
+      };
       exams.push(exam);
-      io.sockets.in(data.examId).emit('exam:started', exam);
-
+      io.sockets.in(data.examId).emit('exam:started', {
+         start: exam.start,
+         duration: exam.duration
+      });
    });
 
-   socket.on('exam:finish', function(id) {
-      socket.broadcast.to(id).emit('exam:finished');
+   socket.on('student:distracted', function(student) {
+      var teachers = _.filter(users, function(user) {
+         return user.role === 'teacher' && user.examId === student.examId;
+      });
+      teachers.forEach(function(teacher) {
+         teacher.socket.emit('student:distracted', student);
+      });
+   });
+
+   socket.on('exam:finish', function(examId) {
+      var exam = _.remove(exams, function(exam) {
+         return exam.id === examId;
+      })[0];
+      if (exam) {
+         clearInterval(exam.clock);
+      }
+      socket.broadcast.to(examId).emit('exam:finished');
    });
 
 });

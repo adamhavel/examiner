@@ -1,16 +1,18 @@
 angular.module('app.ui')
 
    .controller('UIController',
-   ['$scope', '$state', 'Modal', 'NewBlueprint', 'ExamTake', 'User',
-   function($scope, $state, Modal, NewBlueprint, ExamTake, User) {
+   ['$scope', '$state', 'Modal', 'NewBlueprint', 'ExamTake', 'Timer', 'User',
+   function($scope, $state, Modal, NewBlueprint, ExamTake, Timer, User) {
 
       $scope.state = $state;
 
       $scope.modal = Modal;
 
-      $scope.blueprint = NewBlueprint;
+      $scope.newBlueprint = NewBlueprint;
 
       $scope.examTake = ExamTake;
+
+      $scope.timer = Timer;
 
       $scope.user = User;
 

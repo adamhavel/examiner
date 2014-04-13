@@ -1,4 +1,5 @@
-var blueprints = require('../controllers/blueprints');
+var blueprints = require('../controllers/blueprints'),
+    exams = require('../controllers/exams');
 
 module.exports = function(app) {
 
@@ -9,7 +10,7 @@ module.exports = function(app) {
       .get(blueprints.get)
       .post(blueprints.create);
 
-   app.param('subject', blueprints.validateSubject);
-   app.param('date', blueprints.validateDate);
-   app.param('lang', blueprints.validateLang);
+   app.param('subject', exams.validateSubject);
+   app.param('date', exams.validateDate);
+   app.param('lang', exams.validateLang);
 };

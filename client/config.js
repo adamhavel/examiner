@@ -6,18 +6,18 @@ angular.module('app').config([
 
       $locationProvider.html5Mode(true).hashPrefix('!');
 
-      $urlRouterProvider.otherwise('/');
+      $urlRouterProvider.otherwise('/exams');
 
       $stateProvider
          .state('home', {
-            url: '/',
+            url: '/exams',
             templateUrl: 'partials/pending.html',
             controller: 'ExamsController',
          })
          .state('exam', {
             url: '/exam/:subject/:date/:lang',
             templateUrl: 'partials/exam.html',
-            controller: true ? 'ExamTakeController' : 'ExamOverviewController',
+            controller: 'ExamTakeController',
          })
          .state('blueprints', {
             url: '/blueprints{filter:.*}',

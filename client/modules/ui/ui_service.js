@@ -58,12 +58,12 @@ angular.module('app.ui')
                   api.urgent = true;
                }
             }, 1000);
-         },
+         };
 
          api.stop = function() {
             $interval.cancel(clock);
             api.reset();
-         },
+         };
 
          api.reset = function() {
             api.data = {

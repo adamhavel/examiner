@@ -31,6 +31,7 @@ angular.module('app.ui')
                previousOffset = null;
                requestAnimationFrame(smoothScroll);
             });
+
          }
       };
    })

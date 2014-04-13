@@ -3,16 +3,8 @@
 angular.module('app.examterms')
 
    .controller('ExamTermsController',
-   ['$scope', '$stateParams', '$state', 'ExamTerms', 'NewBlueprint', 'Modal',
-   function($scope, $stateParams, $state, ExamTerms, NewBlueprint, Modal) {
-
-      if (NewBlueprint.isOngoing) {
-         $state.go('newBlueprint', {
-            subject: NewBlueprint.data.subject,
-            date: NewBlueprint.data.date,
-            lang: NewBlueprint.data.lang
-         });
-      }
+   ['$scope', '$stateParams', '$state', 'ExamTerms', 'Modal',
+   function($scope, $stateParams, $state, ExamTerms, Modal) {
 
       $scope.examTerms = ExamTerms;
 

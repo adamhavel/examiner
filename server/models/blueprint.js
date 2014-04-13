@@ -43,9 +43,9 @@ var BlueprintSchema = new Schema(
 );
 
 BlueprintSchema.index({
-   subject: 1,
-   date: -1,
-   lang: 1
+   "subject": 1,
+   "date": -1,
+   "lang": 1
 });
 
 mongoose.model('Blueprint', BlueprintSchema);

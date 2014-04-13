@@ -22,6 +22,21 @@ angular.module('app.exams')
          //    $scope.content = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, asperiores quas libero dolore deleniti natus illo inventore assumenda voluptates modi. Inventore, in perferendis nemo odit. Aspernatur, error fugiat eveniet asperiores.';
          // }
 
+         if ($scope.editable === 'true') {
+
+            $element.on('keydown', function(e) {
+               if (e.keyCode === 13) {
+                  e.preventDefault();
+                  document.execCommand('InsertHTML', false, '<br>');
+               }
+            });
+
+            $scope.$on('$destroy', function() {
+               $element.off('keydown');
+            });
+
+         }
+
       }
 
       return {
@@ -399,11 +414,6 @@ angular.module('app.exams')
                      } else {
                         $scope.$watch('content', watchHandler);
                      }
-
-                     // $scope.$watch('content', function() {
-                     //    canvas.loadFromJSON($scope.content.states[$scope.content.currentState]);
-                     //    canvas.renderAll();
-                     // });
 
                      canvas.on('object:modified', function() {
                         if ($scope.content.currentState < $scope.content.states.length - 1) {

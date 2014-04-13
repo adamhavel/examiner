@@ -3,8 +3,8 @@
 angular.module('app.exams.take')
 
    .factory('ExamTake',
-   ['$resource', '$rootScope', '$state', '$timeout', 'webStorage', 'Modal',
-   function($resource, $rootScope, $state, $timeout, webStorage, Modal) {
+   ['$resource', '$rootScope', '$state', '$timeout', 'webStorage', 'Exam', 'Modal', 'User',
+   function($resource, $rootScope, $state, $timeout, webStorage, Exam, Modal, User) {
 
       var ExamTake = (function() {
 
@@ -44,25 +44,36 @@ angular.module('app.exams.take')
             }
          };
 
-         /*api.store = function() {
+         api.store = function() {
             api.save();
-            $rootScope.$emit('finishBlueprint');
+            $rootScope.$emit('seal');
             $timeout(function() {
-               var blueprint = new Blueprint(api.data);
-               blueprint.$save(function() {
-                  Modal.open('success', 'The blueprint has been successfully saved.', function() {
-                     $state.go('blueprints', { filter: '/mi-mdw' });
-                     api.reset();
-                     webStorage.remove('blueprint');
+               var exam = new Exam(api.data);
+               exam.answers = [];
+               exam.sections.forEach(function(section) {
+                  section.questions.forEach(function(question) {
+                     var answer = {
+                        points: 0,
+                        content: []
+                     };
+                     question.answer.forEach(function(chunk) {
+                        answer.content.push(chunk.content);
+                     });
+                     exam.answers.push(answer);
                   });
+               });
+               exam.sections = null;
+               exam.$save(function() {
+                  api.reset();
+                  $state.go('home');
+                  webStorage.remove('exam');
                }, function(err) {
-                  Modal.open('error', 'There seems to be a problem with the server. Please try saving the blueprint later.');
+                  Modal.open('error', 'There seems to be a problem with the server.');
                   api.data = angular.fromJson(webStorage.get('blueprint'));
                   webStorage.remove('blueprint');
-                  //api.data.date = new Date(api.data.date);
                });
             }, 1000);
-         };*/
+         };
 
          (function init() {
             var storedSession = angular.fromJson(webStorage.get('exam'));
@@ -80,6 +91,17 @@ angular.module('app.exams.take')
       })();
 
       $rootScope.$on('save', ExamTake.save);
+
+      $rootScope.$on('$stateChangeStart', function(e, toState) {
+         if (ExamTake.isOngoing && (toState.name === 'home' || (User.isStudent() && toState.name !== 'exam'))) {
+            e.preventDefault();
+            $state.go('exam', {
+               subject: ExamTake.data.subject,
+               date: ExamTake.data.date,
+               lang: ExamTake.data.lang
+            });
+         }
+      });
 
       return ExamTake;
 

@@ -7,17 +7,16 @@ angular.module('app.exams.take')
    function($scope, $stateParams, $state, $interval, Blueprint, ExamTake, Modal, Timer, Socket, User) {
 
       var fingerprint = {
-         role: User.data.role,
          name: User.data.name,
          id: User.data.id,
+         role: User.data.role,
          examId: $stateParams.subject + '/' + $stateParams.date
-      }
+      };
 
-      $scope.user = User.data;
-      $scope.isStudent = User.data.role === 'student';
+      $scope.user = User;
       $scope.timer = Timer;
 
-      if (User.data.role === 'teacher') {
+      if (!User.isStudent()) {
 
          $scope.students = [];
 
@@ -40,11 +39,11 @@ angular.module('app.exams.take')
          });
 
          $scope.start = function() {
-            Modal.open('setDuration', 'The exam will automatically end in exactly', function(duration) {
-               if (duration) {
+            Modal.open('setDuration', 'The exam will automatically end in exactly', function(minutes) {
+               if (minutes) {
                   Socket.emit('exam:start', {
                      examId: fingerprint.examId,
-                     duration: parseInt(duration) * 60000
+                     duration: (parseInt(minutes) * 60000)
                   });
                }
             });
@@ -54,29 +53,29 @@ angular.module('app.exams.take')
             Modal.open('confirm', 'Are you sure you want to end the exam early? There is no going back.', function(confirm) {
                if (confirm) {
                   Socket.emit('exam:finish', fingerprint.examId);
+                  Timer.stop();
                   Socket.emit('user:leave', fingerprint);
                   ExamTake.reset();
-                  Timer.stop();
                   $state.go('home');
                }
             }, 'Collect');
          };
 
          $scope.leave = function() {
-            Socket.emit('user:leave', fingerprint);
             if ($scope.students.length) {
                Socket.emit('exam:finish', fingerprint.examId);
             }
+            Socket.emit('user:leave', fingerprint);
             ExamTake.reset();
             $state.go('home');
          };
 
          $scope.adjustTimer = function() {
-            Modal.open('setDuration', 'The exam will automatically end in exactly', function(duration) {
-               if (duration) {
-                  duration: parseInt(duration) * 60000
-               }
-            });
+            // Modal.open('setDuration', 'The exam will automatically end in exactly', function(duration) {
+            //    if (duration) {
+            //       duration: parseInt(duration) * 60000
+            //    }
+            // });
          };
 
          $scope.showStudents = function() {
@@ -91,12 +90,12 @@ angular.module('app.exams.take')
 
       } else {
 
-         var distractionHandler = function(e) {
+         var distractionHandler = function() {
             if ($scope.exam.started) {
                Socket.emit('student:distracted', fingerprint);
                //Modal.open('alert', 'You should focus on the exam.', function() {});
             }
-         }
+         };
 
          window.addEventListener('blur', distractionHandler);
 
@@ -120,10 +119,12 @@ angular.module('app.exams.take')
          Timer.stop();
          Socket.emit('user:leave', fingerprint);
          Modal.open('examFinished', 'The exam has ended.', function() {
-            //if (fingerprint.role === 'student') {
+            if (User.isStudent()) {
+               ExamTake.store();
+            } else {
                ExamTake.reset();
-            //}
-            $state.go('home');
+               $state.go('home');
+            }
          });
       });
 
@@ -137,22 +138,23 @@ angular.module('app.exams.take')
          }, function() {
             $scope.exam = ExamTake.data;
             ExamTake.isOngoing = true;
+            if (User.isStudent()) {
+               ExamTake.data.student = {
+                  name: User.data.name,
+                  id: User.data.id
+               };
+            }
          }, function(err) {
 
          });
       }
 
-      $scope.store = function() {
-         Socket.emit('user:leave', fingerprint);
-         ExamTake.reset();
-         $state.go('home');
-      };
-
       $scope.handIn = function() {
          Modal.open('confirm', 'Do you want to hand in the exam early? There is no going back.', function(confirmed) {
             if (confirmed) {
                Timer.stop();
-               $scope.store();
+               Socket.emit('user:leave', fingerprint);
+               ExamTake.store();
             }
          }, 'Hand in');
       };

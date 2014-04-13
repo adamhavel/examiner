@@ -3,8 +3,8 @@
 angular.module('app.blueprints.create')
 
    .factory('NewBlueprint',
-   ['$resource', '$rootScope', '$state', '$timeout', 'webStorage', 'Blueprint', 'Modal', 'dateFilter',
-   function($resource, $rootScope, $state, $timeout, webStorage, Blueprint, Modal, dateFilter) {
+   ['$resource', '$rootScope', '$state', '$timeout', 'webStorage', 'Blueprint', 'Modal',
+   function($resource, $rootScope, $state, $timeout, webStorage, Blueprint, Modal) {
 
       var NewBlueprint = (function() {
 
@@ -93,6 +93,17 @@ angular.module('app.blueprints.create')
       })();
 
       $rootScope.$on('save', NewBlueprint.save);
+
+      $rootScope.$on('$stateChangeStart', function(e, toState) {
+         if (NewBlueprint.isOngoing && toState.name === 'examTerms') {
+            e.preventDefault();
+            $state.go('newBlueprint', {
+               subject: NewBlueprint.data.subject,
+               date: NewBlueprint.data.date,
+               lang: NewBlueprint.data.lang
+            });
+         }
+      });
 
       return NewBlueprint;
 

@@ -3,16 +3,8 @@
 angular.module('app.exams')
 
    .controller('ExamsController',
-   ['$scope', '$stateParams', '$state', 'ExamTerms', 'ExamTake', 'Modal',
-   function($scope, $stateParams, $state, ExamTerms, ExamTake, Modal) {
-
-      if (ExamTake.isOngoing) {
-         $state.go('exam', {
-            subject: ExamTake.data.subject,
-            date: ExamTake.data.date,
-            lang: ExamTake.data.lang
-         });
-      }
+   ['$scope', '$stateParams', '$state', 'ExamTerms', 'Modal',
+   function($scope, $stateParams, $state, ExamTerms, Modal) {
 
       $scope.examTerms = ExamTerms;
 

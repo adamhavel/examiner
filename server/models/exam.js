@@ -3,37 +3,17 @@ var mongoose = require('mongoose'),
 
 var ExamSchema = new Schema(
    {
+      student: {
+         name: String,
+         id: String
+      },
       subject: String,
-      date: Date,
+      date: String,
       lang: String,
-      lede: String,
-      duration: Number,
-      sections: [
+      answers: [
          {
-            name: String,
-            lede: String,
-            questions: [
-               {
-                  name: String,
-                  points: Number,
-                  question: [
-                     {
-                        datatype: String,
-                        lang: String,
-                        external: Boolean,
-                        content: String
-                     }
-                  ],
-                  answer: [
-                     {
-                        datatype: String,
-                        lang: String,
-                        solution: String,
-                        content: String
-                     }
-                  ]
-               }
-            ]
+            content: [Schema.Types.Mixed],
+            points: Number
          }
       ]
    },
@@ -43,9 +23,10 @@ var ExamSchema = new Schema(
 );
 
 ExamSchema.index({
-   subject: 1,
-   date: -1,
-   lang: 1
+   "subject": 1,
+   "date": -1,
+   "lang": 1,
+   "student.id": 1
 });
 
 mongoose.model('Exam', ExamSchema);

@@ -28,6 +28,11 @@
       border-color: rgba(black, .25);
       box-shadow: none;
    }
+   &[disabled] {
+      opacity: .6;
+      pointer-events: none;
+      box-shadow: none;
+   }
    & + & {
       @include taper(.5, left, margin);
    }
@@ -64,9 +69,8 @@
 
 %t-sheet {
    border: 1px solid rgba(black, .15);
-   border-top-color: rgba(black, .05);
-   border-left-color: rgba(black, .05);
+   border-top-color: rgba(black, .075);
+   border-left-color: rgba(black, .075);
    background: white;
-   box-shadow: 1px 1px 0 0 rgba(black, .25);
    color: rgba(black, .6);
 }

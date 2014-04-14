@@ -122,6 +122,15 @@ io.sockets.on('connection', function(socket) {
       });
    });
 
+   socket.on('student:resized', function(data) {
+      var teachers = _.filter(users, function(user) {
+         return user.role === 'teacher' && user.examId === data.student.examId;
+      });
+      teachers.forEach(function(teacher) {
+         teacher.socket.emit('student:resized', data);
+      });
+   });
+
    socket.on('exam:finish', function(examId) {
       var exam = _.remove(exams, function(exam) {
          return exam.id === examId;

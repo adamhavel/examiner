@@ -60,10 +60,8 @@ button {
          // filter: drop-shadow(-3px 3px 0px brand(yellow)) drop-shadow(3px -3px 0px brand(red));
       }
       &[disabled] {
-         &:hover {
-            transform: none;
-         }
-         &:before {
+         pointer-events: none;
+         @include icon {
             opacity: .1;
          }
       }
@@ -306,9 +304,8 @@ button {
 .category-preview {
    @extend %t-preview;
    @include blank-lines(1.5, trailing);
-   transition: transform .3s;
    .content {
-      transition: color, border-color, border-width, background, box-shadow;
+      transition: color, border-color, border-width, background, transform;
       transition-duration: .3s;
       @include before {
          @include position($top: 3px, $left: 0, $right: 0);
@@ -324,18 +321,18 @@ button {
       @include size(100%);
       content: '';
       z-index: -1;
-      background: darken(white, 2%);
+      background: darken(white, 1%);
       transition: transform .3s, opacity .15s .15s;
       opacity: 0;
    }
    &:after {
-      background: darken(white, 3%);
+      background: darken(white, 2%);
       z-index: -2;
    }
    &:hover {
-      transform: translate(-10px, 10px);
       .content {
          @extend %t-sheet;
+         transform: translate(-9px, 9px);
          &:before {
             opacity: 0;
          }
@@ -344,11 +341,8 @@ button {
          transition: transform .3s, opacity .1s;
          opacity: 1;
       }
-      &:before {
-         transform: translate(9px, -10px);
-      }
       &:after {
-         transform: translate(20px, -20px);
+         transform: translate(9px, -9px);
       }
    }
    &__heading {
@@ -446,7 +440,7 @@ button {
       @extend %icon--thumbs-up;
       background: lighten(brand(green), 10%);
    }
-   &--studentDistracted {
+   &--shadyStudent {
       @extend %icon--pirate;
       background: lighten(brand(yellow), 10%);
    }

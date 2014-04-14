@@ -8,11 +8,11 @@
          </div>
          <div ng-if="!user.isStudent()">
             <span ng-show="exam.started">
-               <button class="icon--person" ng-click="showStudents()"><em>{{students.length}}</em></button>
+               <button class="icon--person" ng-click="showStudents()" ng-disabled="!students.length"><em>{{students.length}}</em></button>
                <button ng-click="finish()">Collect</button>
             </span>
             <span ng-show="!exam.started">
-               <button class="icon--person" ng-click="showStudents()"><em>{{students.length}}</em></button>
+               <button class="icon--person" ng-click="showStudents()" ng-disabled="!students.length"><em>{{students.length}}</em></button>
                <button ng-show="!students.length" ng-click="leave()">Leave</button>
                <button ng-if="students.length" ng-click="start()">Hand out</button>
             </span>

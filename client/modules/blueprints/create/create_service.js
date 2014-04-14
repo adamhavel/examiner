@@ -60,7 +60,6 @@ angular.module('app.blueprints.create')
             $rootScope.$emit('seal');
             $timeout(function() {
                var blueprint = new Blueprint(api.data);
-               //blueprint.date = dateFilter(blueprint.date, 'yyyy-MM-dd');
                blueprint.$save(function() {
                   Modal.open('success', 'The blueprint has been successfully saved.', function() {
                      $state.go('blueprints', { filter: '/mi-mdw' });
@@ -71,9 +70,8 @@ angular.module('app.blueprints.create')
                   Modal.open('error', 'There seems to be a problem with the server. Please try saving the blueprint later.');
                   api.data = angular.fromJson(webStorage.get('blueprint'));
                   webStorage.remove('blueprint');
-                  //api.data.date = new Date(api.data.date);
                });
-            }, 1000);
+            }, 500);
          };
 
          (function init() {
@@ -82,7 +80,6 @@ angular.module('app.blueprints.create')
                api.data = storedSession;
                api.isOngoing = true;
                webStorage.remove('blueprint');
-               //api.data.date = new Date(api.data.date);
             } else {
                api.reset();
             }

@@ -35,7 +35,11 @@ angular.module('app.exams.take')
          });
 
          Socket.on('student:distracted', function(student) {
-            Modal.open('studentDistracted', student.name + ' might have strayed on the wrong path.');
+            Modal.open('shadyStudent', student.name + ' might have strayed on the wrong path.');
+         });
+
+         Socket.on('student:resized', function(data) {
+            Modal.open('shadyStudent', data.student.name + '\'s browser covers only ' + Math.round(data.viewportUse * 100) + '% of the screen. Something\'s fishy!');
          });
 
          $scope.start = function() {
@@ -90,6 +94,14 @@ angular.module('app.exams.take')
 
       } else {
 
+         function getViewportUse() {
+            console.log('resolution: ' + window.screen.availWidth + 'x' + window.screen.availHeight);
+            console.log('browser: ' + window.outerWidth + 'x' + window.outerHeight);
+            var pixelsAvailable = window.screen.availWidth * window.screen.availHeight;
+            var pixelsUsed = window.outerWidth * window.outerHeight;
+            return (pixelsUsed / pixelsAvailable);
+         }
+
          var distractionHandler = function() {
             if ($scope.exam.started) {
                Socket.emit('student:distracted', fingerprint);
@@ -97,10 +109,26 @@ angular.module('app.exams.take')
             }
          };
 
-         window.addEventListener('blur', distractionHandler);
+         var resizeHandler = function() {
+            if ($scope.exam.started) {
+               var viewportUse = getViewportUse();
+               if (viewportUse < 1) {
+                  var data = {
+                     student: fingerprint,
+                     viewportUse: viewportUse
+                  };
+                  Socket.emit('student:resized', data);
+               }
+            }
+         };
+
+         //window.addEventListener('blur', distractionHandler);
+
+         window.addEventListener('resize', _.debounce(resizeHandler, 1000));
 
          $scope.$on('$destroy', function() {
-            window.removeEventListener('blur', distractionHandler);
+            //window.removeEventListener('blur', distractionHandler);
+            window.removeEventListener('resize', resizeHandler);
          });
 
       }
@@ -112,6 +140,16 @@ angular.module('app.exams.take')
          var endTime = moment(exam.start).add(exam.duration);
          Modal.open('examStarted', 'The exam has begun. It will end at exactly ' + endTime.format('HH:mm') + '. Good luck!', function() {
             $scope.exam.started = true;
+            if (User.isStudent()) {
+               var viewportUse = getViewportUse();
+               if (viewportUse < 1) {
+                  var data = {
+                     student: fingerprint,
+                     viewportUse: viewportUse
+                  };
+                  Socket.emit('student:resized', data);
+               }
+            }
          });
       });
 

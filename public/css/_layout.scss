@@ -93,6 +93,7 @@ $navigation-height: $leading * 1;
       transform: translateZ(0);
       &__item {
          @extend %icon--right;
+         @extend %epsilon;
          @include linespan(2);
          @include blank-lines(.5, trailing);
          display: inline-block;
@@ -103,8 +104,7 @@ $navigation-height: $leading * 1;
          font-family: "Roboto", sans-serif;
          font-weight: 300;
          text-decoration: none;
-         font-size: 1.2em;
-         color: rgba(black, .65);
+         color: rgba(black, .5);
          transition: transform, opacity, color, box-shadow, background-color;
          transition-duration: .25s;
          opacity: .3;
@@ -120,7 +120,7 @@ $navigation-height: $leading * 1;
             box-shadow: inset #{-($leading / 1.75 + .2rem)} 0 .2rem 0 rgba(black, .075),
                         .5rem .2rem 0 0 rgba(black, .05);
             opacity: 1;
-            color: inherit;
+            color: rgba(black, .5);
          }
          &.ng-ongoing {
             background-color: brand(green);

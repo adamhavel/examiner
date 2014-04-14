@@ -278,6 +278,8 @@ angular.module('app.exams')
 
                } else {
 
+                  Prism.highlightElement(code);
+
                   $scope.$watch('content', function() {
                      Prism.highlightElement(code);
                   });

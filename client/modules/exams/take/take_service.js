@@ -64,15 +64,17 @@ angular.module('app.exams.take')
                });
                exam.sections = null;
                exam.$save(function() {
-                  api.reset();
-                  $state.go('home');
-                  webStorage.remove('exam');
+                  Modal.open('success', 'The exam has been successfully saved.', function() {
+                     api.reset();
+                     $state.go('home');
+                     webStorage.remove('exam');
+                  });
                }, function(err) {
                   Modal.open('error', 'There seems to be a problem with the server.');
-                  api.data = angular.fromJson(webStorage.get('blueprint'));
-                  webStorage.remove('blueprint');
+                  api.data = angular.fromJson(webStorage.get('exam'));
+                  webStorage.remove('exam');
                });
-            }, 1000);
+            }, 500);
          };
 
          (function init() {

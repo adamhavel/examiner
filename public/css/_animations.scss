@@ -30,10 +30,10 @@
 
 %horizontal-slide {
    &.ng-animate {
-      transition: transform .2s, opacity .2s;
+      transition: transform .3s, opacity .3s;
    }
    &.ng-enter {
-      transform: translate3d(-100%, -50%, 0);
+      transform: translate3d(-300%, -50%, 0);
       opacity: 0;
    }
    &.ng-enter-active,

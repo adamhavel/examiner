@@ -477,37 +477,48 @@ button {
    @extend %icon--clock-alt;
    position: relative;
    z-index: 0;
-   line-height: $leading * 2;
-   font-family: "Roboto", sans-serif;
-   font-weight: 300;
-   color: transparent;
    text-align: center;
    overflow: hidden;
-   transform: translateX(35%);
-   transition: transform .4s, color .4s;
-   transition-delay: 1s;
+   transform: translateX(35%) translateZ(0);
+   transition: transform .4s;
    cursor: pointer;
    @include icon {
       @include linespan(8);
+      display: block;
       width: 100%;
       margin: 0;
-      opacity: .04;
+      opacity: .05;
       transition: opacity .4s, transform 1s;
-      transition-delay: 1s;
-      transform: rotateZ(0);
+      xtransform: rotateZ(0);
    }
    &:hover,
    &.ng-urgent {
-      color: rgba(black, .4);
-      transform: translateX(0);
-      transition-delay: 0;
+      transform: translateX(0) translateZ(0);
       @include icon {
-         transform: rotateZ(85deg);
-         transition-delay: 0;
+         xtransform: rotateZ(85deg);
          opacity: .4;
       }
    }
    &.ng-urgent {
       color: rgba(red, .4);
+   }
+   &__display {
+      display: block;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+      line-height: $leading * 2;
+      font-family: "Roboto", sans-serif;
+      font-weight: 300;
+      color: rgba(black, .4);
+      opacity: 0;
+      transition: width .001s .4s, height .001s .4s, opacity .4s .001s;
+   }
+   &:hover > &__display,
+   &.ng-urgent > &__display {
+      width: 100%;
+      height: 100%;
+      opacity: 1;
+      transition: width .001s, height .001s, opacity .4s .001s;
    }
 }

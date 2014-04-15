@@ -75,6 +75,7 @@ uglify: {
          'public/lib/angular-resource/angular-resource.min.js',
          'public/lib/angular-webstorage/angular-webstorage.js',
          'public/lib/socket.io-client/dist/socket.io.min.js',
+         //'public/lib/angular-utf8-base64/angular-utf8-base64.js',
          'public/lib/momentjs/moment.js'
       ],
       dest: 'public/lib/libs.min.js'

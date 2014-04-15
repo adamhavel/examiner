@@ -8,11 +8,11 @@ angular.module('app.blueprints.create')
 
       function checkDefaultNames() {
          var sections = $scope.blueprint.sections;
-         sections.forEach(function(section, i) {
+         _.forEach(sections, function(section, i) {
             if (/^Section \d+$/.test(section.name)) {
                section.name = 'Section ' + (i + 1);
             }
-            section.questions.forEach(function(question, j) {
+            _.forEach(section.questions, function(question, j) {
                if (/^Question \d+\.\d+$/.test(question.name)) {
                   question.name = 'Question ' + (i + 1) + '.' + (j + 1);
                }
@@ -22,7 +22,7 @@ angular.module('app.blueprints.create')
 
       function recalculatePoints() {
          var sections = $scope.blueprint.sections;
-         sections.forEach(function(section) {
+         _.forEach(sections, function(section) {
             var points = 0;
             section.questions.forEach(function(question) {
                points += question.points;
@@ -38,11 +38,11 @@ angular.module('app.blueprints.create')
                case 'code':
                   return content.replace(/(\s|<([^>]+)>|&nbsp;)+/g, '') === '';
                case 'list':
-                  return content.every(function(item) {
+                  return _.every(content, function(item) {
                      return !item.content;
                   });
                case 'options':
-                  return content.every(function(item) {
+                  return _.every(content, function(item) {
                      return !(item.content || item.value);
                   });
                case 'canvas':
@@ -66,17 +66,17 @@ angular.module('app.blueprints.create')
       }
 
       function isAcceptable() {
-         return !$scope.blueprint.sections.some(function(section) {
+         return !_.some($scope.blueprint.sections, function(section) {
             if (!section.questions.length) {
                Modal.open('alert', 'All sections must contain at least one question.');
                return true;
             } else {
-               return section.questions.some(function(question) {
+               return _.some(section.questions, function(question) {
                   if (!question.body.length) {
                      Modal.open('alert', 'All questions must have some content.');
                      return true;
                   } else {
-                     var areChunksEmpty = question.body.every(function(chunk) {
+                     var areChunksEmpty = _.every(question.body, function(chunk) {
                         return isEmpty(chunk);
                      });
                      if (areChunksEmpty) {
@@ -109,7 +109,7 @@ angular.module('app.blueprints.create')
             if (confirmed) {
                watcher();
                NewBlueprint.reset();
-               $state.go('home');
+               $state.go('examTerms');
             }
          }, 'Discard');
       };
@@ -196,9 +196,8 @@ angular.module('app.blueprints.create')
                };
                break;
             case 'code':
-               Modal.open('chooseCodeLanguage', 'Please choose a language.', function(lang) {
+               Modal.open('chooseProgrammingLanguage', 'Please choose one of the following programming languages.', function(lang) {
                   if (lang) {
-                     console.log(lang);
                      target.push({
                         datatype: 'code',
                         lang: lang
@@ -212,7 +211,7 @@ angular.module('app.blueprints.create')
                };
                break;
             case 'image':
-               Modal.open('loadImage', 'Please provide an image URL.', function(url) {
+               Modal.open('loadImage', 'Please provide an external image link.', function(url) {
                   if (url) {
                      target.push({
                         datatype: 'image',
@@ -257,6 +256,14 @@ angular.module('app.blueprints.create')
             }
          }, 'Remove hint');
       };
+
+      $scope.changeProgrammingLanguage = function(chunk) {
+         Modal.open('chooseProgrammingLanguage', 'Please choose one of the following programming languages.', function(lang) {
+            if (lang) {
+               chunk.lang = lang;
+            }
+         });
+      }
 
       $scope.areEqual = function(o1, o2) {
          return angular.toJson(o1) === angular.toJson(o2);

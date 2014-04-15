@@ -94,35 +94,34 @@ angular.module('app.exams.take')
 
       } else {
 
-         function getViewportUse() {
-            console.log('resolution: ' + window.screen.availWidth + 'x' + window.screen.availHeight);
-            console.log('browser: ' + window.outerWidth + 'x' + window.outerHeight);
+         function checkViewportUse() {
+            // console.log('resolution: ' + window.screen.availWidth + 'x' + window.screen.availHeight);
+            // console.log('browser: ' + window.outerWidth + 'x' + window.outerHeight);
             var pixelsAvailable = window.screen.availWidth * window.screen.availHeight;
             var pixelsUsed = window.outerWidth * window.outerHeight;
-            return (pixelsUsed / pixelsAvailable);
+            var viewportUse = pixelsUsed / pixelsAvailable;
+            if (viewportUse < 1) {
+               var data = {
+                  student: fingerprint,
+                  viewportUse: viewportUse
+               };
+               Socket.emit('student:resized', data);
+            }
          }
 
          var distractionHandler = function() {
             if ($scope.exam.started) {
                Socket.emit('student:distracted', fingerprint);
-               //Modal.open('alert', 'You should focus on the exam.', function() {});
             }
          };
 
          var resizeHandler = function() {
             if ($scope.exam.started) {
-               var viewportUse = getViewportUse();
-               if (viewportUse < 1) {
-                  var data = {
-                     student: fingerprint,
-                     viewportUse: viewportUse
-                  };
-                  Socket.emit('student:resized', data);
-               }
+               checkViewportUse();
             }
          };
 
-         //window.addEventListener('blur', distractionHandler);
+         window.addEventListener('blur', distractionHandler);
 
          window.addEventListener('resize', _.debounce(resizeHandler, 1000));
 
@@ -141,14 +140,7 @@ angular.module('app.exams.take')
          Modal.open('examStarted', 'The exam has begun. It will end at exactly ' + endTime.format('HH:mm') + '. Good luck!', function() {
             $scope.exam.started = true;
             if (User.isStudent()) {
-               var viewportUse = getViewportUse();
-               if (viewportUse < 1) {
-                  var data = {
-                     student: fingerprint,
-                     viewportUse: viewportUse
-                  };
-                  Socket.emit('student:resized', data);
-               }
+               checkViewportUse();
             }
          });
       });

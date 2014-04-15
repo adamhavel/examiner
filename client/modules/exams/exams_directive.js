@@ -27,7 +27,7 @@ angular.module('app.exams')
             $element.on('keydown', function(e) {
                if (e.keyCode === 13) {
                   e.preventDefault();
-                  document.execCommand('InsertHTML', false, '<br>');
+                  document.execCommand('InsertHTML', false, '<br>&nbsp;');
                }
             });
 
@@ -251,7 +251,7 @@ angular.module('app.exams')
                   '   }\n' +
                   '}).map(function(filepath) {\n' +
                   '   // Read file source.\n' +
-                  '   return grunt.file.read(filepath);\n' +
+                  '   return grunt.files.read(filepath);\n' +
                   '});';
                   $scope.$apply();
                }
@@ -274,6 +274,15 @@ angular.module('app.exams')
 
                   $scope.$on('$destroy', function() {
                      editor.removeEventListener('keydown');
+                  });
+
+                  $scope.$watch('lang', function(newValue, oldValue) {
+                     if (newValue !== oldValue) {
+                        console.log('yay');
+                        setTimeout(function() {
+                           Prism.highlightElement(code);
+                        }, 100);
+                     }
                   });
 
                } else {
@@ -404,7 +413,7 @@ angular.module('app.exams')
                               states: [angular.toJson(canvas)],
                               currentState: 0
                            };
-                           $scope.$watch('content', watchHandler);
+                           $scope.watcher = $scope.$watch('content', watchHandler);
                            $scope.$apply();
                         });
                      } else if (!$scope.content) {
@@ -412,9 +421,9 @@ angular.module('app.exams')
                            states: [angular.toJson(canvas)],
                            currentState: 0
                         };
-                        $scope.$watch('content', watchHandler);
+                        $scope.watcher = $scope.$watch('content', watchHandler);
                      } else {
-                        $scope.$watch('content', watchHandler);
+                        $scope.watcher = $scope.$watch('content', watchHandler);
                      }
 
                      canvas.on('object:modified', function() {
@@ -802,6 +811,7 @@ angular.module('app.exams')
          controller: ['$scope', '$rootScope', function($scope, $rootScope) {
 
             function sealCanvas() {
+               $scope.watcher();
                $scope.content = $scope.canvas.toSVG();
             }
 

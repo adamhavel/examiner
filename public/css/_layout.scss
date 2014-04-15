@@ -4,6 +4,7 @@
 
 body {
    @extend %dimmable;
+   overflow-x: hidden;
    background: brand(blue);
 }
 
@@ -72,7 +73,24 @@ $navigation-height: $leading * 1;
    background: brand(paper);
    box-shadow: .25em .25em 0 0 rgba(black, .05);
    .content {
-      //@extend %fade;
+      &.ng-leave {
+         @include position($top: 0, $left: 0, $right: 0);
+         @include blank-lines(2, both, padding);
+         @include taper(2);
+         min-height: $main-content-width * 1.414;
+         box-sizing: border-box;
+         transform: translateX(0) translateY(0) translateZ(0);
+         border-left: 1px solid rgba(black, .25);
+         background: lighten(brand(paper), .5%);
+         overflow: hidden;
+         opacity: 1;
+         transition: transform .5s, opacity .25s .25s;
+         transition-timing-function: ease-out;
+      }
+      &.ng-leave-active {
+         opacity: 0;
+         transform: translateX(100%) translateY(-5%) translateZ(0);
+      }
    }
 }
 
@@ -87,6 +105,7 @@ $navigation-height: $leading * 1;
 }
 
    .site-nav {
+      @extend %horizontal-slide;
       @include blank-lines(2, trailing);
       text-align: right;
       overflow: hidden;

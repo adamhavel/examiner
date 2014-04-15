@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
     Blueprint = mongoose.model('Blueprint'),
+    _ = require('lodash'),
     svgo = new (require('svgo'))();
 
 exports.query = function(req, res) {
@@ -48,29 +49,24 @@ exports.get = function(req, res) {
 };
 
 exports.create = function(req, res) {
-   req.body.sections.forEach(function(section) {
-      section.questions.forEach(function(question) {
-         question.body.forEach(function(chunk) {
-            if (chunk.datatype === 'canvas') {
+   _.forEach(req.body.sections, function(section) {
+      _.forEach(section.questions, function(question) {
+
+         var svgChunks = _.where(question.body.concat(question.answer), { 'datatype': 'canvas' });
+
+         _.forEach(svgChunks, function(chunk) {
+            if (chunk.content) {
                svgo.optimize(chunk.content, function(result) {
                   chunk.content = result.data;
                });
             }
-         });
-         question.answer.forEach(function(chunk) {
-            if (chunk.datatype === 'canvas') {
-               if (chunk.content) {
-                  svgo.optimize(chunk.content, function(result) {
-                     chunk.content = result.data;
-                  });
-               }
-               if (chunk.solution) {
-                  svgo.optimize(chunk.solution, function(result) {
-                     chunk.solution = result.data;
-                  });
-               }
+            if (chunk.solution) {
+               svgo.optimize(chunk.solution, function(result) {
+                  chunk.solution = result.data;
+               });
             }
          });
+
       });
    });
 

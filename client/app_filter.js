@@ -6,6 +6,6 @@ angular.module('app')
       };
    })
 
-   .filter('escape', ['base64', function(base64) {
+   .filter('base64', ['base64', function(base64) {
       return base64.encode;
    }]);

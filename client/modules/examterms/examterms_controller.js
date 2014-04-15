@@ -9,7 +9,7 @@ angular.module('app.examterms')
       $scope.examTerms = ExamTerms;
 
       $scope.createBlueprint = function(examTerm) {
-         Modal.open('chooseLanguage', 'Please choose the language of the exam.', function(lang) {
+         Modal.open('chooseLanguage', 'The exam can be taken in the following languages – please pick one.', function(lang) {
             $state.go('newBlueprint', {
                subject: examTerm.subject,
                date: examTerm.date,

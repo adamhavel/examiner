@@ -18,13 +18,16 @@ angular.module('app')
                });
             });
 
-            $element.on('paste', function(e) {
-               e.preventDefault();
-               document.execCommand('InsertHTML', false, e.clipboardData.getData('text/plain'));
-            });
+            if ($element[0].tagName.toLowerCase() !== 'code') {
+               $element.on('paste', function(e) {
+                  e.preventDefault();
+                  document.execCommand('InsertHTML', false, e.clipboardData.getData('text/plain'));
+               });
+            }
 
             $scope.$on('$destroy', function() {
                $element.off('input');
+               $element.off('paste');
             });
 
             ngModel.$render = function() {

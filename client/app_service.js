@@ -62,7 +62,6 @@ angular.module('app')
         alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
         lookup: null,
         ie: /MSIE /.test(navigator.userAgent),
-        ieo: /MSIE [67]/.test(navigator.userAgent),
         encode: function (s) {
             var buffer = B64.toUtf8(s),
                 position = -1,
@@ -110,29 +109,16 @@ angular.module('app')
             var buffer = B64.fromUtf8(s),
                 position = 0,
                 len = buffer.length;
-            if (B64.ieo) {
-                var result = [];
-                while (position < len) {
-                    if (buffer[position] < 128)
-                        result.push(String.fromCharCode(buffer[position++]));
-                    else if (buffer[position] > 191 && buffer[position] < 224)
-                        result.push(String.fromCharCode(((buffer[position++] & 31) << 6) | (buffer[position++] & 63)));
-                    else
-                        result.push(String.fromCharCode(((buffer[position++] & 15) << 12) | ((buffer[position++] & 63) << 6) | (buffer[position++] & 63)));
-                }
-                return result.join('');
-            } else {
-                var result = '';
-                while (position < len) {
-                    if (buffer[position] < 128)
-                        result += String.fromCharCode(buffer[position++]);
-                    else if (buffer[position] > 191 && buffer[position] < 224)
-                        result += String.fromCharCode(((buffer[position++] & 31) << 6) | (buffer[position++] & 63));
-                    else
-                        result += String.fromCharCode(((buffer[position++] & 15) << 12) | ((buffer[position++] & 63) << 6) | (buffer[position++] & 63));
-                }
-                return result;
-            }
+             var result = '';
+             while (position < len) {
+                 if (buffer[position] < 128)
+                     result += String.fromCharCode(buffer[position++]);
+                 else if (buffer[position] > 191 && buffer[position] < 224)
+                     result += String.fromCharCode(((buffer[position++] & 31) << 6) | (buffer[position++] & 63));
+                 else
+                     result += String.fromCharCode(((buffer[position++] & 15) << 12) | ((buffer[position++] & 63) << 6) | (buffer[position++] & 63));
+             }
+             return result;
         },
         toUtf8: function (s) {
             var position = -1,

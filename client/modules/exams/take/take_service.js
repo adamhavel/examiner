@@ -26,18 +26,17 @@ angular.module('app.exams.take')
          api.save = function() {
             if (api.isOngoing) {
                var regExpHTML = /(<([^>]+)>)/g;
-               api.data.sections.forEach(function(section) {
-                  section.questions.forEach(function(question) {
-                     question.body.forEach(function(chunk) {
-                        if (chunk.datatype === 'code') {
+               _.forEach(api.data.sections, function(section) {
+                  _.forEach(section.questions, function(question) {
+
+                     var codeChunks = _.where(question.body.concat(question.answer), { 'datatype': 'code' });
+
+                     _.forEach(codeChunks, function(chunk) {
+                        if (chunk.content) {
                            chunk.content = chunk.content.replace(regExpHTML, '');
                         }
                      });
-                     question.answer.forEach(function(chunk) {
-                        if (chunk.datatype === 'code') {
-                           chunk.content = chunk.content.replace(regExpHTML, '');
-                        }
-                     });
+
                   });
                });
                webStorage.add('exam', angular.toJson(api.data));
@@ -50,13 +49,13 @@ angular.module('app.exams.take')
             $timeout(function() {
                var exam = new Exam(api.data);
                exam.answers = [];
-               exam.sections.forEach(function(section) {
-                  section.questions.forEach(function(question) {
+               _.forEach(exam.sections, function(section) {
+                  _.forEach(section.questions, function(question) {
                      var answer = {
                         points: 0,
                         content: []
                      };
-                     question.answer.forEach(function(chunk) {
+                     _.forEach(question.answer, function(chunk) {
                         answer.content.push(chunk.content);
                      });
                      exam.answers.push(answer);

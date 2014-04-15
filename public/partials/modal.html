@@ -4,15 +4,14 @@
 
       <form ng-switch-when="loadImage" ng-submit="submitImage()">
          <div ng-show="loading">loading</div>
-         <p class="modal__prompt">{{modal.prompt}}</p>
-         <input type="url" ng-model="modal.callback.value" required autofocus>
-         http://31.media.tumblr.com/e05faf08d9254af029d384ccb2b9e81d/tumblr_msbc2eCq0e1rsuch2o1_1280.jpg
+         <label for="modal__input" class="modal__prompt">{{modal.prompt}}</label>
+         <input type="url" id="modal__input" ng-model="modal.callback.value" required autofocus ng-init="modal.callback.value = 'http://31.media.tumblr.com/e05faf08d9254af029d384ccb2b9e81d/tumblr_msbc2eCq0e1rsuch2o1_1280.jpg'">
          <button ng-click="close()">Cancel</button>
          <button type="submit">Add image</button>
       </form>
 
       <form ng-switch-when="chooseLanguage">
-         <p class="modal__prompt">{{modal.prompt}}</p>
+         <label class="modal__prompt">{{modal.prompt}}</label>
          <select ng-init="modal.callback.value = 'en'" ng-model="modal.callback.value" required>
             <option value="en">English</option>
             <option value="cs">Čeština</option>
@@ -21,9 +20,30 @@
          <button ng-click="confirm()">Select</button>
       </form>
 
-      <form ng-switch-when="chooseCodeLanguage">
-         <p class="modal__prompt">{{modal.prompt}}</p>
-         <input type="text" ng-model="modal.callback.value" required autofocus>
+      <form ng-switch-when="chooseProgrammingLanguage">
+         <label class="modal__prompt">{{modal.prompt}}</label>
+         <select ng-init="modal.callback.value = 'javascript'" ng-model="modal.callback.value" required>
+            <option value="bash">Bash</option>
+            <option value="c">C</option>
+            <option value="clike">C-like</option>
+            <option value="coffeescript">CoffeeScript</option>
+            <option value="cpp">C++</option>
+            <option value="csharp">C#</option>
+            <option value="css">CSS</option>
+            <option value="gherkin">Gherkin</option>
+            <option value="go">Go</option>
+            <option value="groovy">Groovy</option>
+            <option value="http">HTTP</option>
+            <option value="java">Java</option>
+            <option value="javascript">JavaScript</option>
+            <option value="markup">Markup</option>
+            <option value="nsis">NSIS</option>
+            <option value="php">PHP</option>
+            <option value="python">Python</option>
+            <option value="ruby">Ruby</option>
+            <option value="scss">Sass</option>
+            <option value="sql">SQL</option>
+         </select>
          <button ng-click="close()">Cancel</button>
          <button ng-click="confirm()">Select</button>
       </form>

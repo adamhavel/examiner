@@ -117,7 +117,7 @@ io.sockets.on('connection', function(socket) {
       var teachers = _.filter(users, function(user) {
          return user.role === 'teacher' && user.examId === student.examId;
       });
-      teachers.forEach(function(teacher) {
+      _.forEach(teachers, function(teacher) {
          teacher.socket.emit('student:distracted', student);
       });
    });
@@ -126,7 +126,7 @@ io.sockets.on('connection', function(socket) {
       var teachers = _.filter(users, function(user) {
          return user.role === 'teacher' && user.examId === data.student.examId;
       });
-      teachers.forEach(function(teacher) {
+      _.forEach(teachers, function(teacher) {
          teacher.socket.emit('student:resized', data);
       });
    });

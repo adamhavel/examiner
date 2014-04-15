@@ -49,7 +49,7 @@
          <div class="question__chunk" ng-repeat="chunk in question.body" ng-switch on="chunk.datatype">
             <paragraph ng-switch-when="text" content="chunk.content" editable="false"></paragraph>
             <img ng-switch-when="image" class="question__image" ng-src="{{chunk.content}}">
-            <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;base64,{{chunk.content | escape}}">
+            <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;base64,{{chunk.content | base64}}">
             <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="false"></snippet>
             <list ng-switch-when="list" content="chunk.content" editable="false"></list>
          </div>
@@ -62,7 +62,7 @@
             <paragraph ng-switch-when="text" content="chunk.content" editable="{{user.isStudent() ? 'true' : 'false'}}"></paragraph>
             <div ng-switch-when="canvas">
                <icanvas ng-if="user.isStudent()" content="chunk.content"></icanvas>
-               <img ng-if="!user.isStudent()" class="question__image" ng-src="data:image/svg+xml;base64,{{chunk.content | escape}}">
+               <img ng-if="!user.isStudent()" class="question__image" ng-src="data:image/svg+xml;base64,{{chunk.content | base64}}">
             </div>
             <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="{{user.isStudent() ? 'true' : 'false'}}"></snippet>
             <list ng-switch-when="list" content="chunk.content" editable="{{user.isStudent() ? 'true' : 'false'}}"></list>

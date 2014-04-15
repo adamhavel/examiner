@@ -23,10 +23,10 @@ var ExamSchema = new Schema(
 );
 
 ExamSchema.index({
-   "subject": 1,
-   "date": -1,
-   "lang": 1,
-   "student.id": 1
+   'subject': 1,
+   'date': -1,
+   'lang': 1,
+   'student.id': 1
 });
 
 mongoose.model('Exam', ExamSchema);

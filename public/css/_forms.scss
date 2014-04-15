@@ -30,26 +30,25 @@ select {
    @include blank-lines(.5, trailing);
    @extend %trim-trailing-lines;
    display: block;
+   padding: 0 .5em;
+   border: 1px solid rgba(black, .4);
+   border-bottom-color: rgba(black, .15);
+   border-right-color: rgba(black, .15);
+   background: rgba(white, .4);
    box-sizing: border-box;
-   color: rgba(black, .75);
-   xtransition: box-shadow .25s;
+   transition: background-color .25s;
    &:hover,
    &:focus {
-      xbox-shadow: 0 0 .5em 0 brand(purple);
+      background: rgba(white, .8);
    }
 }
 
 input,
 textarea {
    width: 100%;
-   border: $forms-border-width solid rgba(black, .6);
    &.error {
-      border-color: red;
+      border-color: brand(red);
    }
-}
-
-input {
-   padding: 0 .5em;
 }
 
 .checkbox-wrapper {
@@ -68,6 +67,7 @@ input {
    input[type="checkbox"] {
       @include linespan(1);
       width: $leading;
+      padding: 0;
       cursor: pointer;
       vertical-align: top;
       &:checked {
@@ -87,6 +87,11 @@ textarea {
    height: auto;
    padding: calc(#{$leading * .25} - #{$forms-border-width}) .5em;
    line-height: $leading;
+}
+
+select {
+   padding: 0 .25em;
+   cursor: pointer;
 }
 
 

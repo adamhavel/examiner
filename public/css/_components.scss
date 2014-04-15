@@ -384,13 +384,21 @@ button {
    width: $main-content-width * 4/5;
    box-sizing: border-box;
    background: lighten(brand(yellow), 10%);
-   box-shadow: 2rem 2rem 0 0 rgba(black, .075);
+   box-shadow: 2rem 2rem 0 0 rgba(black, .1);
    pointer-events: auto;
    font-family: "Roboto", sans-serif;
    font-weight: 300;
    color: rgba(black, .6);
-   input {
-      //@extend %delta;
+   label {
+      @include blank-lines(.5, trailing);
+   }
+   input,
+   select {
+      @include blank-lines(1, trailing);
+      @extend %epsilon;
+      width: 100%;
+      color: rgba(black, .6);
+      font-weight: 300;
    }
    &__close {
       display: none;
@@ -426,7 +434,7 @@ button {
       @include primary-button(lighten(brand(red), 40%));
       background: lighten(brand(purple), 20%);
    }
-   &--chooseCodeLanguage {
+   &--chooseProgrammingLanguage {
       @extend %icon--code-alt;
       @include primary-button(lighten(brand(red), 40%));
       background: lighten(brand(purple), 20%);
@@ -489,13 +497,13 @@ button {
       margin: 0;
       opacity: .05;
       transition: opacity .4s, transform 1s;
-      xtransform: rotateZ(0);
+      transform: rotateZ(0);
    }
    &:hover,
    &.ng-urgent {
       transform: translateX(0) translateZ(0);
       @include icon {
-         xtransform: rotateZ(85deg);
+         transform: rotateZ(30deg);
          opacity: .4;
       }
    }

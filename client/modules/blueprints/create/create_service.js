@@ -27,28 +27,30 @@ angular.module('app.blueprints.create')
          api.save = function() {
             if (api.isOngoing) {
                var regExpHTML = /(<([^>]+)>)/g;
-               api.data.sections.forEach(function(section) {
-                  section.questions.forEach(function(question) {
-                     question.body.forEach(function(chunk) {
-                        if (chunk.datatype === 'code') {
+               _.forEach(api.data.sections, function(section) {
+                  _.forEach(section.questions, function(question) {
+
+                     var codeChunks = _.where(question.body.concat(question.answer), { 'datatype': 'code' }),
+                         optionsChunks = _.where(question.answer, { 'datatype': 'options' });
+
+                     _.forEach(codeChunks, function(chunk) {
+                        if (chunk.content) {
                            chunk.content = chunk.content.replace(regExpHTML, '');
                         }
-                     });
-                     question.answer.forEach(function(chunk) {
-                        if (chunk.datatype === 'code') {
+                        if (chunk.solution) {
                            chunk.solution = chunk.solution.replace(regExpHTML, '');
-                           if (chunk.content) {
-                              chunk.content = chunk.content.replace(regExpHTML, '');
-                           }
-                        } else if (chunk.datatype === 'options') {
-                           chunk.content = chunk.solution.map(function(option) {
-                              return {
-                                 content: option.content,
-                                 value: false
-                              };
-                           });
                         }
                      });
+
+                     _.forEach(optionsChunks, function(chunk) {
+                        chunk.content = _.map(chunk.solution, function(option) {
+                           return {
+                              content: option.content,
+                              value: false
+                           };
+                        });
+                     });
+
                   });
                });
                webStorage.add('blueprint', angular.toJson(api.data));

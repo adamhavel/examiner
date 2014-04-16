@@ -270,20 +270,13 @@ angular.module('app.blueprints.create')
       };
 
       $scope.blueprint = NewBlueprint.data;
+
       if (!NewBlueprint.isOngoing) {
          $scope.blueprint.subject = $stateParams.subject;
          $scope.blueprint.date = $stateParams.date;
          $scope.blueprint.lang = $stateParams.lang;
          $scope.addSection();
          NewBlueprint.isOngoing = true;
-      } else if ($scope.blueprint.subject !== $stateParams.subject || $scope.blueprint.date !== $stateParams.date || $scope.blueprint.lang !== $stateParams.lang) {
-         Modal.open('alert', 'You can only create one blueprint at a time.', function() {
-            $state.go('newBlueprint', {
-               subject: $scope.blueprint.subject,
-               date: $scope.blueprint.date,
-               lang: $scope.blueprint.lang
-            });
-         });
       }
 
       var watcher = $scope.$watch('blueprint.sections', function() {

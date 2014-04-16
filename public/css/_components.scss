@@ -2,6 +2,17 @@
    Components
    ========================================================================== */
 
+/* Breadcrumbs
+   ========================================================================== */
+
+.breadcrumbs {
+   @extend %pipe-list;
+   li {
+      @include before(' — ');
+   }
+}
+
+
 /* Buttons
    ========================================================================== */
 
@@ -262,99 +273,85 @@ button {
 /* Preview
    ========================================================================== */
 
-.exam-preview {
+.preview {
    @extend %t-preview;
    @include blank-lines(1.5, trailing);
-   transition: transform .1s;
-   .content {
-      transition: color, border-color, border-width, background, box-shadow;
-      transition-duration: .3s;
-   }
-   &__student {
-      line-height: 1;
-      font-family: "PT Sans Narrow", sans-serif;
-   }
-   &__subject {
-      margin-bottom: 0;
-      font-family: "PT Sans", sans-serif;
-   }
-   &__date {
-      font-family: "PT Sans", sans-serif;
-      font-style: italic;
-   }
-   &.ng-urgent {
-      color: brand(red) !important;
-      .content {
-         border-color: brand(red);
-      }
-   }
-   &:hover {
-      z-index: 100;
-      transform: scale(1.5);
-      .content {
-         @extend %t-sheet;
-         box-shadow: 20px 17px 0 0 rgba(black, .05);
-      }
-   }
-}
-
-/* Category preview
-   ========================================================================== */
-
-.category-preview {
-   @extend %t-preview;
-   @include blank-lines(1.5, trailing);
-   .content {
-      transition: color, border-color, border-width, background, transform;
-      transition-duration: .3s;
-      @include before {
-         @include position($top: 3px, $left: 0, $right: 0);
-         height: 3px;
-         border: solid rgba(black, .5);
-         border-width: 1px 0;
-         transition: opacity .3s;
-      }
-   }
-   &:before, &:after {
-      @extend %t-sheet;
-      @include position($top: 0, $left: 0);
-      @include size(100%);
-      content: '';
-      z-index: -1;
-      background: darken(white, 1%);
-      transition: transform .3s, opacity .15s .15s;
-      opacity: 0;
-   }
-   &:after {
-      background: darken(white, 2%);
-      z-index: -2;
-   }
-   &:hover {
-      .content {
-         @extend %t-sheet;
-         transform: translate(-9px, 9px);
-         &:before {
-            opacity: 0;
-         }
-      }
-      &:before, &:after {
-         transition: transform .3s, opacity .1s;
-         opacity: 1;
-      }
-      &:after {
-         transform: translate(9px, -9px);
-      }
-   }
    &__heading {
       line-height: 1;
       font-family: "PT Sans Narrow", sans-serif;
-      &:not(:last-child) {
-         //@extend %heading--subsection;
-      }
    }
    &__subheading {
+      margin-bottom: 0;
       font-family: "PT Sans", sans-serif;
-      font-style: italic;
+      span {
+         @include blank-lines(.35, trailing);
+         display: inline-block;
+         padding: 0 .75rem;
+         padding-bottom: calc(#{$leading * .15} - 1px);
+         border-bottom: 1px solid rgba(black, .25);
+      }
+   }
+   time {
+      display: block;
+      line-height: 1.25;
+   }
+   &--sheet {
+      transition: transform .1s;
+      .content {
+         transition: color, border-color, border-width, background, box-shadow;
+         transition-duration: .3s;
+      }
+      &:hover {
+         z-index: 100;
+         transform: scale(1.5);
+         .content {
+            @extend %t-sheet;
+            box-shadow: 20px 17px 0 0 rgba(black, .05);
+         }
+      }
+   }
+   &--stack {
+      .content {
+         transition: color, border-color, border-width, background, transform;
+         transition-duration: .3s;
+         @include before {
+            @include position($top: 3px, $left: 0, $right: 0);
+            height: 3px;
+            border: solid rgba(black, .5);
+            border-width: 1px 0;
+            transition: opacity .3s;
+         }
+      }
+      &:before, &:after {
+         @extend %t-sheet;
+         @include position($top: 0, $left: 0);
+         @include size(100%);
+         content: '';
+         z-index: -1;
+         background: darken(white, 1%);
+         opacity: 0;
+         transition: transform .3s, opacity .15s .15s;
+      }
+      &:after {
+         background: darken(white, 2%);
+         z-index: -2;
+      }
+      &:hover {
+         .content {
+            @extend %t-sheet;
+            transform: translate(-9px, 9px);
+            &:before {
+               opacity: 0;
+            }
+         }
+         &:before, &:after {
+            transition: transform .3s, opacity .1s;
+            opacity: 1;
+         }
+         &:after {
+            transform: translate(9px, -9px);
+         }
+      }
    }
 }
 
@@ -418,6 +415,11 @@ button {
       min-height: 5rem;
       width: auto;
       height: auto;
+   }
+   &--loading {
+      @include icon {
+         animation: spin .75s infinite;
+      }
    }
    &--save {
       @extend %icon--save;

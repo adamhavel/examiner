@@ -6,11 +6,11 @@ angular.module('app').config([
 
       $locationProvider.html5Mode(true).hashPrefix('!');
 
-      $urlRouterProvider.otherwise('/exams');
+      $urlRouterProvider.otherwise('/exams/');
 
       $stateProvider
-         .state('home', {
-            url: '/exams',
+         .state('exams', {
+            url: '/exams/:subject',
             templateUrl: 'partials/exams.html',
             controller: 'ExamsController',
          })
@@ -20,7 +20,10 @@ angular.module('app').config([
             controller: 'ExamTakeController',
          })
          .state('blueprints', {
-            url: '/blueprints{filter:.*}',
+            url: '/blueprints/:subject',
+            /*params: {
+               subject: { value: null }
+            },*/
             templateUrl: 'partials/blueprints.html',
             controller: 'BlueprintsController'
          })

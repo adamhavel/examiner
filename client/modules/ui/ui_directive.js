@@ -71,11 +71,13 @@ angular.module('app.ui')
                   // TODO:
                   // provide loading visuals
                   $scope.loading = false;
-                  if (passed) {
-                     callback(callback.value);
-                     $scope.close();
-                  } else {
-                     //document.querySelector('.modal').querySelector('input').setCustomValidity("Ray is wack!");
+                  if (Modal.content) {
+                     if (passed) {
+                        callback(callback.value);
+                        $scope.close();
+                     } else {
+                        //document.querySelector('.modal').querySelector('input').setCustomValidity("Ray is wack!");
+                     }
                   }
                });
             };

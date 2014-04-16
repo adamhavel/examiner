@@ -79,10 +79,10 @@ exports.get = function(req, res) {
    Exam.findOne({
       subject: req.subject,
       lang: req.lang,
-      date: req.date
+      date: req.date,
+      uid: req.uid
    }).exec(function(err, exam) {
       if (err) {
-         console.log(err);
          res.send(500);
       } else if (!exam) {
          res.send(404);
@@ -107,7 +107,7 @@ exports.create = function(req, res) {
 
    exam.save(function(err) {
       if (err) {
-         res.send();
+         res.send(500, err);
       } else {
          res.send(exam);
       }

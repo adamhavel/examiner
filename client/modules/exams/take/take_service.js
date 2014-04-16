@@ -66,7 +66,7 @@ angular.module('app.exams.take')
                exam.$save(function() {
                   Modal.open('success', 'The exam has been successfully saved.', function() {
                      api.reset();
-                     $state.go('home');
+                     $state.go('exams');
                      webStorage.remove('exam');
                   });
                }, function(err) {
@@ -94,15 +94,40 @@ angular.module('app.exams.take')
 
       $rootScope.$on('save', ExamTake.save);
 
-      $rootScope.$on('$stateChangeStart', function(e, toState) {
-         if (ExamTake.isOngoing && (toState.name === 'home' || (User.isStudent() && toState.name !== 'exam'))) {
-            e.preventDefault();
+      $rootScope.$on('$stateChangeStart', function(e, state, params) {
+
+         var redirect = function() {
             $state.go('exam', {
                subject: ExamTake.data.subject,
                date: ExamTake.data.date,
                lang: ExamTake.data.lang
             });
+         };
+
+         if (ExamTake.isOngoing && (state.name === 'exams' || (User.isStudent() && state.name !== 'exam'))) {
+            e.preventDefault();
+            redirect();
+         } else if (!ExamTake.isOngoing && User.isStudent() && state.name === 'exam' && !User.data.pledge) {
+            e.preventDefault();
+            Modal.open('confirm', 'Are you sure?', function(confirm) {
+               if (confirm) {
+                  User.data.pledge = true;
+                  $state.go(state, {
+                     subject: params.subject,
+                     date: params.date,
+                     lang: params.lang
+                  });
+               }
+            });
+         } else if (ExamTake.isOngoing && state.name === 'exam') {
+            if (params.subject !== ExamTake.data.subject || params.date !== ExamTake.data.date || params.lang !== ExamTake.data.lang) {
+               e.preventDefault();
+               Modal.open('alert', 'You can only take one exam at a time.', function() {
+                  redirect();
+               });
+            }
          }
+
       });
 
       return ExamTake;

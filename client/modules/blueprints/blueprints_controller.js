@@ -3,39 +3,24 @@
 angular.module('app.blueprints')
 
    .controller('BlueprintsController',
-   ['$scope', '$stateParams', '$state', 'Blueprints', 'dateFilter',
-   function($scope, $stateParams, $state, Blueprints, dateFilter) {
+   ['$scope', '$stateParams', '$state', 'Blueprints',
+   function($scope, $stateParams, $state, Blueprints) {
 
-      var filter = $stateParams.filter.substr(1).split('/') || null;
-      $scope.subject = filter[0] || null;
-      $scope.date = filter[1] || null;
-      $scope.lang = filter[2] || null;
-
-      if ($scope.subject) {
-         $scope.level = 'date';
-      } else {
-         $scope.level = 'subject';
-      }
-
-      $scope.subjects = [];
-      $scope.dates = [];
+      $scope.subject = $stateParams.subject;
 
       $scope.blueprints = Blueprints.query({
-         subject: $scope.subject,
-         date: $scope.date,
-         lang: $scope.lang
+         subject: $scope.subject
       }, function(blueprints) {
-         blueprints.forEach(function(blueprint) {
-            var subject = blueprint.subject;
-            if ($scope.subjects.indexOf(subject) === -1) {
-               $scope.subjects.push(blueprint.subject);
-            }
-         });
+
+         if ($scope.subject) {
+            $scope.items = blueprints;
+         } else {
+            $scope.items = _.uniq(_.pluck(blueprints, 'subject'));
+         }
+
       }, function() {
          $state.go('blueprints');
       });
-
-      $scope.dateFilter = dateFilter;
 
    }])
 

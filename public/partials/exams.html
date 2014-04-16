@@ -1,18 +1,33 @@
-<h1 class="alpha heading">Pending exams</h1>
+<h1 class="alpha heading">
+   Pending exams<span ng-if="subject">: {{subject | uppercase}}</span>
+</h1>
 
 <section class="list">
 
    <div class="grid">
 
-      <div class="grid__item one-quarter" ng-repeat="term in examTerms">
+      <div class="grid__item one-quarter" ng-repeat="item in items">
 
-         <section class="exam-preview">
+         <section ng-if="!subject" class="preview preview--stack">
             <div class="content">
-               <h1 class="gamma heading exam-preview__student">{{term.subject | uppercase}}</h1>
-               <h2 class="epsilon heading exam-preview__subject">{{term.date | date: 'd. M. yyyy'}}</h2>
-               <h3 class="heading exam-preview__date">{{term.date | date: 'h:mm'}}</h3>
+               <h1 class="beta heading preview__heading">{{item | uppercase}}</h1>
             </div>
-            <a ng-click="takeExam(term)" href="" class="more"></a>
+            <a ui-sref="exams({ subject: item })" class="more"></a>
+         </section>
+
+         <section ng-if="subject" class="preview preview--sheet">
+            <div class="content">
+               <h1 class="beta heading preview__heading">{{item.subject | uppercase}}</h1>
+               <h2 class="heading preview__subheading">
+                  <time class="epsilon">{{item.date | date: 'd. M. yyyy'}}</time>
+                  <time>{{item.date | date: 'h:mm'}}</time>
+               </h2>
+            </div>
+            <a ui-sref="exam({
+               subject: item.subject,
+               date: item.date,
+               lang: item.lang
+            })" class="more"></a>
          </section>
 
       </div>

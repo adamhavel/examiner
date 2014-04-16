@@ -26,7 +26,8 @@ angular.module('app.user')
             api.data = {
                name: 'Adam Havel',
                id: 'havelad1',
-               role: 'teacher'
+               role: 'teacher',
+               pledge: false
             };
          };
 

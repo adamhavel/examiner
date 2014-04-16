@@ -1,35 +1,72 @@
-<h1 class="alpha heading">Blueprints</h1>
+<h1 class="alpha heading">
+   Blueprints<em ng-if="subject">: {{subject | uppercase}}</em>
+</h1>
 
-<section class="list" ng-switch on="level">
+<section class="list">
 
-   <div class="grid" ng-switch-when="subject">
+   <div class="grid">
 
-      <div class="grid__item one-quarter" ng-repeat="subject in subjects">
+      <div class="grid__item one-quarter" ng-repeat="item in items">
 
-         <section class="category-preview">
+         <section ng-if="!subject" class="preview preview--stack">
             <div class="content">
-               <h1 class="beta heading category-preview__heading">{{subject | uppercase}}</h1>
+               <h1 class="beta heading preview__heading">{{item | uppercase}}</h1>
             </div>
-            <a ng-href="blueprints/{{subject}}" class="more"></a>
+            <a ui-sref="blueprints({ subject: item })" class="more"></a>
+         </section>
+
+         <section ng-if="subject" class="preview preview--sheet">
+            <div class="content">
+               <h1 class="beta heading preview__heading">{{item.subject | uppercase}}</h1>
+               <h2 class="heading preview__subheading">
+                  <time class="epsilon">{{item.date | date: 'd. M. yyyy'}}</time>
+                  <time>{{item.date | date: 'h:mm'}}</time>
+               </h2>
+            </div>
+            <a ui-sref="blueprint({
+               subject: item.subject,
+               date: item.date,
+               lang: item.lang
+            })" class="more"></a>
          </section>
 
       </div>
 
-   </div>
+      <div class="grid__item one-quarter">
 
-   <div class="grid" ng-switch-when="date">
-
-      <div class="grid__item one-quarter" ng-repeat="blueprint in blueprints">
-
-         <section class="category-preview">
+         <section ng-if="subject" class="preview preview--sheet">
             <div class="content">
-               <h1 class="gamma heading category-preview__heading">{{blueprint.subject | uppercase}}</h1>
-               <h2 class="epsilon heading category-preview__subheading">{{blueprint.date | date: 'd. M. yyyy'}}</h2>
+               <h1 class="gamma heading preview__heading">Leonard Bernstein</h1>
+               <h2 class="heading preview__subheading"><span>MI-DIP</span></h2>
+               <h2 class="zeta heading preview__subheading">
+                  <time>15. 6. 2015</time>
+                  <time>11:00</time>
+               </h2>
             </div>
             <a ui-sref="blueprint({
-               subject: blueprint.subject,
-               date: blueprint.date,
-               lang: blueprint.lang
+               subject: item.subject,
+               date: item.date,
+               lang: item.lang
+            })" class="more"></a>
+         </section>
+
+      </div>
+
+      <div class="grid__item one-quarter">
+
+         <section ng-if="subject" class="preview preview--sheet">
+            <div class="content">
+               <h1 class="gamma heading preview__heading">Dieter<br>Rams</h1>
+               <h2 class="heading preview__subheading"><span>MI-DIP</span></h2>
+               <h2 class="zeta heading preview__subheading">
+                  <time>15. 6. 2015</time>
+                  <time>11:00</time>
+               </h2>
+            </div>
+            <a ui-sref="blueprint({
+               subject: item.subject,
+               date: item.date,
+               lang: item.lang
             })" class="more"></a>
          </section>
 

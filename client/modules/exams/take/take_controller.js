@@ -75,7 +75,7 @@ angular.module('app.exams.take')
                   Timer.stop();
                   Socket.emit('user:leave', fingerprint);
                   ExamTake.reset();
-                  $state.go('home');
+                  $state.go('exams');
                }
             }, 'Collect');
          };
@@ -86,7 +86,7 @@ angular.module('app.exams.take')
             }
             Socket.emit('user:leave', fingerprint);
             ExamTake.reset();
-            $state.go('home');
+            $state.go('exams');
          };
 
          $scope.adjustTimer = function() {
@@ -137,7 +137,11 @@ angular.module('app.exams.take')
       Socket.on('exam:started', function(exam) {
          Timer.start(exam.start, exam.duration);
          var endTime = moment(exam.start).add(exam.duration);
-         Modal.open('examStarted', 'The exam has begun. It will end at exactly ' + endTime.format('HH:mm') + '. Good luck!', function() {
+         var prompt = 'The exam has begun. It will end at exactly ' + endTime.format('HH:mm') + '.';
+         if (User.isStudent()) {
+            prompt += ' Good luck!';
+         }
+         Modal.open('examStarted', prompt, function() {
             $scope.exam.started = true;
             if (User.isStudent()) {
                checkViewportUse();
@@ -153,12 +157,13 @@ angular.module('app.exams.take')
                ExamTake.store();
             } else {
                ExamTake.reset();
-               $state.go('home');
+               $state.go('exams');
             }
          });
       });
 
       $scope.exam = ExamTake.data;
+
       if (!ExamTake.isOngoing) {
          Socket.emit('user:register', fingerprint);
          ExamTake.data = Blueprint.get({

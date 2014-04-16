@@ -1,9 +1,8 @@
-<section ng-attr-class="modal modal--{{modal.type}}" ng-if="modal">
+<section ng-attr-class="modal modal--{{modal.type}}" ng-class="{'modal--loading': loading}" ng-if="modal">
    <button class="modal__close tools__item icon--remove" ng-click="close()">close</button>
    <div class="modal__content" ng-switch on="modal.type">
 
       <form ng-switch-when="loadImage" ng-submit="submitImage()">
-         <div ng-show="loading">loading</div>
          <label for="modal__input" class="modal__prompt">{{modal.prompt}}</label>
          <input type="url" id="modal__input" ng-model="modal.callback.value" required autofocus ng-init="modal.callback.value = 'http://31.media.tumblr.com/e05faf08d9254af029d384ccb2b9e81d/tumblr_msbc2eCq0e1rsuch2o1_1280.jpg'">
          <button ng-click="close()">Cancel</button>

@@ -12,6 +12,11 @@ module.exports = function(app, passport, db) {
    app.use(compression());
    app.use(express.static(config.root + '/../public'));
 
+   // for sourcemaps to work
+   if (process.env.NODE_ENV === 'development') {
+      app.use('/client', express.static(config.root + '/../client'));
+   }
+
    app.use(bodyParser.json());
 
    // setup session store
@@ -27,7 +32,15 @@ module.exports = function(app, passport, db) {
    app.use(passport.initialize());
    app.use(passport.session());
 
-   app.all(/^(?!\/api\/|\/client\/).*/, function(req, res, next) {
+   var regexPublic;
+
+   if (process.env.NODE_ENV === 'development') {
+      regexPublic = /^(?!\/api\/|\/client\/).*/;
+   } else {
+      regexPublic = /^(?!\/api\/).*/;
+   }
+
+   app.all(regexPublic, function(req, res, next) {
       res.sendfile('index.html', { root: config.root + '/../public' });
    });
 

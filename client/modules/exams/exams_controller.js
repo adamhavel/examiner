@@ -3,21 +3,21 @@
 angular.module('app.exams')
 
    .controller('ExamsController',
-   ['$scope', '$stateParams', '$state', 'ExamTerms', 'Modal',
-   function($scope, $stateParams, $state, ExamTerms, Modal) {
+   ['$scope', '$stateParams', '$state', 'Blueprints', 'Modal', 'User',
+   function($scope, $stateParams, $state, Blueprints, Modal, User) {
 
-      $scope.examTerms = ExamTerms;
+      $scope.subject = $stateParams.subject;
 
-      $scope.takeExam = function(examTerm) {
-         Modal.open('confirm', 'Are you sure?', function(confirm) {
-            if (confirm) {
-               $state.go('exam', {
-                  subject: examTerm.subject,
-                  date: examTerm.date,
-                  lang: 'en'
-               });
-            }
-         });
-      };
+      $scope.examTerms = Blueprints.query({
+         subject: $scope.subject
+      }, function(examTerms) {
+
+         if ($scope.subject) {
+            $scope.items = examTerms;
+         } else {
+            $scope.items = _.uniq(_.pluck(examTerms, 'subject'));
+         }
+
+      });
 
    }]);

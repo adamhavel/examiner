@@ -186,7 +186,7 @@ angular.module('app.exams')
                   var item = e.target;
                   var items = getElements('label', $element[0]);
                   var index = items.indexOf(item);
-                  if (n.keyCode === 13) {
+                  if (e.keyCode === 13) {
                      e.preventDefault();
                      $scope.items.splice(index + 1, 0, {
                         value: 0,

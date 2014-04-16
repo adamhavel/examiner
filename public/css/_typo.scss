@@ -30,7 +30,7 @@ a {
    &:hover,
    &:focus,
    &:active {
-      color: blue;
+      color: rgba(black, .75);
    }
 }
 
@@ -60,6 +60,12 @@ a {
       margin-bottom: 0;
       font-style: italic;
    }
+   a {
+      text-decoration: none;
+   }
+   em {
+      font-weight: 300;
+   }
 }
 
 .alpha, %alpha {
@@ -80,6 +86,10 @@ a {
 
 .epsilon, %epsilon {
    font-size: 1.28rem;
+}
+
+.zeta, %zeta {
+   font-size: .858rem;
 }
 
 

@@ -93,15 +93,28 @@ angular.module('app.blueprints.create')
 
       $rootScope.$on('save', NewBlueprint.save);
 
-      $rootScope.$on('$stateChangeStart', function(e, toState) {
-         if (NewBlueprint.isOngoing && toState.name === 'examTerms') {
-            e.preventDefault();
+      $rootScope.$on('$stateChangeStart', function(e, state, params) {
+
+         var redirect = function() {
             $state.go('newBlueprint', {
                subject: NewBlueprint.data.subject,
                date: NewBlueprint.data.date,
                lang: NewBlueprint.data.lang
             });
+         };
+
+         if (NewBlueprint.isOngoing && state.name === 'examTerms') {
+            e.preventDefault();
+            redirect();
+         } else if (NewBlueprint.isOngoing && state.name === 'newBlueprint') {
+            if (params.subject !== NewBlueprint.data.subject || params.date !== NewBlueprint.data.date || params.lang !== NewBlueprint.data.lang) {
+               e.preventDefault();
+               Modal.open('alert', 'You can only create one blueprint at a time.', function() {
+                  redirect();
+               });
+            }
          }
+
       });
 
       return NewBlueprint;

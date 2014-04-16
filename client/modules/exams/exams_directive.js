@@ -105,7 +105,7 @@ angular.module('app.exams')
 
          if (!$scope.items) {
             $scope.items = [{
-               content: 'Lorem ipsum dolor sit amet'
+               content: ''
             }];
          }
 
@@ -175,7 +175,7 @@ angular.module('app.exams')
          if (!$scope.items) {
             $scope.items = [{
                value: false,
-               content: 'Lorem ipsum dolor sit amet'
+               content: ''
             }];
          }
 

@@ -11,7 +11,7 @@ angular.module('app').config([
       $stateProvider
          .state('home', {
             url: '/exams',
-            templateUrl: 'partials/pending.html',
+            templateUrl: 'partials/exams.html',
             controller: 'ExamsController',
          })
          .state('exam', {

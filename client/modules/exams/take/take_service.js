@@ -61,7 +61,8 @@ angular.module('app.exams.take')
                      exam.answers.push(answer);
                   });
                });
-               exam.sections = null;
+               delete exam.lede;
+               delete exam.sections;
                exam.$save(function() {
                   Modal.open('success', 'The exam has been successfully saved.', function() {
                      api.reset();

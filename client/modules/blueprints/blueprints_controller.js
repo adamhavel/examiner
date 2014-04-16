@@ -40,8 +40,8 @@ angular.module('app.blueprints')
    }])
 
    .controller('BlueprintController',
-   ['$scope', '$stateParams', '$state', 'Blueprint', 'NewBlueprint',
-   function($scope, $stateParams, $state, Blueprint, NewBlueprint) {
+   ['$scope', '$stateParams', '$state', 'Blueprint', 'NewBlueprint', 'Modal',
+   function($scope, $stateParams, $state, Blueprint, NewBlueprint, Modal) {
 
       function adjustForTimezone(date) {
          var offset = date.getTimezoneOffset();
@@ -64,17 +64,22 @@ angular.module('app.blueprints')
       };
 
       $scope.clone = function() {
-         var directions = {
-            subject: NewBlueprint.data.subject,
-            date: NewBlueprint.data.date,
-            lang: NewBlueprint.data.lang
-         };
+         Modal.open('confirm', 'Are you sure you want to clone the blueprint? Any work in-progress will be overwritten.', function(confirmed) {
+            NewBlueprint.data.lede = $scope.blueprint.lede;
+            NewBlueprint.data.sections = angular.fromJson(JSON.stringify($scope.blueprint.sections, function stripJunk(key, value) {
+               if (/^[\$_]/.test(key)) {
+                  return undefined;
+               }
+               return value;
+            }));
+            $state.go('examTerms');
+         }, 'Clone');
+      };
+
+      $scope.edit = function() {
          NewBlueprint.data = angular.fromJson(angular.toJson($scope.blueprint));
-         NewBlueprint.data.subject = directions.subject;
-         NewBlueprint.data.date = directions.date;
-         NewBlueprint.data.lang = directions.lang;
-         NewBlueprint.data.ongoing = true;
-         $state.go('newBlueprint', directions);
+         NewBlueprint.isOngoing = true;
+         $state.go('examTerms');
       };
 
    }]);

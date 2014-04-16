@@ -20,7 +20,7 @@ exports.query = function(req, res) {
          date: req.date
       });
    }
-   query.exec(function(err, blueprints) {
+   query.lean().exec(function(err, blueprints) {
       if (err) {
          res.send(500);
       } else if (!blueprints.length) {
@@ -36,10 +36,9 @@ exports.get = function(req, res) {
       subject: req.subject,
       lang: req.lang,
       date: req.date
-   }).exec(function(err, blueprint) {
+   }).lean().exec(function(err, blueprint) {
       if (err) {
-         console.log(err);
-         res.send(500);
+         res.send(500, err);
       } else if (!blueprint) {
          res.send(404);
       } else {
@@ -70,13 +69,15 @@ exports.create = function(req, res) {
       });
    });
 
-   var blueprint = new Blueprint(req.body);
+   var id = req.body._id || mongoose.Types.ObjectId();
+   delete req.body._id;
 
-   blueprint.save(function(err) {
+   Blueprint.findByIdAndUpdate(id, req.body, { upsert: true }, function(err, blueprint) {
       if (err) {
-         res.send();
+         res.send(500, err);
       } else {
          res.send(blueprint);
       }
    });
+
 };

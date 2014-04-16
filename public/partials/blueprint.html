@@ -3,8 +3,8 @@
    <header class="exam__header">
       <h1 class="alpha heading exam__heading">{{blueprint.subject | uppercase}} &mdash; {{blueprint.date | date: 'd. M. yyyy, H:mm'}}</h1>
       <div class="exam__controls">
-         <button ng-if="newBlueprint.isOngoing" ng-click="clone()">Clone blueprint</button>
-         <button ng-if="editable && !newBlueprint.isOngoing" ng-click="edit()">Modify blueprint</button>
+         <button ng-show="newBlueprint.isOngoing" ng-click="clone()">Clone blueprint</button>
+         <button ng-show="editable && !newBlueprint.isOngoing" ng-click="edit()">Modify blueprint</button>
       </div>
    </header>
 
@@ -14,7 +14,7 @@
 
    <section class="exam__section" id="{{section.name || 'Untitled section ' + ($index+1) | idfy}}" ng-repeat="section in blueprint.sections">
 
-      <header>
+      <header ng-if="blueprint.sections.length > 1 || section.lede">
          <h1 class="beta heading" ng-model="section.name">{{section.name}}</h1>
          <p class="exam__points">
             {{section.points}} {{section.points != 1 ? 'points' : 'point'}}

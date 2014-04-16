@@ -26,7 +26,7 @@
 
    <section class="exam__section" id="{{section.name || 'Untitled section ' + ($index+1) | idfy}}" ng-repeat="section in exam.sections">
 
-      <header>
+      <header ng-if="exam.sections.length > 1 || section.lede">
          <h1 class="beta heading" ng-model="section.name">{{section.name}}</h1>
          <p class="exam__points">
             {{section.points}} {{section.points != 1 ? 'points' : 'point'}}
@@ -55,7 +55,7 @@
          </div>
 
          <div class="question__chunk question__answer" ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">
-            <ul ng-if="!user.isStudent()" class="inline-list tools tools--small tools--flush">
+            <ul ng-if="!user.isStudent() && chunk.solution" class="inline-list tools tools--small tools--flush">
                <li><button title="Change language" class="tools__item icon--view" ng-mousedown="toggleSolution(chunk)" ng-mouseup="toggleSolution(chunk)">Change language</button></li>
             </ul>
             <h2 class="heading heading--caption epsilon">Your answer</h2>

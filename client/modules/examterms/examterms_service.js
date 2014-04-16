@@ -18,6 +18,13 @@ angular.module('app.examterms')
             lang: 'en'
 
          },
+         {
+
+            subject: 'mi-w20',
+            date: '2014-04-18T09:30',
+            lang: 'en'
+
+         }
       ];
 
       return mockData;

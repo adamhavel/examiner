@@ -126,7 +126,7 @@ angular.module('app.exams.take')
          window.addEventListener('resize', _.debounce(resizeHandler, 1000));
 
          $scope.$on('$destroy', function() {
-            //window.removeEventListener('blur', distractionHandler);
+            window.removeEventListener('blur', distractionHandler);
             window.removeEventListener('resize', resizeHandler);
          });
 

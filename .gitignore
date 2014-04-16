@@ -3,6 +3,7 @@ public/lib
 public/img/icon-*.png
 *.css
 *.min.js
+*.map
 db/**
 !db/mongodb.conf
 build

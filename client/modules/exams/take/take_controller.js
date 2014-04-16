@@ -16,6 +16,21 @@ angular.module('app.exams.take')
       $scope.user = User;
       $scope.timer = Timer;
 
+      function checkViewportUse() {
+         // console.log('resolution: ' + window.screen.availWidth + 'x' + window.screen.availHeight);
+         // console.log('browser: ' + window.outerWidth + 'x' + window.outerHeight);
+         var pixelsAvailable = window.screen.availWidth * window.screen.availHeight;
+         var pixelsUsed = window.outerWidth * window.outerHeight;
+         var viewportUse = pixelsUsed / pixelsAvailable;
+         if (viewportUse < 1) {
+            var data = {
+               student: fingerprint,
+               viewportUse: viewportUse
+            };
+            Socket.emit('student:resized', data);
+         }
+      }
+
       if (!User.isStudent()) {
 
          $scope.students = [];
@@ -93,21 +108,6 @@ angular.module('app.exams.take')
          };
 
       } else {
-
-         function checkViewportUse() {
-            // console.log('resolution: ' + window.screen.availWidth + 'x' + window.screen.availHeight);
-            // console.log('browser: ' + window.outerWidth + 'x' + window.outerHeight);
-            var pixelsAvailable = window.screen.availWidth * window.screen.availHeight;
-            var pixelsUsed = window.outerWidth * window.outerHeight;
-            var viewportUse = pixelsUsed / pixelsAvailable;
-            if (viewportUse < 1) {
-               var data = {
-                  student: fingerprint,
-                  viewportUse: viewportUse
-               };
-               Socket.emit('student:resized', data);
-            }
-         }
 
          var distractionHandler = function() {
             if ($scope.exam.started) {

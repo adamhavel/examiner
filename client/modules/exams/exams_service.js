@@ -2,7 +2,7 @@
 
 angular.module('app.exams')
 
-   .factory('Exam', ['$resource', 'User', function($resource, User) {
+   .factory('Exam', ['$resource', function($resource) {
       return $resource('api/exam/:subject/:date/:lang/:uid', {
          uid: '@student.id',
          subject: '@subject',

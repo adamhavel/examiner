@@ -263,7 +263,7 @@ angular.module('app.blueprints.create')
                chunk.lang = lang;
             }
          });
-      }
+      };
 
       $scope.areEqual = function(o1, o2) {
          return angular.toJson(o1) === angular.toJson(o2);

@@ -27,7 +27,7 @@ module.exports = function(app, passport, db) {
    app.use(passport.initialize());
    app.use(passport.session());
 
-   app.all(/^(?!\/api\/).*/, function(req, res, next) {
+   app.all(/^(?!\/api\/|\/client\/).*/, function(req, res, next) {
       res.sendfile('index.html', { root: config.root + '/../public' });
    });
 

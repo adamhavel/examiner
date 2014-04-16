@@ -105,7 +105,7 @@ angular.module('app')
         },
         decode: function (s) {
             if (s.length % 4)
-                throw new Error("InvalidCharacterError: 'B64.decode' failed: The string to be decoded is not correctly encoded.");
+                throw new Error('InvalidCharacterError: \'B64.decode\' failed: The string to be decoded is not correctly encoded.');
             var buffer = B64.fromUtf8(s),
                 position = 0,
                 len = buffer.length;
@@ -166,8 +166,8 @@ angular.module('app')
         }
     };
 
-    return{
+    return {
         decode: B64.decode,
         encode: B64.encode
-    }
+    };
 });

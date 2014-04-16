@@ -20,7 +20,7 @@ angular.module('app.user')
 
          api.isStudent = function() {
             return api.data.role === 'student';
-         }
+         };
 
          api.reset = function() {
             api.data = {

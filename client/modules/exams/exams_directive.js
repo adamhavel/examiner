@@ -126,10 +126,10 @@ angular.module('app.exams')
                      $scope.items.splice(index, 1);
                      $scope.$apply();
                      var prevItem = items[index - 1];
-                     range = document.createRange();
+                     var range = document.createRange();
                      range.selectNodeContents(prevItem);
                      range.collapse(false);
-                     selection = window.getSelection();
+                     var selection = window.getSelection();
                      selection.removeAllRanges();
                      selection.addRange(range);
                   }
@@ -186,7 +186,7 @@ angular.module('app.exams')
                   var item = e.target;
                   var items = getElements('label', $element[0]);
                   var index = items.indexOf(item);
-                  if (e.keyCode === 13) {
+                  if (n.keyCode === 13) {
                      e.preventDefault();
                      $scope.items.splice(index + 1, 0, {
                         value: 0,
@@ -199,10 +199,10 @@ angular.module('app.exams')
                      $scope.items.splice(index, 1);
                      $scope.$apply();
                      var prevItem = items[index - 1];
-                     range = document.createRange();
+                     var range = document.createRange();
                      range.selectNodeContents(prevItem);
                      range.collapse(false);
-                     selection = window.getSelection();
+                     var selection = window.getSelection();
                      selection.removeAllRanges();
                      selection.addRange(range);
                   }

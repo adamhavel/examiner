@@ -37,6 +37,9 @@
       "bililiteRange",
       "requestAnimationFrame",
       "Prism",
-      "fabric"
+      "fabric",
+      "_",
+      "io",
+      "moment"
    ]
 }

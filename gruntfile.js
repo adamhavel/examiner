@@ -56,9 +56,10 @@ modernizr: {
 uglify: {
    app: {
       options: {
-         report: 'min'
+         report: 'min',
+         sourceMap: true
       },
-      src: 'client/**/*.js',
+      src: ['client/**/*.js'],
       dest: 'public/js/app.min.js'
    },
    libs: {
@@ -475,7 +476,7 @@ grunt.registerTask('makecss', function(option) {
 });
 
 grunt.registerTask('makejs', [
-   'uglify:app', 'concat:bundle', 'jshint:client'
+   'uglify:app', /*'concat:bundle',*/ 'jshint:client'
 ]);
 
 grunt.registerTask('makeicons', function() {

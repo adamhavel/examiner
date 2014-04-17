@@ -1,11 +1,11 @@
 <article class="exam">
 
    <header class="exam__header">
-      <h1 class="alpha heading exam__subject">{{blueprint.subject | uppercase}}</h1>
-      <h2 class="alpha heading exam__date">{{blueprint.date | date: 'd. M. yyyy, H:mm'}}</h2>
-      <div class="exam__controls">
-         <button ng-show="newBlueprint.isOngoing" ng-click="clone()">Clone blueprint</button>
-         <button ng-show="editable && !newBlueprint.isOngoing" ng-click="edit()">Modify blueprint</button>
+      <h1 class="alpha heading exam__subject">{{exam.subject | uppercase}}</h1>
+      <h2 class="alpha heading exam__date">{{exam.date | date: 'd. M. yyyy, H:mm'}}</h2>
+      <div class="exam__controls" ng-if="evaluation.isOngoing">
+         <button ng-click="discard()">Hold off</button>
+         <button ng-click="edit()">Evaluate</button>
       </div>
    </header>
 

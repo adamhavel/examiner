@@ -49,11 +49,12 @@ angular.module('app.exams.take')
             $timeout(function() {
                var exam = new Exam(api.data);
                exam.answers = [];
-               _.forEach(exam.sections, function(section) {
+               exam._blueprint = api.data._id;
+               _.forEach(api.data.sections, function(section) {
                   _.forEach(section.questions, function(question) {
                      var answer = {
-                        points: 0,
-                        content: []
+                        content: [],
+                        _question: question._id
                      };
                      _.forEach(question.answer, function(chunk) {
                         answer.content.push(chunk.content);

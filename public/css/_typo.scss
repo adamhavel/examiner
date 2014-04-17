@@ -63,7 +63,7 @@ a {
    a {
       text-decoration: none;
    }
-   em {
+   &__subtitle {
       font-weight: 300;
    }
 }
@@ -118,6 +118,13 @@ p {
       @extend %trim-trailing-lines;
       font-style: italic;
    }
+}
+
+pre {
+   @extend %aloof;
+   @extend %editable;
+   line-height: $leading;
+   font-family: inherit;
 }
 
 span {

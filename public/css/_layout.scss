@@ -37,7 +37,7 @@ $navigation-height: $leading * 1;
    }
 
    .top-nav {
-      box-sizing: border-box;
+      opacity: .75;
       text-align: right;
       &__item {
          display: block;
@@ -77,6 +77,7 @@ $navigation-height: $leading * 1;
          @include position($top: 0, $left: 0, $right: 0);
          @include blank-lines(2, both, padding);
          @include taper(2);
+         z-index: 10000;
          min-height: $main-content-width * 1.414;
          box-sizing: border-box;
          transform: translateX(0) translateY(0) translateZ(0);
@@ -105,7 +106,6 @@ $navigation-height: $leading * 1;
 }
 
    .site-nav {
-      @extend %horizontal-slide;
       @include blank-lines(2, trailing);
       text-align: right;
       overflow: hidden;
@@ -133,7 +133,8 @@ $navigation-height: $leading * 1;
          &:hover,
          &:focus,
          &.ng-active,
-         &.ng-ongoing {
+         &.ng-ongoing,
+         &.ng-urgent {
             transform: translateX($leading / 1.75);
             background-color: brand(yellow);
             box-shadow: inset #{-($leading / 1.75 + .2rem)} 0 .2rem 0 rgba(black, .075),
@@ -141,16 +142,28 @@ $navigation-height: $leading * 1;
             opacity: 1;
             color: rgba(black, .5);
          }
+         &.ng-urgent {
+            background-color: lighten(brand(red), 25%);
+         }
          &.ng-ongoing {
             background-color: brand(green);
-         }
-         &.ng-urgent {
-            color: brand(red);
-            opacity: 1;
          }
          .site-nav:hover & {
             opacity: 1;
          }
+      }
+      &.ng-animate {
+         transition: transform .75s;
+      }
+      &.ng-enter {
+         transform: translateX(100%) translateZ(0);
+      }
+      &.ng-leave,
+      &.ng-enter-active {
+         transform: translateX(0) translateZ(0);
+      }
+      &.ng-leave-active {
+         transform: translateX(100%) translateZ(0);
       }
    }
 

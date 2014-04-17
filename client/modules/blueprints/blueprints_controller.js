@@ -12,10 +12,20 @@ angular.module('app.blueprints')
          subject: $scope.subject
       }, function(blueprints) {
 
+         blueprints = _.groupBy(blueprints, function(blueprint) {
+            return blueprint.subject;
+         });
+
+         var subjects = _.keys(blueprints);
+
+         if (subjects.length === 1) {
+            $scope.subject = subjects[0];
+         }
+
          if ($scope.subject) {
-            $scope.items = blueprints;
+            $scope.items = blueprints[$scope.subject];
          } else {
-            $scope.items = _.uniq(_.pluck(blueprints, 'subject'));
+            $scope.items = subjects;
          }
 
       }, function() {

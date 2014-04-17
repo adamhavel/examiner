@@ -1,0 +1,39 @@
+<h1 class="alpha heading">
+   Evaluation<span class="heading__subtitle" ng-if="subject">: {{subject | uppercase}}</span>
+</h1>
+
+<section class="list">
+
+   <div class="grid">
+
+      <div class="grid__item one-quarter" ng-repeat="item in items">
+
+         <section ng-if="!subject" class="preview preview--stack" ng-class="{'ng-urgent': item.urgent}">
+            <div class="content">
+               <h1 class="beta heading preview__heading">{{item.subject | uppercase}}</h1>
+            </div>
+            <a ui-sref="pastExams({ subject: item.subject })" class="more"></a>
+         </section>
+
+         <section ng-if="subject" class="preview preview--sheet" ng-class="{'ng-urgent': !item.evaluated}">
+            <div class="content">
+               <h1 class="gamma heading preview__heading">{{item.student.name | break}}</h1>
+               <h2 class="heading preview__subheading"><span>{{item.subject | uppercase}}</span></h2>
+               <h2 class="heading preview__subheading">
+                  <time>{{item.date | date: 'd. M. yyyy'}}</time>
+                  <time>{{item.date | date: 'h:mm'}}</time>
+               </h2>
+            </div>
+            <a ui-sref="evaluate({
+               subject: item.subject,
+               date: item.date,
+               lang: item.lang,
+               uid: item.student.id
+            })" class="more"></a>
+         </section>
+
+      </div>
+
+   </div>
+
+</section>

@@ -1,7 +1,8 @@
 <article class="exam exam--blueprint">
 
    <header class="exam__header">
-      <h1 class="alpha heading exam__heading">{{blueprint.subject | uppercase}} &mdash; {{blueprint.date | date: 'd. M. yyyy, H:mm'}}</h1>
+      <h1 class="alpha heading exam__subject">{{blueprint.subject | uppercase}}</h1>
+      <h2 class="alpha heading exam__date">{{blueprint.date | date: 'd. M. yyyy, H:mm'}}</h2>
       <div class="exam__controls">
          <button ng-click="discard()">Discard</button>
          <button ng-click="store()">Save &amp; finish</button>

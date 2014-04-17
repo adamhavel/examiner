@@ -7,13 +7,22 @@ var ExamSchema = new Schema(
          name: String,
          id: String
       },
+      _blueprint: {
+         type: Schema.Types.ObjectId,
+         ref: 'Blueprint'
+      },
+      evaluated: { type: Boolean, default: false },
       subject: String,
       date: String,
       lang: String,
       answers: [
          {
+            _question: {
+               type: Schema.Types.ObjectId,
+               ref: 'Question'
+            },
             content: [Schema.Types.Mixed],
-            points: Number
+            points: { type: Number, default: 0 },
          }
       ]
    },

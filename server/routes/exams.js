@@ -12,6 +12,9 @@ module.exports = function(app) {
       .get(exams.get)
       .post(exams.create);
 
+   // app.route('/api/exams/:subject?/:date?/:lang?/:uid?')
+   //    .get(exams.query);
+
    app.param('uid', exams.validateUserID);
    app.param('subject', exams.validateSubject);
    app.param('date', exams.validateDate);

@@ -115,10 +115,22 @@ button {
       display: flex;
       align-items: center;
    }
-   &__heading {
-      flex: 1;
+   &__subject {
    }
-   &__header > &__heading {
+   &__date {
+      @extend %icon--bullet;
+      flex: 1;
+      font-weight: 400 !important;
+      @include icon {
+         float: left;
+         width: $leading * 1.5;
+         height: $leading * 2;
+         background-size: 50%;
+         margin-right: 0;
+         opacity: .75;
+      };
+   }
+   &__header > .heading {
       margin-bottom: 0;
    }
    &__controls {
@@ -277,8 +289,9 @@ button {
    @extend %t-preview;
    @include blank-lines(1.5, trailing);
    &__heading {
-      line-height: 1;
+      line-height: 1 !important;
       font-family: "PT Sans Narrow", sans-serif;
+      white-space: pre;
    }
    &__subheading {
       margin-bottom: 0;
@@ -289,21 +302,49 @@ button {
          padding: 0 .75rem;
          padding-bottom: calc(#{$leading * .15} - 1px);
          border-bottom: 1px solid rgba(black, .25);
+         transition: border-color .3s;
       }
    }
    time {
       display: block;
       line-height: 1.25;
+      font-style: italic;
    }
    &--sheet {
       transition: transform .1s;
+      transform: translateZ(0);
+      @include before {
+         @include position($top: 0, $right: 0);
+         @include size(15px);
+         z-index: 10;
+         background: brand(paper);
+         border: solid rgba(black, .5);
+         border-width: 0 0 1px 1px;
+      }
+      @include after {
+         @include position($top: 8px, $right: -2px);
+         @include size(20px);
+         box-sizing: border-box;
+         border-top: 1px solid rgba(black, .5);
+         z-index: 100;
+         transform: rotateZ(45deg);
+         transform-origin: top center;
+
+      }
+      &:before, &:after {
+         opacity: 1;
+         transition: opacity .1s;
+      }
       .content {
          transition: color, border-color, border-width, background, box-shadow;
          transition-duration: .3s;
       }
       &:hover {
          z-index: 100;
-         transform: scale(1.5);
+         transform: scale(1.5) translateZ(0);
+         &:before, &:after {
+            opacity: 0;
+         }
          .content {
             @extend %t-sheet;
             box-shadow: 20px 17px 0 0 rgba(black, .05);
@@ -319,7 +360,7 @@ button {
             height: 3px;
             border: solid rgba(black, .5);
             border-width: 1px 0;
-            transition: opacity .3s;
+            transition: opacity .3s, border-color .3s;
          }
       }
       &:before, &:after {
@@ -350,6 +391,18 @@ button {
          }
          &:after {
             transform: translate(9px, -9px);
+         }
+      }
+   }
+   &.ng-urgent {
+      color: brand(red);
+      &:not(:hover) {
+         .content,
+         .content:before,
+         span,
+         &:before,
+         &:after, {
+            border-color: brand(red);
          }
       }
    }
@@ -501,16 +554,31 @@ button {
       transition: opacity .4s, transform 1s;
       transform: rotateZ(0);
    }
+   @include after() {
+      @include position($top: 0, $left: 0);
+      @include linespan(8);
+      display: block;
+      width: 100%;
+      opacity: 0;
+      transition: opacity .4s, transform 1s;
+      transform: rotateZ(-90deg);
+      background: {
+         repeat: no-repeat;
+         size: 100%;
+         image: url('data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2297.51%22%20height%3D%2297.513%22%20viewBox%3D%2220.088%2019.661%2097.51%2097.513%22%20enable-background%3D%22new%2020.088%2019.661%2097.51%2097.513%22%3E%3Cpath%20fill%3D%22%23E84849%22%20d%3D%22M68.843%20107.421c-21.542%200-39.004-17.461-39.004-39.005%200-21.542%2017.463-39.003%2039.004-39.003%2021.543%200%2039.005%2017.461%2039.005%2039.003%200%2021.544-17.462%2039.005-39.005%2039.005z%22%2F%3E%3Ccircle%20fill%3D%22%23F6A2A3%22%20cx%3D%2268.843%22%20cy%3D%2268.417%22%20r%3D%2233.698%22%2F%3E%3Cellipse%20fill%3D%22%23E9E9EA%22%20cx%3D%2268.843%22%20cy%3D%2268.417%22%20rx%3D%2230.992%22%20ry%3D%2230.278%22%2F%3E%3Cellipse%20fill%3D%22%23E9E9EA%22%20cx%3D%2268.844%22%20cy%3D%2270.471%22%20rx%3D%2230.993%22%20ry%3D%2230.278%22%2F%3E%3Cg%20fill%3D%22%23626463%22%3E%3Ccircle%20cx%3D%2269.082%22%20cy%3D%2268.143%22%20r%3D%225.176%22%2F%3E%3Cpath%20d%3D%22M69.785%2067.679c.368.367.203%201.128-.366%201.696-.57.57-1.33.734-1.697.366l-12.022-12.017c-.368-.367-.204-1.129.368-1.699.569-.57%201.329-.734%201.696-.365l12.021%2012.019zM69.244%2069.375c-.419.422-1.103.422-1.524%200-.42-.419-.421-1.103%200-1.524l17.429-17.428c.421-.422%201.104-.422%201.525%200%20.42.418.42%201.104%200%201.524l-17.43%2017.428z%22%2F%3E%3C%2Fg%3E%3Cpath%20d%3D%22M68.844%2040.194c-15.307%200-28.011%2010.842-30.531%2025.089h61.062c-2.522-14.248-15.226-25.089-30.531-25.089z%22%20fill%3D%22none%22%2F%3E%3Cpath%20fill%3D%22%23DDDFDF%22%20d%3D%22M68.866%2041.383c24.729.207%2030.786%2023.195%2030.786%2023.195-2.307-14.928-15.233-26.439-30.809-26.439s-28.456%2011.512-30.76%2026.44c0%200%206.053-23.402%2030.783-23.196z%22%2F%3E%3C%2Fsvg%3E'), none;
+      }
+   }
    &:hover,
    &.ng-urgent {
       transform: translateX(0) translateZ(0);
       @include icon {
-         transform: rotateZ(30deg);
-         opacity: .4;
+         transform: rotateZ(90deg);
+         opacity: 0;
       }
-   }
-   &.ng-urgent {
-      color: rgba(red, .4);
+      @include after {
+         opacity: .8;
+         transform: rotateZ(0deg);
+      }
    }
    &__display {
       display: block;
@@ -518,17 +586,15 @@ button {
       height: 0;
       overflow: hidden;
       line-height: $leading * 2;
-      font-family: "Roboto", sans-serif;
-      font-weight: 300;
-      color: rgba(black, .4);
+      color: rgba(black, .5);
       opacity: 0;
       transition: width .001s .4s, height .001s .4s, opacity .4s .001s;
-   }
-   &:hover > &__display,
-   &.ng-urgent > &__display {
-      width: 100%;
-      height: 100%;
-      opacity: 1;
-      transition: width .001s, height .001s, opacity .4s .001s;
+      .ng-urgent > &,
+      :hover > & {
+         width: 100%;
+         height: 100%;
+         opacity: 1;
+         transition: width .001s, height .001s, opacity .4s .001s;
+      }
    }
 }

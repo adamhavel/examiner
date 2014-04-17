@@ -12,12 +12,22 @@ angular.module('app').config([
          .state('exams', {
             url: '/exams/:subject',
             templateUrl: 'partials/exams.html',
-            controller: 'ExamsController',
+            controller: 'PendingExamsController',
          })
          .state('exam', {
             url: '/exam/:subject/:date/:lang',
             templateUrl: 'partials/exam.html',
             controller: 'ExamTakeController',
+         })
+         .state('pastExams', {
+            url: '/evaluate/:subject',
+            templateUrl: 'partials/pastExams.html',
+            controller: 'PastExamsController',
+         })
+         .state('evaluate', {
+            url: '/evaluate/:subject/:date/:lang/:uid',
+            templateUrl: 'partials/evaluate.html',
+            controller: 'ExamEvaluateController',
          })
          .state('blueprints', {
             url: '/blueprints/:subject',

@@ -4,21 +4,13 @@
 
 code {
    @extend %editable;
-   display: block;
    font-family: Consolas, Monaco, "Andale Mono", monospace;
    white-space: pre;
    word-spacing: normal;
    word-break: normal;
    tab-size: 3;
    hyphens: none;
-}
-
-pre {
-   @extend %aloof;
-   @extend %editable;
    font-size: .9em;
-   line-height: $leading;
-   overflow: auto;
 }
 
 .token.comment,

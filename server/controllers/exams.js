@@ -64,7 +64,7 @@ exports.query = function(req, res) {
          date: req.date
       });
    }
-   query.exec(function(err, exams) {
+   query.populate('_blueprint', 'lede sections').exec(function(err, exams) {
       if (err) {
          res.send(500);
       } else if (!exams.length) {
@@ -80,8 +80,8 @@ exports.get = function(req, res) {
       subject: req.subject,
       lang: req.lang,
       date: req.date,
-      uid: req.uid
-   }).exec(function(err, exam) {
+      'student.id': req.uid
+   }).populate('_blueprint', 'lede sections').exec(function(err, exam) {
       if (err) {
          res.send(500);
       } else if (!exam) {

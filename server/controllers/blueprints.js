@@ -56,12 +56,12 @@ exports.create = function(req, res) {
          _.forEach(svgChunks, function(chunk) {
             if (chunk.content) {
                svgo.optimize(chunk.content, function(result) {
-                  chunk.content = result.data;
+                  chunk.content = result.data.replace(/<desc>[^<]*<\/desc>/, '').replace(/"/g, '\'');
                });
             }
             if (chunk.solution) {
                svgo.optimize(chunk.solution, function(result) {
-                  chunk.solution = result.data;
+                  chunk.solution = result.data.replace(/<desc>[^<]*<\/desc>/, '').replace(/"/g, '\'');
                });
             }
          });

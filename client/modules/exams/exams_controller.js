@@ -62,7 +62,7 @@ angular.module('app.exams')
                   subject: subject,
                };
                item.urgent = _.some(exams[subject], function(exam) {
-                  return !exam.evaluated;
+                  return exam.evaluated === null;
                });
                $scope.items.push(item);
             });

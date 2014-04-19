@@ -15,7 +15,7 @@
             <a ui-sref="pastExams({ subject: item.subject })" class="more"></a>
          </section>
 
-         <section ng-if="subject" class="preview preview--sheet" ng-class="{'ng-urgent': !item.evaluated}">
+         <section ng-if="subject" class="preview preview--sheet" ng-class="{'ng-urgent': item.evaluated === null}">
             <div class="content">
                <h1 class="gamma heading preview__heading">{{item.student.name | break}}</h1>
                <h2 class="heading preview__subheading"><span>{{item.subject | uppercase}}</span></h2>

@@ -112,26 +112,36 @@ angular.module('app.exams')
          if ($scope.editable === 'true') {
 
             $element.on('keydown', function(e) {
-               if (e.keyCode === 13 || e.keyCode === 8 || e.keyCode === 46) {
+               var k = e.keyCode;
+               if (k === 13 || k === 8 || k === 46 || k === 38 || k === 40) {
                   var item = e.target;
                   var items = getElements('li', $element[0]);
                   var index = items.indexOf(item);
-                  if (e.keyCode === 13) {
+                  if (k === 13) {
                      e.preventDefault();
                      $scope.items.splice(index + 1, 0, { content: ''});
                      $scope.$apply();
                      getElements('li', $element[0])[index + 1].focus();
-                  } else if ($scope.items.length > 1 && !$scope.items[index].content) {
-                     e.preventDefault();
-                     $scope.items.splice(index, 1);
-                     $scope.$apply();
-                     var prevItem = items[index - 1];
-                     var range = document.createRange();
-                     range.selectNodeContents(prevItem);
-                     range.collapse(false);
-                     var selection = window.getSelection();
-                     selection.removeAllRanges();
-                     selection.addRange(range);
+                  } else {
+                     var focusOn = null;
+                     if ((k === 8 || k === 46) && $scope.items.length > 1 && !$scope.items[index].content) {
+                        $scope.items.splice(index, 1);
+                        $scope.$apply();
+                        focusOn = items[index - 1];
+                     } else if (k === 38) {
+                        focusOn = index > 0 ? items[index - 1] : null;
+                     } else if (k === 40) {
+                        focusOn = index < items.length - 1 ? items[index + 1] : null;
+                     }
+                     if (focusOn) {
+                        e.preventDefault();
+                        var range = document.createRange();
+                        range.selectNodeContents(focusOn);
+                        range.collapse(false);
+                        var selection = window.getSelection();
+                        selection.removeAllRanges();
+                        selection.addRange(range);
+                     }
                   }
                }
             });
@@ -398,12 +408,14 @@ angular.module('app.exams')
 
                   (function init() {
 
-                     var watchHandler = function() {
-                        canvas.loadFromJSON($scope.content.states[$scope.content.currentState]);
-                        canvas.renderAll();
+                     var watchHandler = function(newContent) {
+                        if (_.isObject(newContent)) {
+                           canvas.loadFromJSON($scope.content.states[$scope.content.currentState]);
+                           canvas.renderAll();
+                        }
                      };
 
-                     if ($scope.content && typeof $scope.content === 'string') {
+                     if ($scope.content && _.isString($scope.content)) {
                         fabric.loadSVGFromString($scope.content, function(objects, options) {
                            var canvasBackdrop = fabric.util.groupSVGElements(objects, options);
                            canvasBackdrop.set('selectable', false);
@@ -811,8 +823,8 @@ angular.module('app.exams')
          controller: ['$scope', '$rootScope', function($scope, $rootScope) {
 
             function sealCanvas() {
-               $scope.watcher();
                $scope.content = $scope.canvas.toSVG();
+               $scope.$apply();
             }
 
             $rootScope.$on('seal', sealCanvas);

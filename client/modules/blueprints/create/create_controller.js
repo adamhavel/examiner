@@ -46,6 +46,7 @@ angular.module('app.blueprints.create')
                      return !(item.content || item.value);
                   });
                case 'canvas':
+                  console.log(content);
                   return content.states.length === 1;
             }
          }
@@ -56,10 +57,10 @@ angular.module('app.blueprints.create')
          } else if (item.datatype) {
             if (!(item.content || item.solution)) {
                return true;
-            } else if (item.content) {
-               return isContentEmpty(item.content, item.datatype);
             } else if (item.solution) {
                return isContentEmpty(item.solution, item.datatype);
+            } else if (item.content) {
+               return isContentEmpty(item.content, item.datatype);
             }
          }
          return false;
@@ -170,11 +171,11 @@ angular.module('app.blueprints.create')
          });
       };
 
-      $scope.raisePoints = function(section, question) {
+      $scope.raisePoints = function(question) {
          question.points++;
       };
 
-      $scope.lowerPoints = function(section, question) {
+      $scope.lowerPoints = function(question) {
          if (question.points > 1) {
             question.points--;
          }

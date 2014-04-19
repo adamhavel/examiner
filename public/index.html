@@ -39,10 +39,10 @@
 
          <nav class="site-nav" ng-if="!(examTake.isOngoing && user.isStudent())">
             <ul class="block-list">
-               <li><a class="site-nav__item icon--write" ng-class="{'ng-ongoing': examTake.isOngoing, 'ng-active': state.is('exams')}" ui-sref="exams">Exams</a></li>
+               <li><a class="site-nav__item icon--write" ng-class="{'ng-ongoing': examTake.isOngoing, 'ng-active': state.is('exams') || state.is('exam')}" ui-sref="exams">Exams</a></li>
                <li ng-if="!user.isStudent()"><a class="site-nav__item icon--tick" ng-class="{'ng-urgent': evaluation.isUrgent, 'ng-ongoing': evaluation.isOngoing, 'ng-active': state.is('pastExams') || state.is('evaluate')}" ui-sref="pastExams">Evaluate</a></li>
                <li ng-if="!user.isStudent()"><a class="site-nav__item icon--exams" ng-class="{'ng-active': state.is('blueprints') || state.is('blueprint')}" ui-sref="blueprints">Blueprints</a></li>
-               <li ng-if="!user.isStudent()"><a class="site-nav__item icon--create" ng-class="{'ng-ongoing': newBlueprint.isOngoing, 'ng-active': state.is('examTerms')}" ui-sref="examTerms">Create</a></li>
+               <li ng-if="!user.isStudent()"><a class="site-nav__item icon--create" ng-class="{'ng-ongoing': newBlueprint.isOngoing, 'ng-active': state.is('examTerms') || state.is('newBlueprint')}" ui-sref="examTerms">Create</a></li>
                <li ng-if="user.isStudent()"><a class="site-nav__item icon--exams" ng-class="">History</a></li>
                <li><a class="site-nav__item icon--results" href="">Results</a></li>
             </ul>

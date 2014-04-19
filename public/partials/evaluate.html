@@ -3,9 +3,14 @@
    <header class="exam__header">
       <h1 class="alpha heading exam__subject">{{exam.subject | uppercase}}</h1>
       <h2 class="alpha heading exam__date">{{exam.date | date: 'd. M. yyyy, H:mm'}}</h2>
-      <div class="exam__controls" ng-if="evaluation.isOngoing">
-         <button ng-click="discard()">Hold off</button>
-         <button ng-click="edit()">Evaluate</button>
+      <div class="exam__controls">
+         <div ng-if="evaluation.isOngoing">
+            <button ng-click="discard()">Hold off</button>
+            <button ng-click="store()">Evaluate</button>
+         </div>
+         <div ng-if="!evaluation.isOngoing">
+            <button ng-click="reevaluate()">Re-evaluate</button>
+         </div>
       </div>
    </header>
 
@@ -13,28 +18,29 @@
 
    <p ng-if="blueprint.lede" class="lede">{{blueprint.lede}}</p>
 
-   <section class="exam__section" id="{{section.name || 'Untitled section ' + ($index+1) | idfy}}" ng-repeat="section in blueprint.sections">
+   <section class="exam__section" id="{{(section.name || 'Untitled section ' + ($index+1)) | idfy}}" ng-repeat="section in blueprint.sections">
 
       <header ng-if="blueprint.sections.length > 1 || section.lede">
          <h1 class="beta heading" ng-model="section.name">{{section.name}}</h1>
          <p class="exam__points">
-            {{section.points}} {{section.points != 1 ? 'points' : 'point'}}
+            {{section.points}}/{{section.maxPoints}} {{section.maxPoints !== 1 ? 'points' : 'point'}}
          </p>
       </header>
 
       <p class="lede" ng-if="section.lede">{{section.lede}}</p>
 
-      <article class="question" id="{{question.name || 'Untitled question ' + ($index+1) | idfy}}" ng-repeat="question in section.questions">
+      <article class="question" id="{{(question.name || 'Untitled question ' + ($index+1)) | idfy}}" ng-repeat="question in section.questions">
 
          <header>
-            <ul class="inline-list tools" ng-if="newBlueprint.isOngoing">
-               <li><button title="Copy to the new blueprint" class="tools__item icon--pin" ng-click="copyQuestion(question)">Copy to the new blueprint</button></li>
-            </ul>
             <h1 class="delta heading question__heading">
                {{question.name}}
             </h1>
             <p class="exam__points">
-               {{question.points}} {{question.points != 1 ? 'points' : 'point'}}
+               <span class="tools tools--binary" ng-if="evaluation.isOngoing">
+                  <button title="Raise" class="tools__item icon--raise" ng-click="raisePoints(section, question)" ng-disabled="question.answer.points >= question.points">Raise</button>
+                  <button title="Lower" class="tools__item icon--lower" ng-click="lowerPoints(section, question)">Lower</button>
+               </span>
+               {{question.answer.points}}/{{question.points}} {{question.points !== 1 ? 'points' : 'point'}}
             </p>
          </header>
 
@@ -46,19 +52,20 @@
             <list ng-switch-when="list" content="chunk.content" editable="false"></list>
          </div>
 
-         <div class="question__chunk question__answer" ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">
+         <div class="question__chunk question__answer" ng-repeat="chunk in question.answer.body" ng-switch on="chunk.datatype">
             <h2 class="heading heading--caption epsilon">Answer</h2>
-            <paragraph ng-switch-when="text" content="chunk.solution" editable="false"></paragraph>
-            <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;base64,{{chunk.solution | base64}}">
-            <snippet ng-switch-when="code" content="chunk.solution" lang="{{chunk.lang}}" editable="false"></snippet>
-            <list ng-switch-when="list" content="chunk.solution" editable="false"></list>
-            <options ng-switch-when="options" content="chunk.solution" editable="false" switchable="false"></options>
-            <div ng-if="chunk.content && chunk.datatype !== 'options'" class="question__chunk" ng-switch on="chunk.datatype">
-               <h2 class="heading heading--caption epsilon">Hint</h2>
-               <paragraph ng-switch-when="text" content="chunk.content" editable="false"></paragraph>
-               <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;base64,{{chunk.content | base64}}">
-               <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="false"></snippet>
-               <list ng-switch-when="list" content="chunk.content" editable="false" switchable="false"></list>
+            <paragraph ng-switch-when="text" content="chunk.content" editable="false"></paragraph>
+            <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;base64,{{chunk.content | base64}}">
+            <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="false"></snippet>
+            <list ng-switch-when="list" content="chunk.content" editable="false"></list>
+            <options ng-switch-when="options" content="chunk.content" editable="false" switchable="false"></options>
+            <div ng-if="chunk.solution" class="question__chunk" ng-switch on="chunk.datatype">
+               <h2 class="heading heading--caption epsilon">Solution</h2>
+               <paragraph ng-switch-when="text" content="chunk.solution" editable="false"></paragraph>
+               <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;base64,{{chunk.solution | base64}}">
+               <snippet ng-switch-when="code" content="chunk.solution" lang="{{chunk.lang}}" editable="false"></snippet>
+               <list ng-switch-when="list" content="chunk.solution" editable="false" switchable="false"></list>
+               <options ng-switch-when="options" content="chunk.solution" editable="false" switchable="false"></options>
             </div>
          </div>
 

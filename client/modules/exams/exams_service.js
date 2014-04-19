@@ -8,6 +8,10 @@ angular.module('app.exams')
          subject: '@subject',
          date: '@date',
          lang: '@lang'
+      }, {
+         update: {
+            method: 'PUT'
+         }
       });
    }])
 

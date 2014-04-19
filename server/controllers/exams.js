@@ -1,5 +1,7 @@
 var mongoose = require('mongoose'),
-    Exam = mongoose.model('Exam');
+    Exam = mongoose.model('Exam'),
+    _ = require('lodash'),
+    svgo = new (require('svgo'))();
 
 exports.validateSubject = function(req, res, next, subject) {
    var pattern = /^\w{2}-\w{3}$/i;
@@ -34,7 +36,7 @@ exports.validateLang = function(req, res, next, lang) {
 };
 
 exports.validateUserID = function(req, res, next, uid) {
-   var pattern = /^[a-z]{7}\d$/i;
+   var pattern = /^[a-z0-9]{3,8}$/i;
    if (!pattern.test(uid)) {
       return next(new Error ('not a valid user ID'));
    }
@@ -92,20 +94,51 @@ exports.get = function(req, res) {
    });
 };
 
+exports.update = function(req, res) {
+
+   var answer = req.body.answer;
+
+   Exam.update(
+      {
+         _id: new mongoose.Types.ObjectId(req.body._id),
+         'answers._question': new mongoose.Types.ObjectId(answer._question)
+      },
+      { 'answers.$.body': answer.body },
+      function(err) {
+         if (err) {
+            res.send(500, err);
+         } else {
+            res.send(200);
+         }
+      }
+   );
+
+};
+
 exports.create = function(req, res) {
-   // req.body.answers.forEach(function(answer) {
-   //    answer.content.forEach(function(chunk) {
-   //       if (chunk.datatype === 'canvas') {
-   //          svgo.optimize(chunk.content, function(result) {
-   //             chunk.content = result.data;
-   //          });
-   //       }
-   //    });
-   // });
+   _.forEach(req.body.answers, function(answer) {
 
-   var exam = new Exam(req.body);
+      var svgChunks = _.where(answer.body, { 'datatype': 'canvas' });
 
-   exam.save(function(err) {
+      _.forEach(svgChunks, function(chunk) {
+         if (chunk.content && _.isString(chunk.content)) {
+            svgo.optimize(chunk.content, function(result) {
+               chunk.content = result.data.replace(/<desc>[^<]*<\/desc>/, '').replace(/"/g, '\'');
+            });
+         }
+         if (chunk.solution && _.isString(chunk.solution)) {
+            svgo.optimize(chunk.solution, function(result) {
+               chunk.solution = result.data.replace(/<desc>[^<]*<\/desc>/, '').replace(/"/g, '\'');
+            });
+         }
+      });
+
+   });
+
+   var id = req.body._id || mongoose.Types.ObjectId();
+   delete req.body._id;
+
+   Exam.findByIdAndUpdate(id, req.body, { upsert: true }, function(err, exam) {
       if (err) {
          res.send(500, err);
       } else {

@@ -15,6 +15,26 @@ angular.module('app.exams.evaluate')
          }, 'Hold off');
       };
 
+      $scope.store = function() {
+         ExamEvaluation.store();
+      };
+
+      $scope.reevaluate = function() {
+         ExamEvaluation.store();
+      };
+
+      $scope.raisePoints = function(section, question) {
+         if (question.answer.points < question.points) {
+            question.answer.points++;
+            section.points++;
+         }
+      };
+
+      $scope.lowerPoints = function(section, question) {
+         question.answer.points--;
+         section.points--;
+      };
+
       $scope.exam = ExamEvaluation.data;
       $scope.blueprint = ExamEvaluation.data._blueprint;
 
@@ -27,7 +47,11 @@ angular.module('app.exams.evaluate')
          }, function() {
             $scope.exam = ExamEvaluation.data;
             $scope.blueprint = ExamEvaluation.data._blueprint;
+            _.forEach($scope.blueprint.sections, function(section) {
+               section.maxPoints = section.points;
+            });
             ExamEvaluation.isOngoing = true;
+            ExamEvaluation.linkAnswers();
          });
       }
 

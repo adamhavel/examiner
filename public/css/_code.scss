@@ -4,13 +4,16 @@
 
 code {
    @extend %editable;
+   @extend %zeta;
    font-family: Consolas, Monaco, "Andale Mono", monospace;
    white-space: pre;
    word-spacing: normal;
    word-break: normal;
    tab-size: 3;
    hyphens: none;
-   font-size: .9em;
+   pre > & {
+      display: block;
+   }
 }
 
 .token.comment,

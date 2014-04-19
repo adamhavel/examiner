@@ -3,10 +3,14 @@
 angular.module('app.blueprints.create')
 
    .factory('NewBlueprint',
-   ['$resource', '$rootScope', '$state', '$timeout', 'webStorage', 'Blueprint', 'Modal',
-   function($resource, $rootScope, $state, $timeout, webStorage, Blueprint, Modal) {
+   ['$resource', '$rootScope', '$state', '$timeout', 'webStorage', 'Blueprint', 'Modal', 'User',
+   function($resource, $rootScope, $state, $timeout, webStorage, Blueprint, Modal, User) {
 
       var NewBlueprint = (function() {
+
+         if (User.isStudent()) {
+            return null;
+         }
 
          var api = {
             data: null,
@@ -24,7 +28,8 @@ angular.module('app.blueprints.create')
             api.isOngoing = false;
          };
 
-         api.save = function() {
+         api.save = function(callback) {
+            callback = callback || null;
             if (api.isOngoing) {
                var regExpHTML = /(<([^>]+)>)/g;
                _.forEach(api.data.sections, function(section) {
@@ -55,28 +60,33 @@ angular.module('app.blueprints.create')
                });
                webStorage.add('blueprint', angular.toJson(api.data));
             }
+            if (callback) {
+               callback();
+            }
          };
 
          api.store = function() {
-            api.save();
-            $rootScope.$emit('seal');
-            $timeout(function() {
-               var blueprint = new Blueprint(api.data);
-               blueprint.$save(function() {
-                  Modal.open('success', 'The blueprint has been successfully saved.', function() {
-                     $state.go('blueprints', { filter: '/mi-mdw' });
-                     api.reset();
+            api.save(function() {
+               $rootScope.$emit('seal');
+               $timeout(function() {
+                  var blueprint = new Blueprint(api.data);
+                  blueprint.$save(function() {
+                     Modal.open('success', 'The blueprint has been successfully saved.', function() {
+                        $state.go('blueprints', { filter: '/mi-mdw' });
+                        api.reset();
+                        webStorage.remove('blueprint');
+                     });
+                  }, function(err) {
+                     Modal.open('error', 'There seems to be a problem with the server. Please try saving the blueprint later.');
+                     api.data = angular.fromJson(webStorage.get('blueprint'));
                      webStorage.remove('blueprint');
                   });
-               }, function(err) {
-                  Modal.open('error', 'There seems to be a problem with the server. Please try saving the blueprint later.');
-                  api.data = angular.fromJson(webStorage.get('blueprint'));
-                  webStorage.remove('blueprint');
-               });
-            }, 500);
+               }, 1000);
+            });
          };
 
          (function init() {
+
             var storedSession = angular.fromJson(webStorage.get('blueprint'));
             if (storedSession) {
                api.data = storedSession;
@@ -85,37 +95,40 @@ angular.module('app.blueprints.create')
             } else {
                api.reset();
             }
+
+            $rootScope.$on('save', function() {
+               api.save();
+            });
+
+            $rootScope.$on('$stateChangeStart', function(e, state, params) {
+
+               var redirect = function() {
+                  $state.go('newBlueprint', {
+                     subject: api.data.subject,
+                     date: api.data.date,
+                     lang: api.data.lang
+                  });
+               };
+
+               if (api.isOngoing && state.name === 'examTerms') {
+                  e.preventDefault();
+                  redirect();
+               } else if (api.isOngoing && state.name === 'newBlueprint') {
+                  if (params.subject !== api.data.subject || params.date !== api.data.date || params.lang !== api.data.lang) {
+                     e.preventDefault();
+                     Modal.open('alert', 'You can only create one blueprint at a time.', function() {
+                        redirect();
+                     });
+                  }
+               }
+
+            });
+
          })();
 
          return api;
 
       })();
-
-      $rootScope.$on('save', NewBlueprint.save);
-
-      $rootScope.$on('$stateChangeStart', function(e, state, params) {
-
-         var redirect = function() {
-            $state.go('newBlueprint', {
-               subject: NewBlueprint.data.subject,
-               date: NewBlueprint.data.date,
-               lang: NewBlueprint.data.lang
-            });
-         };
-
-         if (NewBlueprint.isOngoing && state.name === 'examTerms') {
-            e.preventDefault();
-            redirect();
-         } else if (NewBlueprint.isOngoing && state.name === 'newBlueprint') {
-            if (params.subject !== NewBlueprint.data.subject || params.date !== NewBlueprint.data.date || params.lang !== NewBlueprint.data.lang) {
-               e.preventDefault();
-               Modal.open('alert', 'You can only create one blueprint at a time.', function() {
-                  redirect();
-               });
-            }
-         }
-
-      });
 
       return NewBlueprint;
 

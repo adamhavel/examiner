@@ -89,7 +89,8 @@
 
       <div ng-switch-when="error">
          <p class="modal__prompt">{{modal.prompt}}</p>
-         <button ng-click="confirm()">I understand</button>
+<!--          <button ng-click="close()">{{modal.secondaryActionLabel || 'Cancel'}}</button> -->
+         <button ng-click="confirm()">{{modal.secondaryActionLabel || 'Try again'}}</button>
       </div>
 
       <div ng-switch-when="success">
@@ -104,6 +105,17 @@
             </li>
          </ul>
          <button ng-click="confirm()">Continue</button>
+      </div>
+
+      <div ng-switch-when="pledge">
+         <p class="modal__prompt">
+            <!-- Budu se snažit dosáhnout kvalitních výsledků poctivou cestou a&nbsp;jsem si&nbsp;vědom zodpovědnosti za&nbsp;důsledky svých činů i&nbsp;za&nbsp;svůj přístup ke&nbsp;studiu.<br><br>
+            Tímto stvrzuji, že&nbsp;se&nbsp;během zkoušky budu řídit Etickým&nbsp;kodexem&nbsp;ČVUT&nbsp;v&nbsp;Praze. -->
+            I will attempt to obtain high-quality results by honorable means and I will be aware of my responsibility for the results of my actions and for my approach to studies.<br><br>
+            I hereby confirm that during the exam I will follow the Ethical codex of CTU in Prague.
+         </p>
+         <button ng-click="close()">Cancel</button>
+         <button ng-click="confirm()">Confirm</button>
       </div>
 
    </div>

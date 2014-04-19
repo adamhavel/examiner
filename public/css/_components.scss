@@ -247,6 +247,9 @@ button {
          .tools + & {
 
          }
+         &[src^="data:image/svg+xml"] {
+            width: 100%;
+         }
       }
       &__answer {
          p, pre, .bullet-list {
@@ -312,7 +315,6 @@ button {
    }
    &--sheet {
       transition: transform .1s;
-      transform: translateZ(0);
       @include before {
          @include position($top: 0, $right: 0);
          @include size(15px);
@@ -322,14 +324,13 @@ button {
          border-width: 0 0 1px 1px;
       }
       @include after {
-         @include position($top: 8px, $right: -2px);
-         @include size(20px);
-         box-sizing: border-box;
-         border-top: 1px solid rgba(black, .5);
-         z-index: 100;
+         @include position($top: 15px, $right: 0px);
+         width: 21px;
+         height: 0;
+         border-top: 1px solid rgba(black, .6);
+         z-index: 10;
          transform: rotateZ(45deg);
-         transform-origin: top center;
-
+         transform-origin: top right;
       }
       &:before, &:after {
          opacity: 1;
@@ -341,7 +342,7 @@ button {
       }
       &:hover {
          z-index: 100;
-         transform: scale(1.5) translateZ(0);
+         transform: scale(1.5);
          &:before, &:after {
             opacity: 0;
          }
@@ -434,7 +435,7 @@ button {
    width: $main-content-width * 4/5;
    box-sizing: border-box;
    background: lighten(brand(yellow), 10%);
-   box-shadow: 2rem 2rem 0 0 rgba(black, .1);
+   box-shadow: 2rem 2rem 0 0 rgba(black, .075);
    pointer-events: auto;
    font-family: "Roboto", sans-serif;
    font-weight: 300;
@@ -529,6 +530,23 @@ button {
       @extend %icon--caution;
       background: lighten(brand(red), 15%);
    }
+   &--pledge {
+      @extend %icon;
+      @include primary-button(lighten(brand(red), 40%));
+      @include icon {
+         min-width: 40%;
+         margin-right: $gutter;
+         background-image: url('../img/logo-cvut.svg');
+         background-position: top;
+         opacity: .4;
+      }
+      background: lighten(brand(purple), 20%);
+   }
+      &--pledge &__prompt {
+         font-size: 1rem;
+         font-style: italic;
+         font-family: "PT Sans", sans-serif;
+      }
 }
 
 

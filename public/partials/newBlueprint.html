@@ -1,4 +1,4 @@
-<article class="exam exam--blueprint">
+<article class="exam exam--interactive">
 
    <header class="exam__header">
       <h1 class="alpha heading exam__subject">{{blueprint.subject | uppercase}}</h1>
@@ -13,7 +13,7 @@
 
    <p class="lede" ng-model="blueprint.lede" contenteditable="true" spellcheck="false" placeholder="Type the exam intro..."></p>
 
-   <section class="exam__section" id="{{section.name || 'Untitled section ' + ($index+1) | idfy}}" ng-repeat="section in blueprint.sections">
+   <section class="exam__section" id="{{(section.name || 'Untitled section ' + ($index+1)) | idfy}}" ng-repeat="section in blueprint.sections">
 
       <header>
          <h1 class="beta heading" ng-model="section.name" contenteditable="true" spellcheck="false" placeholder="Type the section name..."></h1>
@@ -31,7 +31,7 @@
 
       <p class="lede" ng-model="section.lede" contenteditable="true" spellcheck="false" placeholder="Type the section intro..."></p>
 
-      <article class="question" id="{{question.name || 'Untitled question ' + ($index+1) | idfy}}" ng-repeat="question in section.questions">
+      <article class="question" id="{{(question.name || 'Untitled question ' + ($index+1)) | idfy}}" ng-repeat="question in section.questions">
 
          <header>
             <h1 ng-model="question.name" class="delta heading question__heading" contenteditable="true" spellcheck="false" placeholder="Type the question name..."></h1>
@@ -63,10 +63,10 @@
             </ul>
             <p class="exam__points">
                <span class="tools tools--binary">
-                  <button title="Raise" class="tools__item icon--raise" ng-click="raisePoints(section, question)">Raise</button>
-                  <button title="Lower" class="tools__item icon--lower" ng-click="lowerPoints(section, question)" ng-disabled="question.points < 2">Lower</button>
+                  <button title="Raise" class="tools__item icon--raise" ng-click="raisePoints(question)">Raise</button>
+                  <button title="Lower" class="tools__item icon--lower" ng-click="lowerPoints(question)" ng-disabled="question.points < 2">Lower</button>
                </span>
-               {{question.points}} {{question.points != 1 ? 'points' : 'point'}}
+               {{question.points}} {{question.points !== 1 ? 'points' : 'point'}}
             </p>
          </header>
 

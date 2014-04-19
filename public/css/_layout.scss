@@ -2,9 +2,13 @@
    Layout
    ========================================================================== */
 
+html {
+   overflow-y: scroll;
+   overflow-x: hidden;
+}
+
 body {
    @extend %dimmable;
-   overflow-x: hidden;
    background: brand(blue);
 }
 
@@ -67,6 +71,7 @@ $navigation-height: $leading * 1;
    z-index: 1;
    max-width: $main-content-width;
    min-height: $main-content-width * 1.414;
+   height: 100%;
    box-sizing: border-box;
    border: solid rgba(black, .05);
    border-width: 0 1px 1px 0;
@@ -87,6 +92,7 @@ $navigation-height: $leading * 1;
          opacity: 1;
          transition: transform .5s, opacity .25s .25s;
          transition-timing-function: ease-out;
+         backface-visibility: hidden;
       }
       &.ng-leave-active {
          opacity: 0;
@@ -143,10 +149,13 @@ $navigation-height: $leading * 1;
             color: rgba(black, .5);
          }
          &.ng-urgent {
-            background-color: lighten(brand(red), 25%);
+            background-color: lighten(brand(red), 30%);
          }
          &.ng-ongoing {
             background-color: brand(green);
+         }
+         &.ng-active {
+            background-color: brand(yellow);
          }
          .site-nav:hover & {
             opacity: 1;

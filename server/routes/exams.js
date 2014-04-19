@@ -10,6 +10,7 @@ module.exports = function(app) {
 
    app.route('/api/exam/:subject/:date/:lang/:uid')
       .get(exams.get)
+      .put(exams.update)
       .post(exams.create);
 
    // app.route('/api/exams/:subject?/:date?/:lang?/:uid?')

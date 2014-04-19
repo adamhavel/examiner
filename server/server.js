@@ -33,24 +33,31 @@ var exams = [];
 
 io.sockets.on('connection', function(socket) {
 
+   function sendStudentList(examId) {
+      var students = _.filter(users, function(user) {
+         return user.role === 'student' && user.examId === examId;
+      });
+      socket.emit('send:students', _.map(students, function(student) {
+         return {
+            name: student.name,
+            id: student.id
+         };
+      }));
+   }
+
    socket.on('user:identify', function(data) {
       var user = _.find(users, function(user) {
          return user.id === data.id;
       });
+      if (!user) {
+         socket.emit('exam:finished');
+      }
       if (user && user.socket !== socket) {
          user.socket = socket;
          socket.join(user.examId);
       }
       if (data.role === 'teacher') {
-         var students = _.filter(users, function(user) {
-            return user.role === 'student' && user.examId === data.examId;
-         });
-         socket.emit('send:students', _.map(students, function(student) {
-            return {
-               name: student.name,
-               id: student.id
-            };
-         }));
+         sendStudentList(data.examId);
       }
    });
 
@@ -75,6 +82,8 @@ io.sockets.on('connection', function(socket) {
             name: user.name,
             id: user.id
          });
+      } else {
+         sendStudentList(user.examId);
       }
       var exam = _.find(exams, function(exam) {
          return exam.id === user.examId;

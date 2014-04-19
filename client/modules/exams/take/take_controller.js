@@ -13,8 +13,15 @@ angular.module('app.exams.take')
          examId: $stateParams.subject + '/' + $stateParams.date
       };
 
-      $scope.user = User;
-      $scope.timer = Timer;
+      function applyWatchers() {
+         _.forEach($scope.exam.answers, function(answer, index) {
+            $scope.$watch('exam.answers[' + index +'].body', _.debounce(function(newValue, oldValue) {
+               if (_.difference(newValue, oldValue).length) {
+                  ExamTake.backup(answer);
+               }
+            }, 1000), true);
+         });
+      }
 
       function checkViewportUse() {
          // console.log('resolution: ' + window.screen.availWidth + 'x' + window.screen.availHeight);
@@ -29,6 +36,46 @@ angular.module('app.exams.take')
             };
             Socket.emit('student:resized', data);
          }
+      }
+
+      $scope.user = User;
+      $scope.timer = Timer;
+
+      $scope.exam = ExamTake.data;
+
+      if (!ExamTake.isOngoing) {
+
+         Socket.emit('user:register', fingerprint);
+
+         ExamTake.data = Blueprint.get({
+            subject: $stateParams.subject,
+            date: $stateParams.date,
+            lang: $stateParams.lang
+         }, function() {
+
+            if (User.isStudent()) {
+
+               ExamTake.data.student = {
+                  name: User.data.name,
+                  id: User.data.id
+               };
+
+               ExamTake.linkAnswers();
+
+            }
+
+            ExamTake.data._blueprint = ExamTake.data._id;
+            delete ExamTake.data._id;
+            ExamTake.isOngoing = true;
+
+            $scope.exam = ExamTake.data;
+
+         });
+
+      } else {
+
+         Socket.emit('user:identify', fingerprint);
+
       }
 
       if (!User.isStudent()) {
@@ -109,6 +156,16 @@ angular.module('app.exams.take')
 
       } else {
 
+         $scope.handIn = function() {
+            Modal.open('confirm', 'Do you want to hand in the exam early? There is no going back.', function(confirmed) {
+               if (confirmed) {
+                  Timer.stop();
+                  Socket.emit('user:leave', fingerprint);
+                  ExamTake.store();
+               }
+            }, 'Hand in');
+         };
+
          var distractionHandler = function() {
             if ($scope.exam.started) {
                Socket.emit('student:distracted', fingerprint);
@@ -130,9 +187,9 @@ angular.module('app.exams.take')
             window.removeEventListener('resize', resizeHandler);
          });
 
-      }
+         applyWatchers();
 
-      Socket.emit('user:identify', fingerprint);
+      }
 
       Socket.on('exam:started', function(exam) {
          Timer.start(exam.start, exam.duration);
@@ -145,6 +202,7 @@ angular.module('app.exams.take')
             $scope.exam.started = true;
             if (User.isStudent()) {
                checkViewportUse();
+               applyWatchers();
             }
          });
       });
@@ -161,37 +219,5 @@ angular.module('app.exams.take')
             }
          });
       });
-
-      $scope.exam = ExamTake.data;
-
-      if (!ExamTake.isOngoing) {
-         Socket.emit('user:register', fingerprint);
-         ExamTake.data = Blueprint.get({
-            subject: $stateParams.subject,
-            date: $stateParams.date,
-            lang: $stateParams.lang
-         }, function() {
-            $scope.exam = ExamTake.data;
-            ExamTake.isOngoing = true;
-            if (User.isStudent()) {
-               ExamTake.data.student = {
-                  name: User.data.name,
-                  id: User.data.id
-               };
-            }
-         }, function(err) {
-
-         });
-      }
-
-      $scope.handIn = function() {
-         Modal.open('confirm', 'Do you want to hand in the exam early? There is no going back.', function(confirmed) {
-            if (confirmed) {
-               Timer.stop();
-               Socket.emit('user:leave', fingerprint);
-               ExamTake.store();
-            }
-         }, 'Hand in');
-      };
 
    }]);

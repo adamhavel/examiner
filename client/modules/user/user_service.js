@@ -36,20 +36,23 @@ angular.module('app.user')
          };
 
          (function init() {
+
             var storedSession = angular.fromJson(webStorage.get('user'));
             if (storedSession) {
                api.data = storedSession;
+               api.data.pledge = false;
                webStorage.remove('user');
             } else {
                api.reset();
             }
+
+            $rootScope.$on('save', api.save);
+
          })();
 
          return api;
 
       })();
-
-      $rootScope.$on('save', User.save);
 
       return User;
 

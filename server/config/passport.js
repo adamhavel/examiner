@@ -1,7 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+    OAuth2Strategy = require('passport-oauth').OAuth2Strategy,
+    LDAPStrategy = require('passport-ldapauth').Strategy;
 
 module.exports = function(passport) {
 
@@ -15,5 +16,16 @@ module.exports = function(passport) {
          done(err, profile);
       })
    );
+
+   // passport.use(new LdapStrategy(
+   //    {
+   //       server: {
+   //          url: 'ldap://localhost:389'
+   //       }
+   //    },
+   //    function(user, done) {
+   //       return done(null, user);
+   //    }
+   // ));
 
 };

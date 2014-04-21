@@ -31,6 +31,13 @@ angular.module('app.examterms')
             date: '2014-04-21T09:30',
             lang: 'en'
 
+         },
+         {
+
+            subject: 'mi-mdw',
+            date: '2014-04-25T09:30',
+            lang: 'en'
+
          }
       ];
 

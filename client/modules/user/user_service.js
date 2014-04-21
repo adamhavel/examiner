@@ -6,51 +6,51 @@ angular.module('app.user')
 
       var User = (function() {
 
-         var api = {
-            data: {}
+         var self = {
+            data: null
          };
 
-         api.switchRole = function() {
-            if (api.data.role === 'student') {
-               api.data.role = 'teacher';
+         self.switchRole = function() {
+            if (self.data.role === 'student') {
+               self.data.role = 'teacher';
             } else {
-               api.data.role = 'student';
+               self.data.role = 'student';
             }
          };
 
-         api.isStudent = function() {
-            return api.data.role === 'student';
+         self.isStudent = function() {
+            return self.data.role === 'student';
          };
 
-         api.reset = function() {
-            api.data = {
+         self.reset = function() {
+            self.data = {
                name: 'Adam Havel',
                id: 'havelad1',
                role: 'teacher',
                pledge: false
             };
+            webStorage.remove('user');
          };
 
-         api.save = function() {
-            webStorage.add('user', angular.toJson(api.data));
+         self.save = function() {
+            webStorage.add('user', angular.toJson(self.data));
          };
 
          (function init() {
 
             var storedSession = angular.fromJson(webStorage.get('user'));
             if (storedSession) {
-               api.data = storedSession;
-               api.data.pledge = false;
-               webStorage.remove('user');
+               self.data = storedSession;
+               //self.data.pledge = false;
             } else {
-               api.reset();
+               self.reset();
             }
 
-            $rootScope.$on('save', api.save);
+            $rootScope.$on('save', self.save);
 
          })();
 
-         return api;
+         return self;
 
       })();
 

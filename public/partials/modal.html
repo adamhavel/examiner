@@ -98,6 +98,11 @@
          <button ng-click="confirm()">Continue</button>
       </div>
 
+      <div ng-switch-when="student">
+         <p class="modal__prompt">{{modal.prompt}}</p>
+         <button ng-click="confirm()">Continue</button>
+      </div>
+
       <div ng-switch-when="studentsList">
          <ul class="bullet-list modal__prompt">
             <li ng-repeat="student in modal.prompt">

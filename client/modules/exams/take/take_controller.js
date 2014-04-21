@@ -38,15 +38,14 @@ angular.module('app.exams.take')
          }
       }
 
-      $scope.user = User;
-      $scope.timer = Timer;
-
-      $scope.exam = ExamTake.data;
-
-      if (!ExamTake.isOngoing) {
-
+      if (ExamTake.isOngoing) {
+         $scope.exam = ExamTake.data;
+         Socket.emit('user:identify', fingerprint);
+         if (User.isStudent() && ExamTake.data.started) {
+            applyWatchers();
+         }
+      } else {
          Socket.emit('user:register', fingerprint);
-
          ExamTake.data = Blueprint.get({
             subject: $stateParams.subject,
             date: $stateParams.date,
@@ -54,28 +53,20 @@ angular.module('app.exams.take')
          }, function() {
 
             if (User.isStudent()) {
-
                ExamTake.data.student = {
                   name: User.data.name,
                   id: User.data.id
                };
-
                ExamTake.linkAnswers();
-
             }
 
             ExamTake.data._blueprint = ExamTake.data._id;
             delete ExamTake.data._id;
+            ExamTake.data.started = false;
             ExamTake.isOngoing = true;
-
             $scope.exam = ExamTake.data;
-
+            ExamTake.save();
          });
-
-      } else {
-
-         Socket.emit('user:identify', fingerprint);
-
       }
 
       if (!User.isStudent()) {
@@ -90,10 +81,11 @@ angular.module('app.exams.take')
             $scope.students.push(student);
          });
 
-         Socket.on('student:left', function(id) {
+         Socket.on('student:left', function(data) {
             _.remove($scope.students, function(student) {
-               return student.id === id;
+               return student.id === data.id;
             });
+            Modal.open('student', data.name + ' has finished early.');
          });
 
          Socket.on('student:distracted', function(student) {
@@ -187,8 +179,6 @@ angular.module('app.exams.take')
             window.removeEventListener('resize', resizeHandler);
          });
 
-         applyWatchers();
-
       }
 
       Socket.on('exam:started', function(exam) {
@@ -199,7 +189,7 @@ angular.module('app.exams.take')
             prompt += ' Good luck!';
          }
          Modal.open('examStarted', prompt, function() {
-            $scope.exam.started = true;
+            ExamTake.data.started = true;
             if (User.isStudent()) {
                checkViewportUse();
                applyWatchers();

@@ -1,12 +1,16 @@
-<h1 class="alpha heading">
-   Pending exams<span class="heading__subtitle" ng-if="subject">: {{subject | uppercase}}</span>
-</h1>
+<header>
+   <h1 class="alpha heading">Pending exams<span class="heading__subtitle" ng-if="subject">: {{subject | uppercase}}</span></h1>
+   <ul class="epsilon breadcrumbs" ng-if="subject">
+      <li><a class="breadcrumbs__item" ui-sref="exams({ subject: null })">Subjects</a></li><!--
+      --><li><a ng-class="{'ng-active': subject}" class="breadcrumbs__item">{{subject | uppercase}}</a></li>
+   </ul>
+</header>
 
 <section class="list">
 
    <div class="grid">
 
-      <div class="grid__item one-quarter" ng-repeat="item in items">
+      <div class="grid__item one-quarter lap--one-third palm--one-half" ng-repeat="item in items">
 
          <section ng-if="!subject" class="preview preview--stack">
             <div class="content">

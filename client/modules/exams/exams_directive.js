@@ -18,9 +18,10 @@ angular.module('app.exams')
 
       function link($scope, $element) {
 
-         // if ($scope.content == null) {
-         //    $scope.content = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, asperiores quas libero dolore deleniti natus illo inventore assumenda voluptates modi. Inventore, in perferendis nemo odit. Aspernatur, error fugiat eveniet asperiores.';
-         // }
+         if (!$scope.content) {
+            //$scope.content = '';
+            $scope.content = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, asperiores quas libero dolore deleniti natus illo inventore assumenda voluptates modi. Inventore, in perferendis nemo odit. Aspernatur, error fugiat eveniet asperiores.';
+         }
 
          if ($scope.editable === 'true') {
 
@@ -250,19 +251,20 @@ angular.module('app.exams')
             load: 'js/ondemand/app.highlight.min.js',
             callback: function () {
 
-               if ($scope.content == null) {
-                  $scope.content = 'var src = f.src.filter(function(filepath) {\n' +
-                  '   // Warn on and remove invalid source files (if nonull was set).\n' +
-                  '   if (!grunt.file.exists(filepath)) {\n' +
-                  '      grunt.log.warn(\'Source file "\' + filepath + \'" not found.\');\n' +
-                  '       return false;\n' +
-                  '   } else {\n' +
-                  '      return true;\n' +
-                  '   }\n' +
-                  '}).map(function(filepath) {\n' +
-                  '   // Read file source.\n' +
-                  '   return grunt.files.read(filepath);\n' +
-                  '});';
+               if (!$scope.content) {
+                  $scope.content = '';
+                  // $scope.content = 'var src = f.src.filter(function(filepath) {\n' +
+                  // '   // Warn on and remove invalid source files (if nonull was set).\n' +
+                  // '   if (!grunt.file.exists(filepath)) {\n' +
+                  // '      grunt.log.warn(\'Source file "\' + filepath + \'" not found.\');\n' +
+                  // '       return false;\n' +
+                  // '   } else {\n' +
+                  // '      return true;\n' +
+                  // '   }\n' +
+                  // '}).map(function(filepath) {\n' +
+                  // '   // Read file source.\n' +
+                  // '   return grunt.files.read(filepath);\n' +
+                  // '});';
                   $scope.$apply();
                }
 
@@ -288,7 +290,6 @@ angular.module('app.exams')
 
                   $scope.$watch('lang', function(newValue, oldValue) {
                      if (newValue !== oldValue) {
-                        console.log('yay');
                         setTimeout(function() {
                            Prism.highlightElement(code);
                         }, 100);

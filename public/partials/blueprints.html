@@ -1,12 +1,16 @@
-<h1 class="alpha heading">
-   Blueprints<span class="heading__subtitle" ng-if="subject">: {{subject | uppercase}}</span>
-</h1>
+<header>
+   <h1 class="alpha heading">Blueprints<span class="heading__subtitle" ng-if="subject">: {{subject | uppercase}}</span></h1>
+   <ul class="epsilon breadcrumbs" ng-if="subject">
+      <li><a class="breadcrumbs__item" ui-sref="blueprints({ subject: null })">Subjects</a></li><!--
+      --><li><a ng-class="{'ng-active': subject}" class="breadcrumbs__item">{{subject | uppercase}}</a></li>
+   </ul>
+</header>
 
 <section class="list">
 
    <div class="grid">
 
-      <div class="grid__item one-quarter" ng-repeat="item in items">
+      <div class="grid__item one-quarter lap--one-third palm--one-half" ng-repeat="item in items">
 
          <section ng-if="!subject" class="preview preview--stack">
             <div class="content">
@@ -21,46 +25,6 @@
                <h2 class="heading preview__subheading">
                   <time class="epsilon">{{item.date | date: 'd. M. yyyy'}}</time>
                   <time>{{item.date | date: 'h:mm'}}</time>
-               </h2>
-            </div>
-            <a ui-sref="blueprint({
-               subject: item.subject,
-               date: item.date,
-               lang: item.lang
-            })" class="more"></a>
-         </section>
-
-      </div>
-
-      <div class="grid__item one-quarter">
-
-         <section ng-if="subject" class="preview preview--sheet">
-            <div class="content">
-               <h1 class="gamma heading preview__heading">Leonard<br>Bernstein</h1>
-               <h2 class="heading preview__subheading"><span>MI-DIP</span></h2>
-               <h2 class="heading preview__subheading">
-                  <time>15. 6. 2015</time>
-                  <time>11:00</time>
-               </h2>
-            </div>
-            <a ui-sref="blueprint({
-               subject: item.subject,
-               date: item.date,
-               lang: item.lang
-            })" class="more"></a>
-         </section>
-
-      </div>
-
-      <div class="grid__item one-quarter">
-
-         <section ng-if="subject" class="preview preview--sheet">
-            <div class="content">
-               <h1 class="gamma heading preview__heading">Dieter<br>Rams</h1>
-               <h2 class="heading preview__subheading"><span>MI-DIP</span></h2>
-               <h2 class="heading preview__subheading">
-                  <time>15. 6. 2015</time>
-                  <time>11:00</time>
                </h2>
             </div>
             <a ui-sref="blueprint({

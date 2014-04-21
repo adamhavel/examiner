@@ -11,6 +11,9 @@ angular.module('app').config([
       $stateProvider
          .state('exams', {
             url: '/exams/:subject',
+            params: {
+               subject: { value: null }
+            },
             templateUrl: 'partials/exams.html',
             controller: 'PendingExamsController',
          })
@@ -20,7 +23,11 @@ angular.module('app').config([
             controller: 'ExamTakeController',
          })
          .state('pastExams', {
-            url: '/evaluate/:subject',
+            url: '/evaluate/:subject/:date',
+            params: {
+               subject: { value: null },
+               date: { value: null }
+            },
             templateUrl: 'partials/pastExams.html',
             controller: 'PastExamsController',
          })
@@ -30,10 +37,10 @@ angular.module('app').config([
             controller: 'ExamEvaluateController',
          })
          .state('blueprints', {
-            url: '/blueprints/:subject',
-            /*params: {
+            url: '/blueprints/{subject}',
+            params: {
                subject: { value: null }
-            },*/
+            },
             templateUrl: 'partials/blueprints.html',
             controller: 'BlueprintsController'
          })

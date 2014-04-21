@@ -12,61 +12,58 @@ angular.module('app.exams.evaluate')
             return null;
          }
 
-         var api = {
+         var self = {
             data: null,
             isOngoing: false,
             isUrgent: false
          };
 
-         api.reset = function() {
-            api.data = {
-               subject: null,
-               date: null,
-               lang: null,
-               student: null,
-               answers: [],
-               section: []
-            };
-            api.isOngoing = false;
+         self.reset = function() {
+            self.data = null;
+            self.isUrgent = false;
+            self.isOngoing = false;
+            webStorage.remove('evaluation');
          };
 
-         api.save = function(callback) {
+         self.save = function(callback) {
             callback = callback || null;
-            if (api.isOngoing) {
-               webStorage.add('evaluation', angular.toJson(api.data));
+            if (self.isOngoing) {
+               webStorage.add('evaluation', angular.toJson(self.data));
             }
             if (callback) {
                callback();
             }
          };
 
-         api.linkAnswers = function() {
-            _.forEach(api.data._blueprint.sections, function(section) {
+         self.linkAnswers = function() {
+            _.forEach(self.data._blueprint.sections, function(section) {
                section.points = 0;
                _.forEach(section.questions, function(question) {
-                  question.answer = _.find(api.data.answers, { '_question': question._id });
+                  question.answer = _.find(self.data.answers, { '_question': question._id });
                   section.points += question.answer.points;
                });
             });
          };
 
-         api.store = function() {
-            api.save(function() {
-               var exam = new Exam(api.data);
+         self.store = function() {
+            self.save(function() {
+               var exam = new Exam(self.data);
                var blueprintId = exam._blueprint._id;
                delete exam._blueprint;
                exam._blueprint = blueprintId;
                exam.evaluated = {};
                exam.$save(function() {
                   Modal.open('success', 'The evaluation has been successfully saved.', function() {
-                     api.reset();
-                     $state.go('pastExams');
-                     webStorage.remove('evaluation');
+                     var directions = {
+                        subject: self.data.subject,
+                        date: self.data.date
+                     };
+                     self.reset();
+                     $state.go('pastExams', directions);
                   });
                }, function(err) {
                   Modal.open('error', 'There seems to be a problem with the server.');
-                  api.data = angular.fromJson(webStorage.get('evaluation'));
-                  webStorage.remove('evaluation');
+                  self.data = angular.fromJson(webStorage.get('evaluation'));
                });
             });
          };
@@ -74,41 +71,40 @@ angular.module('app.exams.evaluate')
          (function init() {
 
             Exams.query({}, function(exams) {
-               api.isUrgent = _.some(exams, function(exam) {
+               self.isUrgent = _.some(exams, function(exam) {
                   return exam.evaluated === null;
                });
             });
 
             var storedSession = angular.fromJson(webStorage.get('evaluation'));
             if (storedSession) {
-               api.data = storedSession;
-               api.isOngoing = true;
-               api.linkAnswers();
-               webStorage.remove('evaluation');
+               self.data = storedSession;
+               self.isOngoing = true;
+               self.linkAnswers();
             } else {
-               api.reset();
+               self.reset();
             }
 
             $rootScope.$on('save', function() {
-               api.save();
+               self.save();
             });
 
             $rootScope.$on('$stateChangeStart', function(e, state, params) {
 
                var redirect = function() {
                   $state.go('evaluate', {
-                     subject: api.data.subject,
-                     date: api.data.date,
-                     lang: api.data.lang,
-                     uid: api.data.student.id
+                     subject: self.data.subject,
+                     date: self.data.date,
+                     lang: self.data.lang,
+                     uid: self.data.student.id
                   });
                };
 
-               if (api.isOngoing && state.name === 'pastExams') {
+               if (self.isOngoing && state.name === 'pastExams') {
                   e.preventDefault();
                   redirect();
-               } else if (api.isOngoing && state.name === 'evaluate') {
-                  if (params.subject !== api.data.subject || params.date !== api.data.date || params.lang !== api.data.lang || params.uid !== api.data.student.id) {
+               } else if (self.isOngoing && state.name === 'evaluate') {
+                  if (params.subject !== self.data.subject || params.date !== self.data.date || params.lang !== self.data.lang || params.uid !== self.data.student.id) {
                      e.preventDefault();
                      Modal.open('alert', 'You can only evaluate one exam at a time.', function() {
                         redirect();
@@ -120,7 +116,7 @@ angular.module('app.exams.evaluate')
 
          })();
 
-         return api;
+         return self;
 
       })();
 

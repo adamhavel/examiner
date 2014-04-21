@@ -5,7 +5,7 @@
       <h2 class="alpha heading exam__date">{{exam.date | date: 'd. M. yyyy, H:mm'}}</h2>
       <div class="exam__controls">
          <div ng-if="evaluation.isOngoing">
-            <button ng-click="discard()">Hold off</button>
+            <button ng-click="discard()">Leave</button>
             <button ng-click="store()">Evaluate</button>
          </div>
          <div ng-if="!evaluation.isOngoing">
@@ -47,26 +47,21 @@
          <div class="question__chunk" ng-repeat="chunk in question.body" ng-switch on="chunk.datatype">
             <paragraph ng-switch-when="text" content="chunk.content" editable="false"></paragraph>
             <img ng-switch-when="image" class="question__image" ng-src="{{chunk.content}}">
-            <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;charset=UTF-8,{{chunk.content}}">
+            <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;base64,{{chunk.content | base64}}">
             <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="false"></snippet>
             <list ng-switch-when="list" content="chunk.content" editable="false"></list>
          </div>
 
          <div class="question__chunk question__answer" ng-repeat="chunk in question.answer.body" ng-switch on="chunk.datatype">
+            <ul ng-if="!user.isStudent() && chunk.solution !== null" class="inline-list tools tools--small tools--flush">
+               <li><button title="Show solution" class="tools__item icon--view" ng-mousedown="toggleSolution(chunk)" ng-mouseup="toggleSolution(chunk)">Show solution</button></li>
+            </ul>
             <h2 class="heading heading--caption epsilon">Answer</h2>
             <paragraph ng-switch-when="text" content="chunk.content" editable="false"></paragraph>
             <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;base64,{{chunk.content | base64}}">
             <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="false"></snippet>
             <list ng-switch-when="list" content="chunk.content" editable="false"></list>
             <options ng-switch-when="options" content="chunk.content" editable="false" switchable="false"></options>
-            <div ng-if="chunk.solution" class="question__chunk" ng-switch on="chunk.datatype">
-               <h2 class="heading heading--caption epsilon">Solution</h2>
-               <paragraph ng-switch-when="text" content="chunk.solution" editable="false"></paragraph>
-               <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;base64,{{chunk.solution | base64}}">
-               <snippet ng-switch-when="code" content="chunk.solution" lang="{{chunk.lang}}" editable="false"></snippet>
-               <list ng-switch-when="list" content="chunk.solution" editable="false" switchable="false"></list>
-               <options ng-switch-when="options" content="chunk.solution" editable="false" switchable="false"></options>
-            </div>
          </div>
 
       </article>

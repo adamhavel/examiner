@@ -32,7 +32,6 @@ $navigation-height: $leading * 1;
 .page-header {
    @include blank-lines(1, both);
    margin-left: $sidebar-width;
-   //padding-bottom: $navigation-height;
    font-family: "Roboto";
 }
 
@@ -41,7 +40,7 @@ $navigation-height: $leading * 1;
    }
 
    .top-nav {
-      opacity: .75;
+      opacity: .6;
       text-align: right;
       &__item {
          display: block;
@@ -70,7 +69,7 @@ $navigation-height: $leading * 1;
    position: relative;
    z-index: 1;
    max-width: $main-content-width;
-   min-height: $main-content-width * 1.414;
+   min-height: $main-content-width * 1.2;
    height: 100%;
    box-sizing: border-box;
    border: solid rgba(black, .05);
@@ -83,20 +82,18 @@ $navigation-height: $leading * 1;
          @include blank-lines(2, both, padding);
          @include taper(2);
          z-index: 10000;
-         min-height: $main-content-width * 1.414;
+         min-height: $main-content-width * 1.2;
          box-sizing: border-box;
-         transform: translateX(0) translateY(0) translateZ(0);
+         transform: translateX(0) translateZ(0);
          border-left: 1px solid rgba(black, .25);
-         background: lighten(brand(paper), .5%);
+         background: brand(paper);
          overflow: hidden;
          opacity: 1;
-         transition: transform .5s, opacity .25s .25s;
-         transition-timing-function: ease-out;
-         backface-visibility: hidden;
+         transition: transform .5s, opacity .6s;
       }
       &.ng-leave-active {
          opacity: 0;
-         transform: translateX(100%) translateY(-10%) translateZ(0);
+         transform: translateX(100%) translateZ(0);
       }
    }
 }
@@ -109,13 +106,14 @@ $navigation-height: $leading * 1;
    @include blank-lines(2, leading, padding);
    width: $sidebar-width;
    box-sizing: border-box;
+   overflow: hidden;
 }
 
    .site-nav {
       @include blank-lines(2, trailing);
+      transform: translateZ(0);
       text-align: right;
       overflow: hidden;
-      transform: translateZ(0);
       &__item {
          @extend %icon--right;
          @extend %epsilon;

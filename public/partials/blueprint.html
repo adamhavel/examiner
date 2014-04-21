@@ -41,7 +41,7 @@
          <div class="question__chunk" ng-repeat="chunk in question.body" ng-switch on="chunk.datatype">
             <paragraph ng-switch-when="text" content="chunk.content" editable="false"></paragraph>
             <img ng-switch-when="image" class="question__image" ng-src="{{chunk.content}}">
-            <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;charset=UTF-8,{{chunk.content}}">
+            <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;base64,{{chunk.content | base64}}">
             <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="false"></snippet>
             <list ng-switch-when="list" content="chunk.content" editable="false"></list>
          </div>

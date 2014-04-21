@@ -8,27 +8,23 @@ angular.module('app.exams.take')
 
       var ExamTake = (function() {
 
-         var api = {
+         var self = {
             data: null,
             isOngoing: false
          };
 
-         api.reset = function() {
-            api.data = {
-               subject: null,
-               date: null,
-               lang: null,
-               sections: []
-            };
-            api.isOngoing = false;
+         self.reset = function() {
+            self.data = null;
+            self.isOngoing = false;
+            webStorage.remove('exam');
          };
 
-         api.save = function(callback) {
+         self.save = function(callback) {
             callback = callback || null;
 
-            if (api.isOngoing && !webStorage.get('exam')) {
+            if (self.isOngoing) {
                var regExpHTML = /(<([^>]+)>)/g;
-               _.forEach(api.data.sections, function(section) {
+               _.forEach(self.data.sections, function(section) {
                   _.forEach(section.questions, function(question) {
 
                      var codeChunks = _.where(question.body.concat(question.answer), { 'datatype': 'code' });
@@ -41,16 +37,16 @@ angular.module('app.exams.take')
 
                   });
                });
-               webStorage.add('exam', angular.toJson(api.data));
+               webStorage.add('exam', angular.toJson(self.data));
             }
             if (callback) {
                callback();
             }
          };
 
-         api.linkAnswers = function(callback) {
-            api.data.answers = [];
-            _.forEach(api.data.sections, function(section) {
+         self.linkAnswers = function(callback) {
+            self.data.answers = [];
+            _.forEach(self.data.sections, function(section) {
                _.forEach(section.questions, function(question) {
                   var answer = {
                      body: [],
@@ -61,26 +57,26 @@ angular.module('app.exams.take')
                      answer.body.push(chunk);
                      delete chunk._id;
                   });
-                  api.data.answers.push(answer);
+                  self.data.answers.push(answer);
                });
             });
          };
 
-         api.backup = function(answer) {
+         self.backup = function(answer) {
 
-            if (!api.data._id) {
-               api.prepare(function(exam) {
+            if (!self.data._id) {
+               self.prepare(function(exam) {
                   exam.$save(function(exam) {
-                     api.data._id = exam._id;
+                     self.data._id = exam._id;
                   });
                });
             } else {
                var chunk = new Exam({
-                  _id: api.data._id,
-                  subject: api.data.subject,
-                  date: api.data.date,
-                  lang: api.data.lang,
-                  student: api.data.student,
+                  _id: self.data._id,
+                  subject: self.data.subject,
+                  date: self.data.date,
+                  lang: self.data.lang,
+                  student: self.data.student,
                   answer: answer
                });
                chunk.$update(function() {
@@ -90,10 +86,10 @@ angular.module('app.exams.take')
 
          };
 
-         api.prepare = function(callback) {
+         self.prepare = function(callback) {
             callback = callback || null;
 
-            var exam = new Exam(api.data);
+            var exam = new Exam(self.data);
             exam.evaluated = null;
             delete exam.lede;
             delete exam.sections;
@@ -103,19 +99,18 @@ angular.module('app.exams.take')
             }
          };
 
-         api.store = function() {
-            api.save(function() {
+         self.store = function() {
+            self.save(function() {
                $rootScope.$emit('seal');
                $timeout(function() {
 
-                  api.prepare(function(exam) {
+                  self.prepare(function(exam) {
 
                      (function upload() {
                         exam.$save(function() {
                            Modal.open('success', 'The exam has been successfully saved.', function() {
-                              api.reset();
+                              self.reset();
                               $state.go('exams');
-                              webStorage.remove('exam');
                            });
                         }, function(err) {
                            Modal.open('error', 'There seems to be a problem with the server.', function() {
@@ -134,34 +129,33 @@ angular.module('app.exams.take')
 
             var storedSession = angular.fromJson(webStorage.get('exam'));
             if (storedSession) {
-               api.data = storedSession;
-               api.isOngoing = true;
+               self.data = storedSession;
+               self.isOngoing = true;
                if (User.isStudent()) {
-                  api.linkAnswers();
+                  self.linkAnswers();
                }
-               webStorage.remove('exam');
             } else {
-               api.reset();
+               self.reset();
             }
 
             $rootScope.$on('save', function() {
-               api.save();
+               self.save();
             });
 
             $rootScope.$on('$stateChangeStart', function(e, state, params) {
 
                var redirect = function() {
                   $state.go('exam', {
-                     subject: api.data.subject,
-                     date: api.data.date,
-                     lang: api.data.lang
+                     subject: self.data.subject,
+                     date: self.data.date,
+                     lang: self.data.lang
                   });
                };
 
-               if (api.isOngoing && (state.name === 'exams' || (User.isStudent() && state.name !== 'exam'))) {
+               if (self.isOngoing && (state.name === 'exams' || (User.isStudent() && state.name !== 'exam'))) {
                   e.preventDefault();
                   redirect();
-               } else if (!api.isOngoing && User.isStudent() && state.name === 'exam' && !User.data.pledge) {
+               } else if (!self.isOngoing && User.isStudent() && state.name === 'exam' && !User.data.pledge) {
                   e.preventDefault();
                   Modal.open('pledge', null, function(confirm) {
                      if (confirm) {
@@ -173,8 +167,8 @@ angular.module('app.exams.take')
                         });
                      }
                   });
-               } else if (api.isOngoing && state.name === 'exam') {
-                  if (params.subject !== api.data.subject || params.date !== api.data.date || params.lang !== api.data.lang) {
+               } else if (self.isOngoing && state.name === 'exam') {
+                  if (params.subject !== self.data.subject || params.date !== self.data.date || params.lang !== self.data.lang) {
                      e.preventDefault();
                      Modal.open('alert', 'You can only take one exam at a time.', function() {
                         redirect();
@@ -186,7 +180,7 @@ angular.module('app.exams.take')
 
          })();
 
-         return api;
+         return self;
 
       })();
 

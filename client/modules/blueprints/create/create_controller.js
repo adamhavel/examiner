@@ -46,7 +46,6 @@ angular.module('app.blueprints.create')
                      return !(item.content || item.value);
                   });
                case 'canvas':
-                  console.log(content);
                   return content.states.length === 1;
             }
          }
@@ -184,30 +183,34 @@ angular.module('app.blueprints.create')
       $scope.addContent = function(question, type, isAnswer) {
          isAnswer = isAnswer || false;
          var target = isAnswer ? question.answer : question.body;
-         var content = null;
+         var chunk = null;
          switch (type) {
             case 'text':
-               content = {
+               chunk = {
                   datatype: 'text'
                };
                break;
             case 'list':
-               content = {
+               chunk = {
                   datatype: 'list'
                };
                break;
             case 'code':
                Modal.open('chooseProgrammingLanguage', 'Please choose one of the following programming languages.', function(lang) {
                   if (lang) {
-                     target.push({
+                     chunk = {
                         datatype: 'code',
                         lang: lang
-                     });
+                     };
+                     target.push(chunk);
+                     if (isAnswer) {
+                        chunk.content = null;
+                     }
                   }
                });
                break;
             case 'options':
-               content = {
+               chunk = {
                   datatype: 'options'
                };
                break;
@@ -222,13 +225,16 @@ angular.module('app.blueprints.create')
                });
                break;
             case 'canvas':
-               content = {
+               chunk = {
                   datatype: 'canvas'
                };
                break;
          }
-         if (content) {
-            target.push(content);
+         if (chunk) {
+            target.push(chunk);
+            if (isAnswer) {
+               chunk.content = null;
+            }
          }
       };
 
@@ -270,14 +276,20 @@ angular.module('app.blueprints.create')
          return angular.toJson(o1) === angular.toJson(o2);
       };
 
-      $scope.blueprint = NewBlueprint.data;
-
-      if (!NewBlueprint.isOngoing) {
-         $scope.blueprint.subject = $stateParams.subject;
-         $scope.blueprint.date = $stateParams.date;
-         $scope.blueprint.lang = $stateParams.lang;
+      if (NewBlueprint.isOngoing) {
+         $scope.blueprint = NewBlueprint.data;
+      } else {
+         NewBlueprint.data = {
+            subject: $stateParams.subject,
+            date: $stateParams.date,
+            lang: $stateParams.lang,
+            lede: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui asperiores hic et debitis doloremque. Expedita, enim, debitis quod unde repudiandae dolorem illo temporibus delectus? Quo, quis cupiditate incidunt nisi magni.',
+            sections: []
+         };
+         $scope.blueprint = NewBlueprint.data;
          $scope.addSection();
          NewBlueprint.isOngoing = true;
+         NewBlueprint.save();
       }
 
       var watcher = $scope.$watch('blueprint.sections', function() {

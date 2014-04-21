@@ -1,10 +1,10 @@
-<article class="exam" ng-if="exam.started || !user.isStudent()">
+<article class="exam" ng-class="{'ng-hidden': !exam.started && user.isStudent()}">
 
    <header class="exam__header">
       <h1 class="alpha heading exam__subject">{{exam.subject | uppercase}}</h1>
       <h2 class="alpha heading exam__date">{{exam.date | date: 'd. M. yyyy, H:mm'}}</h2>
       <div class="exam__controls">
-         <div ng-if="user.isStudent()">
+         <div ng-if="user.isStudent() && exam.started">
             <button ng-click="handIn()">Hand in</button>
          </div>
          <div ng-if="!user.isStudent()">
@@ -21,57 +21,61 @@
       </div>
    </header>
 
-   <contents document="exam"></contents>
+   <div ng-if="exam.started || !user.isStudent()">
 
-   <p ng-if="exam.lede" class="lede">{{exam.lede}}</p>
+      <contents document="exam"></contents>
 
-   <section class="exam__section" id="{{section.name || 'Untitled section ' + ($index+1) | idfy}}" ng-repeat="section in exam.sections">
+      <p ng-if="exam.lede" class="lede">{{exam.lede}}</p>
 
-      <header ng-if="exam.sections.length > 1 || section.lede">
-         <h1 class="beta heading" ng-model="section.name">{{section.name}}</h1>
-         <p class="exam__points">
-            {{section.points}} {{section.points != 1 ? 'points' : 'point'}}
-         </p>
-      </header>
+      <section class="exam__section" id="{{section.name || 'Untitled section ' + ($index+1) | idfy}}" ng-repeat="section in exam.sections">
 
-      <p class="lede" ng-if="section.lede">{{section.lede}}</p>
-
-      <article class="question" id="{{question.name || 'Untitled question ' + ($index+1) | idfy}}" ng-repeat="question in section.questions">
-
-         <header>
-            <h1 class="delta heading question__heading">
-               {{question.name}}
-            </h1>
+         <header ng-if="exam.sections.length > 1 || section.lede">
+            <h1 class="beta heading" ng-model="section.name">{{section.name}}</h1>
             <p class="exam__points">
-               {{question.points}} {{question.points != 1 ? 'points' : 'point'}}
+               {{section.points}} {{section.points != 1 ? 'points' : 'point'}}
             </p>
          </header>
 
-         <div class="question__chunk" ng-repeat="chunk in question.body" ng-switch on="chunk.datatype">
-            <paragraph ng-switch-when="text" content="chunk.content" editable="false"></paragraph>
-            <img ng-switch-when="image" class="question__image" ng-src="{{chunk.content}}">
-            <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;base64,{{chunk.content | base64}}">
-            <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="false"></snippet>
-            <list ng-switch-when="list" content="chunk.content" editable="false"></list>
-         </div>
+         <p class="lede" ng-if="section.lede">{{section.lede}}</p>
 
-         <div class="question__chunk question__answer" ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">
-            <ul ng-if="!user.isStudent() && chunk.solution" class="inline-list tools tools--small tools--flush">
-               <li><button title="Show solution" class="tools__item icon--view" ng-mousedown="toggleSolution(chunk)" ng-mouseup="toggleSolution(chunk)">Show solution</button></li>
-            </ul>
-            <h2 class="heading heading--caption epsilon">Your answer</h2>
-            <paragraph ng-switch-when="text" content="chunk.content" editable="{{user.isStudent() ? 'true' : 'false'}}"></paragraph>
-            <div ng-switch-when="canvas">
-               <icanvas ng-if="user.isStudent()" content="chunk.content"></icanvas>
-               <img ng-if="!user.isStudent()" ng-init="chunk.content = chunk.content || 'aa'" class="question__image" ng-src="data:image/svg+xml;base64,{{chunk.content | base64}}">
+         <article class="question" id="{{question.name || 'Untitled question ' + ($index+1) | idfy}}" ng-repeat="question in section.questions">
+
+            <header>
+               <h1 class="delta heading question__heading">
+                  {{question.name}}
+               </h1>
+               <p class="exam__points">
+                  {{question.points}} {{question.points != 1 ? 'points' : 'point'}}
+               </p>
+            </header>
+
+            <div class="question__chunk" ng-repeat="chunk in question.body" ng-switch on="chunk.datatype">
+               <paragraph ng-switch-when="text" content="chunk.content" editable="false"></paragraph>
+               <img ng-switch-when="image" class="question__image" ng-src="{{chunk.content}}">
+               <img ng-switch-when="canvas" class="question__image" ng-src="data:image/svg+xml;base64,{{chunk.content | base64}}">
+               <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="false"></snippet>
+               <list ng-switch-when="list" content="chunk.content" editable="false"></list>
             </div>
-            <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="{{user.isStudent() ? 'true' : 'false'}}"></snippet>
-            <list ng-switch-when="list" content="chunk.content" editable="{{user.isStudent() ? 'true' : 'false'}}"></list>
-            <options ng-switch-when="options" content="chunk.content" switchable="{{user.isStudent() ? 'true' : 'false'}}" editable="false"></options>
-         </div>
 
-      </article>
+            <div class="question__chunk question__answer" ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">
+               <ul ng-if="!user.isStudent() && chunk.solution !== null" class="inline-list tools tools--small tools--flush">
+                  <li><button title="Show solution" class="tools__item icon--view" ng-mousedown="toggleSolution(chunk)" ng-mouseup="toggleSolution(chunk)">Show solution</button></li>
+               </ul>
+               <h2 class="heading heading--caption epsilon">Your answer</h2>
+               <paragraph ng-switch-when="text" content="chunk.content" editable="{{user.isStudent() ? 'true' : 'false'}}"></paragraph>
+               <div ng-switch-when="canvas">
+                  <icanvas ng-if="user.isStudent()" content="chunk.content"></icanvas>
+                  <img ng-if="!user.isStudent()" ng-init="chunk.content = chunk.content || 'aa'" class="question__image" ng-src="data:image/svg+xml;base64,{{chunk.content | base64}}">
+               </div>
+               <snippet ng-switch-when="code" content="chunk.content" lang="{{chunk.lang}}" editable="{{user.isStudent() ? 'true' : 'false'}}"></snippet>
+               <list ng-switch-when="list" content="chunk.content" editable="{{user.isStudent() ? 'true' : 'false'}}"></list>
+               <options ng-switch-when="options" content="chunk.content" switchable="{{user.isStudent() ? 'true' : 'false'}}" editable="false"></options>
+            </div>
 
-   </section>
+         </article>
+
+      </section>
+
+   </div>
 
 </article>

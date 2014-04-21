@@ -7,20 +7,29 @@ angular.module('app.exams.evaluate')
    function($scope, $stateParams, $state, Exam, ExamEvaluation, Modal) {
 
       $scope.discard = function() {
-         Modal.open('confirm', 'Do you want to hold off the evaluation for another time? All work in-progress will be lost.', function(confirmed) {
+         Modal.open('confirm', 'Are you sure about leaving the ongoing evaluation? All work in-progress will be lost.', function(confirmed) {
             if (confirmed) {
+               var directions = {
+                  subject: $stateParams.subject,
+                  date: $stateParams.date
+               };
                ExamEvaluation.reset();
-               $state.go('pastExams');
+               $state.go('pastExams', directions);
             }
-         }, 'Hold off');
+         }, 'Leave');
       };
 
       $scope.store = function() {
-         ExamEvaluation.store();
+         Modal.open('save', 'You are about to finish the evaluation. You can edit it anytime later. Do you want to continue?', function(confirmed) {
+            if (confirmed) {
+               ExamEvaluation.store();
+            }
+         });
       };
 
       $scope.reevaluate = function() {
-         ExamEvaluation.store();
+         ExamEvaluation.isOngoing = true;
+         ExamEvaluation.save();
       };
 
       $scope.raisePoints = function(section, question) {
@@ -35,10 +44,16 @@ angular.module('app.exams.evaluate')
          section.points--;
       };
 
-      $scope.exam = ExamEvaluation.data;
-      $scope.blueprint = ExamEvaluation.data._blueprint;
+      $scope.toggleSolution = function(answer) {
+         var temp = answer.content;
+         answer.content = answer.solution;
+         answer.solution = temp;
+      };
 
-      if (!ExamEvaluation.isOngoing) {
+      if (ExamEvaluation.isOngoing) {
+         $scope.exam = ExamEvaluation.data;
+         $scope.blueprint = ExamEvaluation.data._blueprint;
+      } else {
          ExamEvaluation.data = Exam.get({
             subject: $stateParams.subject,
             date: $stateParams.date,
@@ -46,12 +61,15 @@ angular.module('app.exams.evaluate')
             uid: $stateParams.uid
          }, function() {
             $scope.exam = ExamEvaluation.data;
-            $scope.blueprint = ExamEvaluation.data._blueprint;
+            $scope.blueprint = $scope.exam._blueprint;
             _.forEach($scope.blueprint.sections, function(section) {
                section.maxPoints = section.points;
             });
-            ExamEvaluation.isOngoing = true;
             ExamEvaluation.linkAnswers();
+            if ($scope.exam.evaluated === null) {
+               ExamEvaluation.isOngoing = true;
+               ExamEvaluation.save();
+            }
          });
       }
 

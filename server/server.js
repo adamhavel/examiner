@@ -69,7 +69,7 @@ io.sockets.on('connection', function(socket) {
          socket.leave(data.examId);
       }
       if (data.role === 'student') {
-         socket.broadcast.to(data.examId).emit('student:left', data.id);
+         socket.broadcast.to(data.examId).emit('student:left', data);
       }
    });
 

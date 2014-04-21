@@ -1,12 +1,17 @@
-<h1 class="alpha heading">
-   Evaluation<span class="heading__subtitle" ng-if="subject">: {{subject | uppercase}}</span>
-</h1>
+<header>
+   <h1 class="alpha heading">Evaluate<span class="heading__subtitle" ng-if="subject">: {{subject | uppercase}}</span></h1>
+   <ul class="epsilon breadcrumbs" ng-if="subject">
+      <li><a class="breadcrumbs__item" ui-sref="pastExams({ subject: null, date: null })">Subjects</a></li><!--
+      --><li><a ng-class="{'ng-active': subject && !date}" class="breadcrumbs__item" ui-sref="pastExams({ subject: subject, date: null })">{{subject | uppercase}}</a></li><!--
+      --><li ng-if="date"><a ng-class="{'ng-active': date}" class="breadcrumbs__item">{{date | date: 'd. M. yyyy, h:mm'}}</a></li>
+   </ul>
+</header>
 
 <section class="list">
 
    <div class="grid">
 
-      <div class="grid__item one-quarter" ng-repeat="item in items">
+      <div class="grid__item one-quarter lap--one-third palm--one-half" ng-repeat="item in items">
 
          <section ng-if="!subject" class="preview preview--stack" ng-class="{'ng-urgent': item.urgent}">
             <div class="content">
@@ -15,7 +20,18 @@
             <a ui-sref="pastExams({ subject: item.subject })" class="more"></a>
          </section>
 
-         <section ng-if="subject" class="preview preview--sheet" ng-class="{'ng-urgent': item.evaluated === null}">
+         <section ng-if="subject && !date" class="preview preview--stack" ng-class="{'ng-urgent': item.urgent}">
+            <div class="content">
+               <h1 class="beta heading preview__heading">{{item.subject | uppercase}}</h1>
+               <h2 class="heading preview__subheading">
+                  <time class="epsilon">{{item.date | date: 'd. M. yyyy'}}</time>
+                  <time>{{item.date | date: 'h:mm'}}</time>
+               </h2>
+            </div>
+            <a ui-sref="pastExams({ subject: item.subject, date: item.date })" class="more"></a>
+         </section>
+
+         <section ng-if="subject && date" class="preview preview--sheet" ng-class="{'ng-urgent': item.evaluated === null}">
             <div class="content">
                <h1 class="gamma heading preview__heading">{{item.student.name | break}}</h1>
                <h2 class="heading preview__subheading"><span>{{item.subject | uppercase}}</span></h2>

@@ -2,9 +2,6 @@ var exams = require('../controllers/exams');
 
 module.exports = function(app) {
 
-   //app.route('/api/exams/:subject?/:date?/:lang?')
-   //   .get(exams.query);
-
    app.route('/api/exams/:subject?/:date?/:lang?/:uid?')
       .get(exams.query);
 
@@ -12,9 +9,6 @@ module.exports = function(app) {
       .get(exams.get)
       .put(exams.update)
       .post(exams.create);
-
-   // app.route('/api/exams/:subject?/:date?/:lang?/:uid?')
-   //    .get(exams.query);
 
    app.param('uid', exams.validateUserID);
    app.param('subject', exams.validateSubject);

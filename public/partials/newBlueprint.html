@@ -86,9 +86,9 @@
 
          <div class="question__chunk question__answer" ng-repeat="chunk in question.answer" ng-switch on="chunk.datatype">
             <ul class="inline-list tools tools--small tools--flush">
-               <li ng-show="chunk.content && chunk.datatype !== 'options'"><button title="Update hint" class="tools__item icon--copy" ng-disabled="areEqual(chunk.solution, chunk.content)" ng-click="updateHint(chunk)">Update hint</button></li>
-               <li ng-show="chunk.content && chunk.datatype !== 'options'"><button title="Remove hint" class="tools__item icon--bulb-off" ng-click="removeHint(chunk)">Remove hint</button></li>
-               <li ng-hide="chunk.content || chunk.datatype === 'options'"><button title="Add hint" class="tools__item icon--bulb-on" ng-click="addHint(chunk)">Add hint</button></li>
+               <li ng-show="chunk.content !== null && chunk.datatype !== 'options'"><button title="Update hint" class="tools__item icon--copy" ng-disabled="areEqual(chunk.solution, chunk.content)" ng-click="updateHint(chunk)">Update hint</button></li>
+               <li ng-show="chunk.content !== null && chunk.datatype !== 'options'"><button title="Remove hint" class="tools__item icon--bulb-off" ng-click="removeHint(chunk)">Remove hint</button></li>
+               <li ng-hide="chunk.content !== null || chunk.datatype === 'options'"><button title="Add hint" class="tools__item icon--bulb-on" ng-click="addHint(chunk)">Add hint</button></li>
                <li ng-show="chunk.datatype === 'code'"><button title="Change language" class="tools__item icon--code-alt" ng-click="changeProgrammingLanguage(chunk)">Change language</button></li>
                <li><button title="Move up" class="tools__item icon--up" ng-disabled="$first" ng-click="move(question.answer, $index, -1)">Move up</button></li>
                <li><button title="Move down" class="tools__item icon--down" ng-disabled="$last" ng-click="move(question.answer, $index, 1)">Move down</button></li>
@@ -100,7 +100,7 @@
             <snippet ng-switch-when="code" content="chunk.solution" lang="{{chunk.lang}}" editable="true"></snippet>
             <list ng-switch-when="list" content="chunk.solution" editable="true"></list>
             <options ng-switch-when="options" content="chunk.solution" editable="true" switchable="true"></options>
-            <div ng-if="chunk.content && chunk.datatype !== 'options'" class="question__chunk" ng-switch on="chunk.datatype">
+            <div ng-if="chunk.content !== null && chunk.datatype !== 'options'" class="question__chunk" ng-switch on="chunk.datatype">
                <ul class="inline-list tools tools--small tools--flush">
                   <li><button title="Remove hint" class="tools__item icon--remove" ng-click="removeHint(chunk)">Remove hint</button></li>
                </ul>

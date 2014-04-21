@@ -12,27 +12,22 @@ angular.module('app.blueprints.create')
             return null;
          }
 
-         var api = {
+         var self = {
             data: null,
             isOngoing: false
          };
 
-         api.reset = function() {
-            api.data = {
-               subject: null,
-               date: null,
-               lang: null,
-               lede: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione, quidem, ullam dolorum expedita aliquam maiores distinctio esse repudiandae totam magnam saepe iusto ipsam nam a libero suscipit enim architecto nobis!',
-               sections: []
-            };
-            api.isOngoing = false;
+         self.reset = function() {
+            self.data = null;
+            self.isOngoing = false;
+            webStorage.remove('blueprint');
          };
 
-         api.save = function(callback) {
+         self.save = function(callback) {
             callback = callback || null;
-            if (api.isOngoing) {
+            if (self.isOngoing) {
                var regExpHTML = /(<([^>]+)>)/g;
-               _.forEach(api.data.sections, function(section) {
+               _.forEach(self.data.sections, function(section) {
                   _.forEach(section.questions, function(question) {
 
                      var codeChunks = _.where(question.body.concat(question.answer), { 'datatype': 'code' }),
@@ -58,28 +53,26 @@ angular.module('app.blueprints.create')
 
                   });
                });
-               webStorage.add('blueprint', angular.toJson(api.data));
+               webStorage.add('blueprint', angular.toJson(self.data));
             }
             if (callback) {
                callback();
             }
          };
 
-         api.store = function() {
-            api.save(function() {
+         self.store = function() {
+            self.save(function() {
                $rootScope.$emit('seal');
                $timeout(function() {
-                  var blueprint = new Blueprint(api.data);
+                  var blueprint = new Blueprint(self.data);
                   blueprint.$save(function() {
                      Modal.open('success', 'The blueprint has been successfully saved.', function() {
-                        $state.go('blueprints', { filter: '/mi-mdw' });
-                        api.reset();
-                        webStorage.remove('blueprint');
+                        $state.go('blueprints', { subject: self.data.subject });
+                        self.reset();
                      });
                   }, function(err) {
                      Modal.open('error', 'There seems to be a problem with the server. Please try saving the blueprint later.');
-                     api.data = angular.fromJson(webStorage.get('blueprint'));
-                     webStorage.remove('blueprint');
+                     self.data = angular.fromJson(webStorage.get('blueprint'));
                   });
                }, 1000);
             });
@@ -89,32 +82,31 @@ angular.module('app.blueprints.create')
 
             var storedSession = angular.fromJson(webStorage.get('blueprint'));
             if (storedSession) {
-               api.data = storedSession;
-               api.isOngoing = true;
-               webStorage.remove('blueprint');
+               self.data = storedSession;
+               self.isOngoing = true;
             } else {
-               api.reset();
+               self.reset();
             }
 
             $rootScope.$on('save', function() {
-               api.save();
+               self.save();
             });
 
             $rootScope.$on('$stateChangeStart', function(e, state, params) {
 
                var redirect = function() {
                   $state.go('newBlueprint', {
-                     subject: api.data.subject,
-                     date: api.data.date,
-                     lang: api.data.lang
+                     subject: self.data.subject,
+                     date: self.data.date,
+                     lang: self.data.lang
                   });
                };
 
-               if (api.isOngoing && state.name === 'examTerms') {
+               if (self.isOngoing && state.name === 'examTerms') {
                   e.preventDefault();
                   redirect();
-               } else if (api.isOngoing && state.name === 'newBlueprint') {
-                  if (params.subject !== api.data.subject || params.date !== api.data.date || params.lang !== api.data.lang) {
+               } else if (self.isOngoing && state.name === 'newBlueprint') {
+                  if (params.subject !== self.data.subject || params.date !== self.data.date || params.lang !== self.data.lang) {
                      e.preventDefault();
                      Modal.open('alert', 'You can only create one blueprint at a time.', function() {
                         redirect();
@@ -126,7 +118,7 @@ angular.module('app.blueprints.create')
 
          })();
 
-         return api;
+         return self;
 
       })();
 

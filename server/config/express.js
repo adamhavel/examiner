@@ -25,7 +25,8 @@ module.exports = function(app, passport, db) {
       secret: config.sessionSecret,
       store: new sessionStore({
          db: db.connection.db,
-         collection: config.sessionCollection
+         collection: config.sessionCollection,
+         auto_reconnect: true
       })
    }));
 
@@ -47,6 +48,9 @@ module.exports = function(app, passport, db) {
    // load routes
    var routesDir = config.root + '/routes';
    fs.readdirSync(routesDir).forEach(function(route) {
+      if (route === 'middleware') {
+         return false;
+      }
       require(routesDir + '/' + route)(app, passport);
    });
 

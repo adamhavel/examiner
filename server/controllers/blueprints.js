@@ -1,13 +1,19 @@
 var mongoose = require('mongoose'),
     Blueprint = mongoose.model('Blueprint'),
     _ = require('lodash'),
+    moment = require('moment'),
     svgo = new (require('svgo'))();
 
 exports.query = function(req, res) {
-   var query = Blueprint.find().sort({ date: -1 });
+   var query = Blueprint.find().select('subject date lang');
+
    if (req.subject) {
       query = query.find({
          subject: req.subject
+      });
+   } else {
+      query = query.find({
+         subject: { $in: req.user.subjects }
       });
    }
    if (req.lang) {
@@ -20,6 +26,7 @@ exports.query = function(req, res) {
          date: req.date
       });
    }
+
    query.lean().exec(function(err, blueprints) {
       if (err) {
          res.send(500);
@@ -32,11 +39,21 @@ exports.query = function(req, res) {
 };
 
 exports.get = function(req, res) {
-   Blueprint.findOne({
+   var query = Blueprint.findOne({
       subject: req.subject,
       lang: req.lang,
       date: req.date
-   }).lean().exec(function(err, blueprint) {
+   });
+
+   if (req.user.role === 'student') {
+      if (moment() < moment(req.date)) {
+         query.select('-sections -lede');
+      } else {
+         query.select('-sections.questions.answer.solution');
+      }
+   }
+
+   query.lean().exec(function(err, blueprint) {
       if (err) {
          res.send(500, err);
       } else if (!blueprint) {

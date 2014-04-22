@@ -1,33 +1,56 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    OAuth2Strategy = require('passport-oauth').OAuth2Strategy,
+    User = mongoose.model('User'),
     LDAPStrategy = require('passport-ldapauth').Strategy;
 
 module.exports = function(passport) {
 
-   passport.use('zuul', new OAuth2Strategy({
-      authorizationURL: 'https://auth.fit.cvut.cz/oauth/oauth/authorize',
-      tokenURL: 'https://auth.fit.cvut.cz/oauth/oauth/token',
-      clientID: '4df4fcde-9ec3-4288-9415-3efa07e8ed11',
-      clientSecret: 'rgrpWfZ6pDnnUGeHf3NeMCnY2hGgArnI',
-      callbackURL: 'http://dev.vitvar.com:5000/api/test'
-   }, function(accessToken, refreshToken, profile, done) {
-         done(err, profile);
-      })
-   );
+   passport.serializeUser(function(user, done) {
+      done(null, user._id);
+   });
 
-   passport.use('usermap', new LDAPStrategy(
+   passport.deserializeUser(function(uid, done) {
+      User.findById(uid, function(err, user) {
+         done(err, user);
+      });
+   });
+
+   passport.use('ldap', new LDAPStrategy(
       {
          server: {
             url: 'ldaps://ldap.fit.cvut.cz:636',
             searchBase: 'ou=People,o=fit.cvut.cz',
-            searchFilter: '(uid={{username}})'
+            searchFilter: '(uid={{username}})',
+            searchAttributes: ['cn','uid']
          }
       },
-      function(user, done) {
-         console.log(user);
-         return done(null, user);
+      function(entry, done) {
+         User.findByIdAndUpdate(entry.uid, { lastActive: new Date() }, function(err, user) {
+            if (err) {
+               return done(err);
+            }
+            if (!user) {
+               var newUser = {
+                  _id: entry.uid,
+                  name: entry.cn,
+                  lastLogin: new Date(),
+                  role: 'teacher',
+                  subjects: ['mi-mdw', 'mi-w20']
+               };
+               User.create(newUser, function(err, user) {
+                  if (err) {
+                     return done(err);
+                  }
+                  console.log('new');
+                  return done(null, user);
+               });
+            } else {
+               console.log('user already in db');
+               return done(null, user);
+            }
+
+         });
       }
    ));
 

@@ -2,12 +2,12 @@
 
 angular.module('app.user')
 
-   .factory('User', ['$rootScope', 'webStorage', function($rootScope, webStorage) {
+   .factory('User', ['$q', '$state', '$http', '$rootScope', function($q, $state, $http, $rootScope) {
 
       var User = (function() {
 
          var self = {
-            data: null
+            data: {}
          };
 
          self.switchRole = function() {
@@ -22,31 +22,63 @@ angular.module('app.user')
             return self.data.role === 'student';
          };
 
-         self.reset = function() {
-            self.data = {
-               name: 'Adam Havel',
-               id: 'havelad1',
-               role: 'teacher',
-               pledge: false
+         self.login = function(uid, password) {
+            var credentials = {
+               username: uid,
+               password: password
             };
-            webStorage.remove('user');
+            var deferred = $q.defer();
+            $http.post('api/user', credentials).success(function(user) {
+               if (user) {
+                  self.data = user;
+                  self.data.id = self.data._id;
+                  delete self.data._id;
+                  deferred.resolve(true);
+               } else {
+                  deferred.resolve(false);
+               }
+            });
+            return deferred.promise;
          };
 
-         self.save = function() {
-            webStorage.add('user', angular.toJson(self.data));
+         self.logout = function() {
+            $http.delete('api/user');
+            self.data = {};
+         };
+
+         self.isLoggedIn = function() {
+            var deferred = $q.defer();
+            $http.get('api/user').success(function(user) {
+               if (user) {
+                  self.data = user;
+                  self.data.id = self.data._id;
+                  delete self.data._id;
+                  deferred.resolve(true);
+               } else {
+                  $state.go('login');
+                  self.data = {};
+                  deferred.resolve(false);
+               }
+            });
+            return deferred.promise;
          };
 
          (function init() {
 
-            var storedSession = angular.fromJson(webStorage.get('user'));
-            if (storedSession) {
-               self.data = storedSession;
-               //self.data.pledge = false;
-            } else {
-               self.reset();
-            }
+            self.isLoggedIn().then(function() {
 
-            $rootScope.$on('save', self.save);
+               $rootScope.$on('$stateChangeStart', function(e, state, params) {
+
+                  if (state.name !== 'login' && !self.data.id) {
+                     e.preventDefault();
+                     $state.go('login');
+                  }
+
+               });
+
+            });
+
+
 
          })();
 

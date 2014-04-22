@@ -27,7 +27,7 @@
       <nav class="top-nav">
          <ul class="inline-list">
             <li>Logged in as: <span ng-model="user.data.name" contenteditable></span> (<span ng-model="user.data.id" contenteditable></span>) [<a ng-click="user.switchRole()" href="">{{user.data.role}}</a>]</li>
-            <li><a href="">Log Out</a></li>
+            <li><a ng-click="user.logout()" ui-sref="login">Log Out</a></li>
          </ul>
       </nav>
 

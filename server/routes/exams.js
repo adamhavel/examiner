@@ -1,4 +1,5 @@
-var exams = require('../controllers/exams');
+var exams = require('../controllers/exams'),
+    auth = require('./middleware/auth');
 
 module.exports = function(app) {
 

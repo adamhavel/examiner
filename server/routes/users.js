@@ -1,16 +1,26 @@
-//var users = require('../controllers/users');
+var auth = require('./middleware/auth');
 
 module.exports = function(app, passport) {
 
-   app.route('/api/login')
-      .get(function(req, res, next) {
-         req.body.username = 'havelad1';
-         req.body.password = 'l9LYl4HMjhBNlAUftm8OG09Z';
+   app.route('/api/user')
+
+      .get(function(req, res) {
+         res.send(req.isAuthenticated() ? req.user : null);
+      })
+
+      .post(function(req, res, next) {
          console.log(req.body);
          next();
-      }, passport.authenticate('usermap'), function(req, res) {
-         console.log(req.user);
-      });
+      }, passport.authenticate('ldap'), function(req, res) {
+         res.send(req.user);
+      })
 
+      .delete(function(req, res) {
+         if (req.isAuthenticated()) {
+            req.logout();
+            res.redirect('/');
+         }
+         console.log('yay');
+      });
 
 };

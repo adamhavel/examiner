@@ -17,15 +17,18 @@ module.exports = function(passport) {
       })
    );
 
-   // passport.use(new LdapStrategy(
-   //    {
-   //       server: {
-   //          url: 'ldap://localhost:389'
-   //       }
-   //    },
-   //    function(user, done) {
-   //       return done(null, user);
-   //    }
-   // ));
+   passport.use('usermap', new LDAPStrategy(
+      {
+         server: {
+            url: 'ldaps://ldap.fit.cvut.cz:636',
+            searchBase: 'ou=People,o=fit.cvut.cz',
+            searchFilter: '(uid={{username}})'
+         }
+      },
+      function(user, done) {
+         console.log(user);
+         return done(null, user);
+      }
+   ));
 
 };

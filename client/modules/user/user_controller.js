@@ -8,9 +8,9 @@ angular.module('app.user')
 
          $scope.login = function() {
             User.login($scope.uid, $scope.password).then(function() {
-                  $state.go('exams');
+               $state.go('exams');
             }, function(err) {
-               console.log('yay');
+               Modal.open('error', err);
             });
          };
 

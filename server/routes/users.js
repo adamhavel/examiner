@@ -8,10 +8,7 @@ module.exports = function(app, passport) {
          res.send(req.isAuthenticated() ? req.user : null);
       })
 
-      .post(function(req, res, next) {
-         console.log(req.body);
-         next();
-      }, passport.authenticate('ldap'), function(req, res) {
+      .post(passport.authenticate('ldap'), function(req, res) {
          res.send(req.user);
       })
 
@@ -20,7 +17,6 @@ module.exports = function(app, passport) {
             req.logout();
             res.redirect('/');
          }
-         console.log('yay');
       });
 
 };

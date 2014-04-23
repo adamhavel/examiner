@@ -71,7 +71,7 @@ angular.module('app.blueprints.create')
                         self.reset();
                      });
                   }, function(err) {
-                     Modal.open('error', 'There seems to be a problem with the server. Please try saving the blueprint later.');
+                     Modal.open('error', 'There seems to be a problem with the server. Please try saving the blueprint later.', null, 'I understand');
                      self.data = angular.fromJson(webStorage.get('blueprint'));
                   });
                }, 1000);

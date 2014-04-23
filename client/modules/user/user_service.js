@@ -2,7 +2,9 @@
 
 angular.module('app.user')
 
-   .factory('User', ['$q', '$state', '$http', '$rootScope', function($q, $state, $http, $rootScope) {
+   .factory('User',
+   ['$q', '$state', '$http', '$rootScope', '$timeout', 'Modal',
+   function($q, $state, $http, $rootScope, $timeout, Modal) {
 
       var User = (function() {
 
@@ -27,17 +29,23 @@ angular.module('app.user')
                username: uid,
                password: password
             };
-            var deferred = $q.defer();
+            var deferred = $q.defer(),
+                resolved = false;
             $http.post('api/user', credentials).success(function(user) {
-               if (user) {
-                  self.data = user;
-                  self.data.id = self.data._id;
-                  delete self.data._id;
-                  deferred.resolve(true);
-               } else {
-                  deferred.resolve(false);
-               }
+               self.data = user;
+               self.data.id = self.data._id;
+               delete self.data._id;
+               deferred.resolve();
+               resolved = true;
+            }, function(err) {
+               deferred.reject('No such user exists.');
+               resolved = true;
             });
+            $timeout(function() {
+               if (!resolved) {
+                  deferred.reject('The server is not responding. Try logging in later.');
+               }
+            }, 5000);
             return deferred.promise;
          };
 

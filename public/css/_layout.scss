@@ -20,6 +20,19 @@ body {
    @include media-query(palm) {
       padding: 0 ($gutter / 2);
    }
+   &.ng-animate {
+      transition: transform 1.5s;
+   }
+   &.ng-enter {
+      transform: translate3d(calc(50% + 50vw), 0, 0);
+   }
+   &.ng-enter-active,
+   &.ng-leave {
+      transform: translate3d(0, 0, 0);
+   }
+   &.ng-leave-active {
+      transform: translate3d(calc(50% + 50vw), 0, 0);
+   }
 }
 
 
@@ -32,7 +45,6 @@ $navigation-height: $leading * 1;
 .page-header {
    @include blank-lines(1, both);
    margin-left: $sidebar-width;
-   font-family: "Roboto";
 }
 
    .site-logo {
@@ -132,6 +144,7 @@ $navigation-height: $leading * 1;
          transition-duration: .25s;
          opacity: .3;
          @include icon {
+            height: $leading * 2;
             margin-left: $gutter / 2;
          };
          &:hover,
@@ -181,4 +194,68 @@ $navigation-height: $leading * 1;
 
 .page-footer {
 
+}
+
+
+/* ==========================================================================
+   Login form
+   ========================================================================== */
+
+.login {
+   @include position($top: 50%, $left: 50%);
+   @include blank-lines(2, both, padding);
+   @include taper(2);
+   transform: translate3d(-50%, -50%, 0);
+   width: $main-content-width / 1.5;
+   box-sizing: border-box;
+   &.ng-animate {
+      transition: transform 1.5s;
+   }
+   &.ng-enter {
+      transform: translate3d(-100vw, -50%, 0);
+   }
+   &.ng-enter-active,
+   &.ng-leave {
+      transform: translate3d(-50%, -50%, 0);
+   }
+   &.ng-leave-active {
+      transform: translate3d(-100vw, -50%, 0);
+   }
+   @include before(url('../img/pencil.svg')) {
+      @include position($top: -10%, $right: 115%);
+      font-size: 0;
+      transform: rotateZ(-105deg);
+      transform-origin: right;
+      filter: drop-shadow(-7px 7px 0 rgba(black, .125));
+   }
+   &__heading {
+      @extend %kilo;
+      @include blank-lines(1, trailing);
+      line-height: $leading * 2;
+      font-family: "Roboto", sans-serif;
+      font-weight: 300;
+      color: rgba(black, .4);
+      text-indent: -5px;
+   }
+   &__form {
+      @include primary-button(lighten(brand(green), 10%));
+      text-align: right;
+   }
+   &__input {
+      @extend %epsilon;
+      @include linespan(2);
+      line-height: auto;
+      font-family: "Roboto", sans-serif;
+      font-weight: 300;
+      text-align: center;
+      color: rgba(black, .75);
+      &:last-of-type {
+         @include blank-lines(1, trailing);
+      }
+   }
+   &__submit {
+      @extend %epsilon;
+      @include linespan(1.75);
+      width: 33%;
+   }
 }

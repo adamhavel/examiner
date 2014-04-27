@@ -11,5 +11,10 @@ angular.module('app.blueprints')
    }])
 
    .factory('Blueprints', ['$resource', function($resource) {
-      return $resource('api/blueprints/:subject/:date/:lang', null);
+      return $resource('api/blueprints', {
+         subject: '@subject',
+         date: '@date',
+         lang: '@lang',
+         fields: '@lang'
+      });
    }]);

@@ -125,7 +125,11 @@ angular.module('app.exams.take')
             });
          };
 
-         (function init() {
+         $rootScope.$on('loggedIn', function() {
+            self.init();
+         });
+
+         self.init = function() {
 
             var storedSession = angular.fromJson(webStorage.get('exam'));
             if (storedSession) {
@@ -178,7 +182,7 @@ angular.module('app.exams.take')
 
             });
 
-         })();
+         };
 
          return self;
 

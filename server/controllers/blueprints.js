@@ -5,33 +5,38 @@ var mongoose = require('mongoose'),
     svgo = new (require('svgo'))();
 
 exports.query = function(req, res) {
-   var query = Blueprint.find().select('subject date lang');
+   var dbQuery = Blueprint.find(),
+       q = req.query;
 
-   if (req.subject) {
-      query = query.find({
-         subject: req.subject
+   if (q.subject) {
+      dbQuery = dbQuery.find({
+         subject: { $regex: new RegExp(q.subject, 'i'), $in: req.user.subjects }
       });
    } else {
-      query = query.find({
+      dbQuery = dbQuery.find({
          subject: { $in: req.user.subjects }
       });
    }
-   if (req.lang) {
-      query = query.find({
-         lang: req.lang
-      });
+
+   if (q.fields) {
+      dbQuery = dbQuery.select(q.fields.replace(/,/g, ' '));
    }
-   if (req.date) {
-      query = query.find({
-         date: req.date
+
+   if (q.lang) {
+      dbQuery = dbQuery.find({
+         lang: q.lang
       });
    }
 
-   query.lean().exec(function(err, blueprints) {
+   if (q.date) {
+      dbQuery = dbQuery.find({
+         date: q.date
+      });
+   }
+
+   dbQuery.lean().exec(function(err, blueprints) {
       if (err) {
          res.send(500);
-      } else if (!blueprints.length) {
-         res.send(404);
       } else {
          res.send(blueprints);
       }
@@ -39,21 +44,27 @@ exports.query = function(req, res) {
 };
 
 exports.get = function(req, res) {
-   var query = Blueprint.findOne({
-      subject: req.subject,
-      lang: req.lang,
-      date: req.date
+   var p = req.params;
+
+   var dbQuery = Blueprint.findOne({
+      subject: p.subject,
+      lang: p.lang,
+      date: p.date
    });
 
+   if (req.query.fields) {
+      dbQuery = dbQuery.select(q.fields.replace(/,/g, ' '));
+   }
+
    if (req.user.role === 'student') {
-      if (moment() < moment(req.date)) {
-         query.select('-sections -lede');
+      if (moment() < moment(p.date)) {
+         dbQuery.select('-sections -lede');
       } else {
-         query.select('-sections.questions.answer.solution');
+         dbQuery.select('-sections.questions.answer.solution');
       }
    }
 
-   query.lean().exec(function(err, blueprint) {
+   dbQuery.lean().exec(function(err, blueprint) {
       if (err) {
          res.send(500, err);
       } else if (!blueprint) {

@@ -9,7 +9,7 @@ angular.module('app.exams')
       $scope.subject = $stateParams.subject;
 
       Blueprints.query({
-         subject: $scope.subject
+         fields: 'subject,date,lang'
       }, function(examTerms) {
 
          examTerms = _.groupBy(examTerms, function(examTerm) {
@@ -41,8 +41,7 @@ angular.module('app.exams')
       $scope.date = $stateParams.date;
 
       Exams.query({
-         subject: $scope.subject,
-         date: $scope.date,
+         fields: 'subject,date,lang,evaluated,student'
       }, function(exams) {
 
          exams = _.groupBy(exams, function(exam) {

@@ -8,7 +8,7 @@ angular.module('app.exams.take')
 
       var fingerprint = {
          name: User.data.name,
-         id: User.data.id,
+         id: User.data._id,
          role: User.data.role,
          examId: $stateParams.subject + '/' + $stateParams.date
       };
@@ -55,7 +55,7 @@ angular.module('app.exams.take')
             if (User.isStudent()) {
                ExamTake.data.student = {
                   name: User.data.name,
-                  id: User.data.id
+                  id: User.data._id
                };
                ExamTake.linkAnswers();
             }

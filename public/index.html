@@ -8,19 +8,25 @@
    <meta name="description" content="">
    <link href="humans.txt" type="text/plain" rel="author">
    <link href="css/default.min.css" rel="stylesheet">
-   <link href="//fonts.googleapis.com" rel="dns-prefetch">
-   <link href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic&amp;subset=latin,latin-ext" rel="stylesheet">
-   <link href="//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700&amp;subset=latin,latin-ext" rel="stylesheet">
-   <link href="//fonts.googleapis.com/css?family=Roboto:300,400,400italic&amp;subset=latin,latin-ext" rel="stylesheet">
    <!--[if lte IE 9]><script src="js/shims.min.js"></script><![endif]-->
 </head>
 <body ng-class="{'ng-dim': modal.content}" ng-controller="UIController">
 
 <modal content="modal.content"></modal>
 
-<div></div>
+<section class="login" ng-if="user.isLoggedIn === false" ng-controller="LoginController">
+   <h1 class="heading login__heading">Examiner</h1>
+   <form class="login__form" ng-submit="login()">
 
-<div class="layout-wrapper" ng-if="state">
+      <input class="login__input" type="text" ng-model="uid" ng-init="uid = 'havelad1'" placeholder="Your username" required>
+      <input class="login__input" type="password" ng-model="password" placeholder="Your password" required>
+
+      <button class="login__submit" type="submit">Log in</button>
+
+   </form>
+</section>
+
+<div class="layout-wrapper" ng-if="user.isLoggedIn === true">
 
    <header class="page-header">
 
@@ -28,8 +34,8 @@
 
       <nav class="top-nav">
          <ul class="inline-list">
-            <li>Logged in as: <span ng-model="user.data.name" contenteditable></span> (<span ng-model="user.data.id" contenteditable></span>) [<a ng-click="user.switchRole()" href="">{{user.data.role}}</a>]</li>
-            <li><a ng-click="user.logout()" ui-sref="login">Log Out</a></li>
+            <li>Logged in as: <span ng-model="user.data.name" contenteditable></span> (<span ng-model="user.data._id" contenteditable></span>) [<a ng-click="user.switchRole()" href="">{{user.data.role}}</a>]</li>
+            <li><a ng-click="user.logout()">Log out</a></li>
          </ul>
       </nav>
 

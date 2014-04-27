@@ -9,7 +9,7 @@ angular.module('app.blueprints')
       $scope.subject = $stateParams.subject;
 
       $scope.blueprints = Blueprints.query({
-         subject: $scope.subject
+         fields: 'subject,date,lang'
       }, function(blueprints) {
 
          blueprints = _.groupBy(blueprints, function(blueprint) {
@@ -28,8 +28,6 @@ angular.module('app.blueprints')
             $scope.items = subjects;
          }
 
-      }, function() {
-         $state.go('blueprints');
       });
 
    }])
@@ -38,19 +36,12 @@ angular.module('app.blueprints')
    ['$scope', '$stateParams', '$state', 'Blueprint', 'NewBlueprint', 'Modal',
    function($scope, $stateParams, $state, Blueprint, NewBlueprint, Modal) {
 
-      function adjustForTimezone(date) {
-         var offset = date.getTimezoneOffset();
-         return new Date(date.getTime() + offset*60000);
-      }
-
       $scope.blueprint = Blueprint.get({
          subject: $stateParams.subject,
          date: $stateParams.date,
          lang: $stateParams.lang
       }, function(blueprint) {
-         $scope.editable = adjustForTimezone(new Date(blueprint.date)) > new Date();
-      }, function() {
-         $state.go('blueprints');
+         $scope.editable = moment(blueprint.date) > moment();
       });
 
       $scope.copyQuestion = function(question) {

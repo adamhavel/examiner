@@ -19,4 +19,13 @@ module.exports = function(app, passport) {
          }
       });
 
+   app.route('/api/logout')
+
+      .get(function(req, res) {
+         if (req.isAuthenticated()) {
+            req.logout();
+            res.redirect('/');
+         }
+      });
+
 };

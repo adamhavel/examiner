@@ -3,13 +3,13 @@
 angular.module('app.user')
 
    .factory('User',
-   ['$q', '$state', '$http', '$rootScope', '$timeout', 'Modal',
-   function($q, $state, $http, $rootScope, $timeout, Modal) {
+   ['$q', '$state', '$http', '$rootScope', '$timeout', '$animate', 'Modal',
+   function($q, $state, $http, $rootScope, $timeout, $animate, Modal) {
 
       var User = (function() {
 
          var self = {
-            data: {}
+            data: null
          };
 
          self.switchRole = function() {
@@ -29,64 +29,77 @@ angular.module('app.user')
                username: uid,
                password: password
             };
+
             var deferred = $q.defer(),
                 resolved = false;
+
             $http.post('api/user', credentials).success(function(user) {
                self.data = user;
-               self.data.id = self.data._id;
-               delete self.data._id;
+               self.isLoggedIn = true;
                deferred.resolve();
                resolved = true;
-            }, function(err) {
-               deferred.reject('No such user exists.');
+               $rootScope.$emit('loggedIn');
+            }).error(function() {
+               deferred.reject('No such user.');
                resolved = true;
             });
+
             $timeout(function() {
                if (!resolved) {
-                  deferred.reject('The server is not responding. Try logging in later.');
+                  deferred.reject('The server is taking too long.');
                }
             }, 5000);
+
             return deferred.promise;
          };
 
          self.logout = function() {
+            self.isLoggedIn = false;
+            self.data = null;
             $http.delete('api/user');
-            self.data = {};
          };
 
          self.isLoggedIn = function() {
             var deferred = $q.defer();
-            $http.get('api/user').success(function(user) {
-               if (user) {
-                  self.data = user;
-                  self.data.id = self.data._id;
-                  delete self.data._id;
-                  deferred.resolve(true);
-               } else {
-                  $state.go('login');
-                  self.data = {};
-                  deferred.resolve(false);
-               }
-            });
+            if (self.data) {
+               deferred.resolve(true);
+            } else {
+               $http.get('api/user').success(function(user) {
+                  if (user) {
+                     self.data = user;
+                     self.isLoggedIn = true;
+                     deferred.resolve(true);
+                  } else {
+                     self.data = null;
+                     self.isLoggedIn = false;
+                     deferred.resolve(false);
+                  }
+               });
+            }
             return deferred.promise;
          };
 
          (function init() {
 
-            self.isLoggedIn().then(function() {
+            self.isLoggedIn().then(function(isLoggedIn) {
+
+               if (isLoggedIn) {
+                  $rootScope.$emit('loggedIn');
+               }
 
                $rootScope.$on('$stateChangeStart', function(e, state, params) {
 
-                  if (state.name !== 'login' && !self.data.id) {
+                  if (!self.data) {
                      e.preventDefault();
-                     $state.go('login');
                   }
 
                });
 
+               $timeout(function() {
+                  $animate.enabled(true);
+               }, 250);
+
             });
-
-
 
          })();
 
@@ -96,4 +109,37 @@ angular.module('app.user')
 
       return User;
 
+   }])
+
+   .factory('AuthInterceptor',
+   ['$q', '$injector', 'Modal',
+   function ($q, $injector, Modal) {
+
+      return {
+
+         'response': function(response) {
+            if (response.status === 401 && $injector.get('User').data) {
+               Modal.open('alert', 'Your session has been ended. You will have to authenticate.', null, 'Log in');
+               $injector.get('User').logout();
+               return $q.reject(response);
+            } else {
+               return response || $q.when(response);
+            }
+         },
+
+         'responseError': function(rejection) {
+            if (rejection.status === 401 && $injector.get('User').data) {
+               Modal.open('alert', 'Your session has been ended. You will have to authenticate.', null, 'Log in');
+               $injector.get('User').logout();
+               return $q.reject(rejection);
+            } else {
+               return $q.reject(rejection);
+            }
+         }
+
+      };
+   }])
+
+   .config(['$httpProvider', function($httpProvider) {
+      $httpProvider.interceptors.push('AuthInterceptor');
    }]);

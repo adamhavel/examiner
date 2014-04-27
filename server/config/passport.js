@@ -10,8 +10,8 @@ module.exports = function(passport) {
       done(null, user._id);
    });
 
-   passport.deserializeUser(function(uid, done) {
-      User.findById(uid, function(err, user) {
+   passport.deserializeUser(function(id, done) {
+      User.findById(id, function(err, user) {
          done(err, user);
       });
    });
@@ -26,7 +26,7 @@ module.exports = function(passport) {
          }
       },
       function(entry, done) {
-         User.findByIdAndUpdate(entry.uid, { lastActive: new Date() }, function(err, user) {
+         User.findByIdAndUpdate(entry.uid, { lastLogin: new Date() }, function(err, user) {
             if (err) {
                return done(err);
             }
@@ -42,14 +42,11 @@ module.exports = function(passport) {
                   if (err) {
                      return done(err);
                   }
-                  console.log('new');
                   return done(null, user);
                });
             } else {
-               console.log('user already in db');
                return done(null, user);
             }
-
          });
       }
    ));

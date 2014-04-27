@@ -2,6 +2,59 @@
    Fonts
    ========================================================================== */
 
+/* PT Sans
+   ========================================================================== */
+
+@font-face {
+   font-family: "PT Sans";
+   src: url('../fonts/pt-sans.woff') format('woff');
+   font-weight: 400;
+   font-style: normal;
+}
+
+@font-face{
+   font-family: "PT Sans";
+   src: url('../fonts/pt-sans-italic.woff') format('woff');
+   font-weight: 400;
+   font-style: italic;
+}
+
+
+/* PT Sans Narrow
+   ========================================================================== */
+
+@font-face {
+   font-family: "PT Sans Narrow";
+   src: url('../fonts/pt-sans-narrow.woff') format('woff');
+   font-weight: 400;
+   font-style: normal;
+}
+
+@font-face{
+   font-family: "PT Sans Narrow";
+   src: url('../fonts/pt-sans-narrow-bold.woff') format('woff');
+   font-weight: 700;
+   font-style: normal;
+}
+
+
+/* Roboto
+   ========================================================================== */
+
+@font-face {
+   font-family: "Roboto";
+   src: url('../fonts/roboto-italic.woff') format('woff');
+   font-weight: 400;
+   font-style: italic;
+}
+
+@font-face{
+   font-family: "Roboto";
+   src: url('../fonts/roboto-light.woff') format('woff');
+   font-weight: 300;
+   font-style: normal;
+}
+
 
 /* ==========================================================================
    Typography
@@ -31,6 +84,9 @@ a {
    &:focus,
    &:active {
       color: rgba(black, .75);
+   }
+   &[ng-click] {
+      cursor: pointer;
    }
 }
 

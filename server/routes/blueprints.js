@@ -6,14 +6,14 @@ var blueprints = require('../controllers/blueprints'),
 module.exports = function(app) {
 
    var isAuthorized = function(req, res, next) {
-      if (req.subject && _.indexOf(req.user.subjects, req.subject) === -1) {
-         return res.send(401, 'User is not authorized');
+      if (req.params.subject && _.indexOf(req.user.subjects, req.params.subject) === -1) {
+         return res.send(403, 'Access forbidden');
       }
       next();
    };
 
-   app.route('/api/blueprints/:subject?/:date?/:lang?')
-      .get(auth.isAuthenticated, isAuthorized, blueprints.query);
+   app.route('/api/blueprints')
+      .get(auth.isAuthenticated, /*auth.isTeacher,*/ isAuthorized, blueprints.query);
 
    app.route('/api/blueprint/:subject/:date/:lang')
       .get(auth.isAuthenticated, isAuthorized, blueprints.get)

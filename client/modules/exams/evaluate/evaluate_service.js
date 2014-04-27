@@ -8,10 +8,6 @@ angular.module('app.exams.evaluate')
 
       var ExamEvaluation = (function() {
 
-         if (User.isStudent()) {
-            return null;
-         }
-
          var self = {
             data: null,
             isOngoing: false,
@@ -68,7 +64,13 @@ angular.module('app.exams.evaluate')
             });
          };
 
-         (function init() {
+         $rootScope.$on('loggedIn', function() {
+            if (!User.isStudent() && !self.isOngoing) {
+               self.init();
+            }
+         });
+
+         self.init = function() {
 
             Exams.query({}, function(exams) {
                self.isUrgent = _.some(exams, function(exam) {
@@ -114,7 +116,7 @@ angular.module('app.exams.evaluate')
 
             });
 
-         })();
+         };
 
          return self;
 

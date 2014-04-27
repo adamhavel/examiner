@@ -8,7 +8,6 @@ exports.validateSubject = function(req, res, next, subject) {
    if (!pattern.test(subject)) {
       return next(new Error ('not a valid subject code'));
    }
-   req.subject = subject;
    return next();
 };
 
@@ -22,7 +21,6 @@ exports.validateDate = function(req, res, next, date) {
    // });
    // req.startDate = new Date(dateArr[0], dateArr[1] - 1, dateArr[2]);
    // req.endDate = new Date(dateArr[0], dateArr[1] - 1, dateArr[2] + 1);
-   req.date = date;
    return next();
 };
 
@@ -31,7 +29,6 @@ exports.validateLang = function(req, res, next, lang) {
    if (!pattern.test(lang)) {
       return next(new Error ('not a valid language code'));
    }
-   req.lang = lang;
    return next();
 };
 
@@ -40,37 +37,52 @@ exports.validateUserID = function(req, res, next, uid) {
    if (!pattern.test(uid)) {
       return next(new Error ('not a valid user ID'));
    }
-   req.uid = uid;
    return next();
 };
 
 exports.query = function(req, res) {
-   var query = Exam.find().sort({ date: -1 });
-   if (req.uid) {
-      query = query.find({
-         'student.id': req.uid
+   var dbQuery = Exam.find(),
+       q = req.query;
+
+   if (q.subject) {
+      dbQuery = dbQuery.find({
+         subject: { $regex: new RegExp(q.subject, 'i'), $in: req.user.subjects }
+      });
+   } else {
+      dbQuery = dbQuery.find({
+         subject: { $in: req.user.subjects }
       });
    }
-   if (req.subject) {
-      query = query.find({
-         subject: req.subject
+
+   if (q.fields) {
+      dbQuery = dbQuery.select(q.fields.replace(/,/g, ' '));
+   }
+
+   if (q.uid) {
+      dbQuery = dbQuery.find({
+         'student.id': { $regex: new RegExp(q.uid, 'i') }
+      });
+   } else if (req.user.role === 'student') {
+      dbQuery = dbQuery.find({
+         'student.id': req.user._id
       });
    }
-   if (req.lang) {
-      query = query.find({
-         lang: req.lang
+
+   if (q.lang) {
+      dbQuery = dbQuery.find({
+         lang: q.lang
       });
    }
-   if (req.date) {
-      query = query.find({
-         date: req.date
+
+   if (q.date) {
+      dbQuery = dbQuery.find({
+         date: q.date
       });
    }
-   query.populate('_blueprint', 'lede sections').exec(function(err, exams) {
+
+   dbQuery.populate('_blueprint', 'lede sections').exec(function(err, exams) {
       if (err) {
          res.send(500);
-      } else if (!exams.length) {
-         res.send(404);
       } else {
          res.send(exams);
       }
@@ -78,12 +90,20 @@ exports.query = function(req, res) {
 };
 
 exports.get = function(req, res) {
-   Exam.findOne({
-      subject: req.subject,
-      lang: req.lang,
-      date: req.date,
-      'student.id': req.uid
-   }).populate('_blueprint', 'lede sections').exec(function(err, exam) {
+   var p = req.params;
+
+   var dbQuery = Exam.findOne({
+      subject: p.subject,
+      lang: p.lang,
+      date: p.date,
+      'student.id': p.uid
+   });
+
+   if (req.query.fields) {
+      dbQuery = dbQuery.select(q.fields.replace(/,/g, ' '));
+   }
+
+   dbQuery.populate('_blueprint', 'lede sections').lean().exec(function(err, exam) {
       if (err) {
          res.send(500);
       } else if (!exam) {

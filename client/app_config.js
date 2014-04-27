@@ -6,14 +6,9 @@ angular.module('app').config([
 
       $locationProvider.html5Mode(true).hashPrefix('!');
 
-      $urlRouterProvider.otherwise('/exams/');
+      $urlRouterProvider.otherwise('/exams');
 
       $stateProvider
-         .state('login', {
-            url: '/login',
-            templateUrl: 'partials/login.html',
-            controller: 'UserController'
-         })
          .state('exams', {
             url: '/exams/:subject',
             params: {
@@ -40,35 +35,14 @@ angular.module('app').config([
             url: '/evaluate/:subject/:date/:lang/:uid',
             templateUrl: 'partials/evaluate.html',
             controller: 'ExamEvaluateController'
-         })
-         .state('blueprints', {
-            url: '/blueprints/{subject}',
-            params: {
-               subject: { value: null }
-            },
-            templateUrl: 'partials/blueprints.html',
-            controller: 'BlueprintsController'
-         })
-         .state('blueprint', {
-            url: '/blueprint/:subject/:date/:lang',
-            templateUrl: 'partials/blueprint.html',
-            controller: 'BlueprintController'
-         })
-         .state('examTerms', {
-            url: '/new',
-            templateUrl: 'partials/examTerms.html',
-            controller: 'ExamTermsController'
-         })
-         .state('newBlueprint', {
-            url: '/new/:subject/:date/:lang',
-            templateUrl: 'partials/newBlueprint.html',
-            controller: 'BlueprintCreateController'
          });
 
    }
 ]).run([
-   '$rootScope', '$location',
-   function($rootScope, $location) {
+   '$rootScope', '$location', '$animate', '$timeout',
+   function($rootScope, $location, $animate, $timeout) {
+
+      $animate.enabled(false);
 
       $rootScope.url = $location.path();
 

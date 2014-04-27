@@ -252,19 +252,19 @@ angular.module('app.exams')
             callback: function () {
 
                if (!$scope.content) {
-                  $scope.content = '';
-                  // $scope.content = 'var src = f.src.filter(function(filepath) {\n' +
-                  // '   // Warn on and remove invalid source files (if nonull was set).\n' +
-                  // '   if (!grunt.file.exists(filepath)) {\n' +
-                  // '      grunt.log.warn(\'Source file "\' + filepath + \'" not found.\');\n' +
-                  // '       return false;\n' +
-                  // '   } else {\n' +
-                  // '      return true;\n' +
-                  // '   }\n' +
-                  // '}).map(function(filepath) {\n' +
-                  // '   // Read file source.\n' +
-                  // '   return grunt.files.read(filepath);\n' +
-                  // '});';
+                  //$scope.content = '';
+                  $scope.content = 'var src = f.src.filter(function(filepath) {\n' +
+                  '   // Warn on and remove invalid source files (if nonull was set).\n' +
+                  '   if (!grunt.file.exists(filepath)) {\n' +
+                  '      grunt.log.warn(\'Source file "\' + filepath + \'" not found.\');\n' +
+                  '       return false;\n' +
+                  '   } else {\n' +
+                  '      return true;\n' +
+                  '   }\n' +
+                  '}).map(function(filepath) {\n' +
+                  '   // Read file source.\n' +
+                  '   return grunt.files.read(filepath);\n' +
+                  '});';
                   $scope.$apply();
                }
 

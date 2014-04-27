@@ -21,11 +21,11 @@
 
          <section ng-if="subject" class="preview preview--sheet">
             <div class="content">
-               <h1 class="beta heading preview__heading">{{item.subject | uppercase}}</h1>
-               <h2 class="heading preview__subheading">
-                  <time class="epsilon">{{item.date | date: 'd. M. yyyy'}}</time>
-                  <time>{{item.date | date: 'h:mm'}}</time>
-               </h2>
+               <h1 class="heading preview__heading">
+                  <time class="alpha">{{item.date | date: 'd. M.'}}</time>
+                  <time class="gamma">{{item.date | date: 'h:mm'}}</time>
+               </h1>
+               <h2 class="epsilon heading preview__subheading">{{item.subject | uppercase}}</h2>
             </div>
             <a ui-sref="exam({
                subject: item.subject,

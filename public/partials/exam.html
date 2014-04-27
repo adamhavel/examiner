@@ -19,6 +19,7 @@
             </span>
          </div>
       </div>
+      <h3 ng-if="user.isStudent()" class="delta heading exam__person icon--person">{{exam.student.name}}</h3>
    </header>
 
    <div ng-if="exam.started || !user.isStudent()">

@@ -20,7 +20,7 @@ angular.module('app.exams.evaluate')
       };
 
       $scope.store = function() {
-         Modal.open('save', 'You are about to finish the evaluation. You can edit it anytime later. Do you want to continue?', function(confirmed) {
+         Modal.open('save', 'Do you want to finish the evaluation now? If neccessary, you can re-evaluate it later.', function(confirmed) {
             if (confirmed) {
                ExamEvaluation.store();
             }

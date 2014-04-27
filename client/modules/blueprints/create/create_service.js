@@ -8,10 +8,6 @@ angular.module('app.blueprints.create')
 
       var NewBlueprint = (function() {
 
-         if (User.isStudent()) {
-            return null;
-         }
-
          var self = {
             data: null,
             isOngoing: false
@@ -78,7 +74,13 @@ angular.module('app.blueprints.create')
             });
          };
 
-         (function init() {
+         $rootScope.$on('loggedIn', function() {
+            if (!User.isStudent() && !self.isOngoing) {
+               self.init();
+            }
+         });
+
+         self.init = function() {
 
             var storedSession = angular.fromJson(webStorage.get('blueprint'));
             if (storedSession) {
@@ -116,7 +118,7 @@ angular.module('app.blueprints.create')
 
             });
 
-         })();
+         };
 
          return self;
 

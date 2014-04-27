@@ -50,7 +50,7 @@ angular.module('app.ui')
                if (Modal.queue.length) {
                   $timeout(function() {
                      Modal.content = Modal.queue.shift();
-                  }, 400);
+                  }, 300);
                }
             };
 
@@ -59,7 +59,7 @@ angular.module('app.ui')
                if (callback) {
                   $timeout(function() {
                      callback(callback.value || true);
-                  }, 200);
+                  }, 300);
                }
                $scope.close();
             };

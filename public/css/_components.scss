@@ -154,22 +154,29 @@ button {
    &__header {
       @extend %aloof;
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
    }
    &__subject {
    }
    &__date {
       @extend %icon--bullet;
-      flex: 1;
       font-weight: 400 !important;
       @include icon {
-         float: left;
          width: $leading * 1.5;
          height: $leading * 2;
          background-size: 50%;
          margin-right: 0;
          opacity: .75;
       };
+   }
+   &__person {
+      flex: 1 100%;
+      font-style: italic;
+      line-height: 1.5;
+      @include icon {
+         width: 1.5rem;
+      }
    }
    &__header > .heading {
       margin-bottom: 0;
@@ -178,6 +185,8 @@ button {
       @extend %inline-list;
       @include buttons(lighten(silver, 20%));
       @include primary-button(lighten(brand(red), 40%));
+      flex: 1;
+      text-align: right;
    }
    &__section {
       @include blank-lines(3, trailing);
@@ -245,6 +254,9 @@ button {
       }
       li {
          @extend %vertical-slide;
+      }
+      .ng-animate & {
+         display: none;
       }
    }
 }
@@ -336,7 +348,6 @@ button {
    &__heading {
       line-height: 1 !important;
       font-family: "PT Sans Narrow", sans-serif;
-      white-space: pre;
    }
    &__subheading {
       margin-bottom: 0;
@@ -353,7 +364,6 @@ button {
    time {
       display: block;
       line-height: 1.25;
-      font-style: italic;
    }
    &--sheet {
       transition: transform .1s;
@@ -464,7 +474,6 @@ button {
    ========================================================================== */
 
 .modal {
-   @extend %horizontal-slide;
    @include blank-lines(1, both, padding);
    @include taper(1, both);
    display: flex;
@@ -482,6 +491,22 @@ button {
    font-family: "Roboto", sans-serif;
    font-weight: 300;
    color: rgba(black, .6);
+   &.ng-animate {
+      transition: transform .3s, opacity .3s;
+   }
+   &.ng-enter {
+      transform: translate3d(-50vw, -50%, 0);
+      opacity: 0;
+   }
+   &.ng-enter-active,
+   &.ng-leave {
+      transform: translate3d(-50%, -50%, 0);
+      opacity: 1;
+   }
+   &.ng-leave-active {
+      transform: translate3d(50vw, -50%, 0);
+      opacity: 0;
+   }
    label {
       @include blank-lines(.5, trailing);
    }
@@ -648,7 +673,7 @@ button {
       height: 0;
       overflow: hidden;
       line-height: $leading * 2;
-      color: rgba(black, .5);
+      color: rgba(black, .45);
       opacity: 0;
       transition: width .001s .4s, height .001s .4s, opacity .4s .001s;
       .ng-urgent > &,

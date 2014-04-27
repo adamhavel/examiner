@@ -33,6 +33,9 @@ body {
    &.ng-leave-active {
       transform: translate3d(calc(50% + 50vw), 0, 0);
    }
+   &.ng-cloak {
+      display: none;
+   }
 }
 
 
@@ -212,14 +215,14 @@ $navigation-height: $leading * 1;
       transition: transform 1.5s;
    }
    &.ng-enter {
-      transform: translate3d(-100vw, -50%, 0);
+      transform: translate3d(calc(-50vw - 100%), -50%, 0);
    }
    &.ng-enter-active,
    &.ng-leave {
       transform: translate3d(-50%, -50%, 0);
    }
    &.ng-leave-active {
-      transform: translate3d(-100vw, -50%, 0);
+      transform: translate3d(calc(-50vw - 100%), -50%, 0);
    }
    @include before(url('../img/pencil.svg')) {
       @include position($top: -10%, $right: 115%);

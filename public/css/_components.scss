@@ -495,7 +495,7 @@ button {
       transition: transform .3s, opacity .3s;
    }
    &.ng-enter {
-      transform: translate3d(-50vw, -50%, 0);
+      transform: translate3d(calc(-50vw - 100%), -50%, 0);
       opacity: 0;
    }
    &.ng-enter-active,

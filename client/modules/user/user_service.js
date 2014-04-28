@@ -3,8 +3,8 @@
 angular.module('app.user')
 
    .factory('User',
-   ['$q', '$state', '$http', '$rootScope', '$timeout', '$animate', 'Modal',
-   function($q, $state, $http, $rootScope, $timeout, $animate, Modal) {
+   ['$q', '$state', '$http', '$rootScope', '$timeout', '$animate', 'Modal', 'Socket',
+   function($q, $state, $http, $rootScope, $timeout, $animate, Modal, Socket) {
 
       var User = (function() {
 

@@ -33,6 +33,8 @@ var db = mongoose.connect(config.db, function() {
 
    io.sockets.on('connection', function(socket) {
 
+      console.log(socket.handshake);
+
       function sendStudentList(examId) {
          var students = _.filter(users, function(user) {
             return user.role === 'student' && user.examId === examId;

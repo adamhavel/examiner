@@ -37,6 +37,16 @@
    font-style: normal;
 }
 
+/* PT Mono
+   ========================================================================== */
+
+@font-face {
+   font-family: "PT Mono";
+   src: url('../fonts/pt-mono.woff') format('woff');
+   font-weight: 400;
+   font-style: normal;
+}
+
 
 /* Roboto
    ========================================================================== */
@@ -137,15 +147,15 @@ a {
 }
 
 .delta, %delta {
-   font-size: 1.42rem;
+   font-size: 1.444rem;
 }
 
 .epsilon, %epsilon {
-   font-size: 1.28rem;
+   font-size: 1.296rem;
 }
 
 .zeta, %zeta {
-   font-size: .858rem;
+   font-size: .868rem;
 }
 
 

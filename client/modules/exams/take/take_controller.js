@@ -164,15 +164,15 @@ angular.module('app.exams.take')
             }
          };
 
-         var resizeHandler = function() {
+         var resizeHandler = _.debounce(function() {
             if ($scope.exam.started) {
                checkViewportUse();
             }
-         };
+         }, 1000);
 
          window.addEventListener('blur', distractionHandler);
 
-         window.addEventListener('resize', _.debounce(resizeHandler, 1000));
+         window.addEventListener('resize', resizeHandler);
 
          $scope.$on('$destroy', function() {
             window.removeEventListener('blur', distractionHandler);

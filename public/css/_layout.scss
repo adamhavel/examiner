@@ -7,9 +7,16 @@ html {
    overflow-x: hidden;
 }
 
+* {
+   -webkit-print-color-adjust:exact;
+}
+
 body {
    @extend %dimmable;
    background: brand(blue);
+   &.ng-cloak {
+      display: none;
+   }
 }
 
 .layout-wrapper {
@@ -32,9 +39,6 @@ body {
    }
    &.ng-leave-active {
       transform: translate3d(calc(50% + 50vw), 0, 0);
-   }
-   &.ng-cloak {
-      display: none;
    }
 }
 
@@ -143,8 +147,9 @@ $navigation-height: $leading * 1;
          font-weight: 300;
          text-decoration: none;
          color: rgba(black, .5);
-         transition: transform, opacity, color, box-shadow, background-color;
-         transition-duration: .25s;
+         transform: translate3d(0, 0, 0);
+         transition: transform, opacity, background-color;
+         transition-duration: .2s;
          opacity: .3;
          @include icon {
             height: $leading * 2;
@@ -155,9 +160,9 @@ $navigation-height: $leading * 1;
          &.ng-active,
          &.ng-ongoing,
          &.ng-urgent {
-            transform: translateX($leading / 1.75);
+            transform: translate3d($leading / 1.75, 0, 0);
             background-color: brand(yellow);
-            box-shadow: inset #{-($leading / 1.75 + .2rem)} 0 .2rem 0 rgba(black, .075),
+            box-shadow: inset 0 0 .25rem 0 rgba(black, .075),
                         .5rem .2rem 0 0 rgba(black, .05);
             opacity: 1;
             color: rgba(black, .5);

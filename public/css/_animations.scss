@@ -3,29 +3,30 @@
    ========================================================================== */
 
 %vertical-slide {
-   xmargin: 0 !important;
-   transition: color 3s;
-   &.ng-animate {
-      overflow: hidden;
-      transition: max-height .25s, opacity .25s /* margin .25s, color .5s;*/;
-   }
-   &.ng-enter {
-      max-height: 0;
-      opacity: 0;
-      margin: 0;
-   }
-   &.ng-enter-active,
-   &.ng-leave {
-      max-height: 500px;
-      opacity: 1;
-      margin: 0;
-      //color: brand(red);
-   }
-   &.ng-leave-active {
-      max-height: 0;
-      opacity: 0;
-      margin: 0;
-   }
+   color: inherit;
+   // xmargin: 0 !important;
+   // transition: color 3s;
+   // &.ng-animate {
+   //    overflow: hidden;
+   //    transition: max-height .25s, opacity .25s /* margin .25s, color .5s;*/;
+   // }
+   // &.ng-enter {
+   //    max-height: 0;
+   //    opacity: 0;
+   //    margin: 0;
+   // }
+   // &.ng-enter-active,
+   // &.ng-leave {
+   //    max-height: 500px;
+   //    opacity: 1;
+   //    margin: 0;
+   //    //color: brand(red);
+   // }
+   // &.ng-leave-active {
+   //    max-height: 0;
+   //    opacity: 0;
+   //    margin: 0;
+   // }
 }
 
 %horizontal-slide {

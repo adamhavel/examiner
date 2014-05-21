@@ -389,7 +389,7 @@ button {
          transition: opacity .1s;
       }
       .content {
-         transition: color, border-color, border-width, background, box-shadow;
+         transition: background-color, border-color;
          transition-duration: .3s;
       }
       &:hover {
@@ -406,7 +406,7 @@ button {
    }
    &--stack {
       .content {
-         transition: color, border-color, border-width, background, transform;
+         transition: background-color, border-color, transform;
          transition-duration: .3s;
          @include before {
             @include position($top: 3px, $left: 0, $right: 0);

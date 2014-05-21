@@ -34,7 +34,6 @@ var BlueprintSchema = new Schema(
       date: String,
       lang: String,
       lede: String,
-      duration: Number,
       sections: [
          {
             name: String,

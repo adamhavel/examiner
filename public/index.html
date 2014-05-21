@@ -10,7 +10,7 @@
    <link href="css/default.min.css" rel="stylesheet">
    <!--[if lte IE 9]><script src="js/shims.min.js"></script><![endif]-->
 </head>
-<body ng-class="{'ng-dim': modal.content}" ng-controller="UIController">
+<body class="ng-cloak" ng-class="{'ng-dim': modal.content}" ng-controller="UIController">
 
 <modal content="modal.content"></modal>
 
@@ -18,15 +18,15 @@
    <h1 class="heading login__heading">Examiner</h1>
    <form class="login__form" ng-submit="login()">
 
-      <input class="login__input" type="text" ng-model="uid" ng-init="uid = 'havelad1'" placeholder="Your username" required>
-      <input class="login__input" type="password" ng-model="password" placeholder="Your password" required>
+      <input class="login__input" name="username" type="text" ng-model="uid" placeholder="Your username" required spellcheck="false">
+      <input class="login__input" name="password" type="password" ng-model="password" placeholder="Your password" required>
 
       <button class="login__submit" type="submit">Log in</button>
 
    </form>
 </section>
 
-<div class="layout-wrapper ng-cloak" ng-if="user.isLoggedIn === true">
+<div class="layout-wrapper" ng-if="user.isLoggedIn === true">
 
    <header class="page-header">
 

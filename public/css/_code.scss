@@ -5,12 +5,13 @@
 code {
    @extend %editable;
    @extend %zeta;
-   font-family: Consolas, Monaco, "Andale Mono", monospace;
+   font-family: "PT Mono", monospace;
    white-space: pre;
    word-spacing: normal;
    word-break: normal;
    tab-size: 3;
    hyphens: none;
+   color: rgba(black, .75);
    pre > & {
       display: block;
    }
@@ -20,11 +21,11 @@ code {
 .token.prolog,
 .token.doctype,
 .token.cdata {
-   color: slategray;
+   color: rgba(black, .4);
 }
 
 .token.punctuation {
-   color: #999;
+   color: rgba(black, .6);
 }
 
 .namespace {
@@ -37,14 +38,14 @@ code {
 .token.number,
 .token.constant,
 .token.symbol {
-   color: #905;
+   color: darken(brand(red), 10%);
 }
 
 .token.selector,
 .token.attr-name,
 .token.string,
 .token.builtin {
-   color: #690;
+   color: darken(brand(green), 30%);
 }
 
 .token.operator,
@@ -53,19 +54,19 @@ code {
 .language-css .token.string,
 .style .token.string,
 .token.variable {
-   color: #a67f59;
+   color: darken(brand(purple), 5%);
 }
 
 .token.atrule,
 .token.attr-value,
 .token.keyword {
-   color: #07a;
+   color: darken(brand(blue), 50%);
 }
 
 
 .token.regex,
 .token.important {
-   color: #e90;
+   color: darken(brand(yellow), 10%);
 }
 
 .token.important {
